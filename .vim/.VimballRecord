@@ -1,0 +1,4 @@
+DrawIt.vba: call delete('/home/rahulkum/.vim/plugin/DrawItPlugin.vim')|call delete('/home/rahulkum/.vim/plugin/cecutil.vim')|call delete('/home/rahulkum/.vim/autoload/DrawIt.vim')|call delete('/home/rahulkum/.vim/doc/DrawIt.txt')
+conque_term_1.0.vba: call delete('/home/rahulkum/.vim/autoload/conque_term.vim')|call delete('/home/rahulkum/.vim/doc/conque_term.txt')|call delete('/home/rahulkum/.vim/plugin/conque_term.vim')|call delete('/home/rahulkum/.vim/syntax/conque_term.vim')
+Recover-0.9.vba: call delete('/home/rahul/.vim/plugin/recover.vim')|call delete('/home/rahul/.vim/autoload/recover.vim')|call delete('/home/rahul/.vim/doc/recoverPlugin.txt')
+zenburn.vba: call delete('/home/rahul/.vim/colors/zenburn.vim')

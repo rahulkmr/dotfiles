@@ -1,0 +1,10 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =8
+let g:netrw_dirhist_1='/home/rahul/flask_app'
+let g:netrw_dirhist_2='/home/rahul/flask_app/flaskext'
+let g:netrw_dirhist_3='/etc/service/syndaemon'
+let g:netrw_dirhist_4='/home/rahul/friencos/apps/books'
+let g:netrw_dirhist_5='/home/rahul/.ipython'
+let g:netrw_dirhist_6='/home/rahul/.config/chromium/Default/Extensions/bbfammmagchhaohncbhghoohcfoeckdi/1.2_0/javascript'
+let g:netrw_dirhist_7='/home/rahul/friencos/apps/user'
+let g:netrw_dirhist_8='/home/rahul/scrap/demo/test'

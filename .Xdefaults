@@ -1,0 +1,29 @@
+!Rxvt*font: xft:Monospace:pixelsize:11
+!Rxvt*boldFont: xft:Monospace:pixelsize:11
+Rxvt.font: -*-lucidatypewriter-medium-*-*-*-14-*-72-*-*-*-*-*
+!Rxvt.font: -*-bitstream vera sans mono-medium-r-normal--24-*-*-*-*-*-*-*
+Rxvt.scrollBar: True
+Rxvt.scrollBar_right: True
+URxvt.scrollBar: True
+URxvt.scrollBar_right: True
+*foreground: #f2f2f2
+!*background: #101010
+*background: #000000
+
+*color0: #6c6c6c
+*color1: #e9897c
+*color2: #b6e77d
+*color3: #ecebbe
+*color4: #a9cdeb
+*color5: #ea96eb
+*color6: #c9caec
+*color7: #f2f2f2
+
+*color8: #747474
+*color9: #f99286
+*color10: #c3f786
+*color11: #fcfbcc
+*color12: #b6defb
+*color13: #fba1fb
+*color14: #d7d9fc
+*color15: #e2e2e2

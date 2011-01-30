@@ -1,0 +1,24 @@
+# set some options
+shell /usr/bin/zsh 
+activity "activity: window ~%"  # Message when activity occurs in a window
+vbell off
+autodetach on                   # Autodetach session on hangup instead of
+                                # terminating screen completely
+shelltitle $HOST                # Set the title of all shell windows
+defflow off                     # Set the default flow control mode
+defmode 0620                    # Set the default mode of each pseudo tty
+defscrollback 10000               # Set the default number of scrollback lines
+deflogin off                    # Do not register the window in utmp
+startup_message off             # Disable startup messages
+
+
+# Display a caption string below, appearing like tabs and
+# displaying the window number and application name (by default).
+caption always
+#caption string "%{kw}%-w%{wr}%n %t%H%{-}%+w"
+caption string "%{kw}%-w%{wr}%n %t%{-}%+w"
+
+#hardstatus alwayslastline
+#hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{=kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B}%Y-%m-%d %{W}%c %{g}]'
+termcapinfo xterm ti@:te@
+multiuser on
