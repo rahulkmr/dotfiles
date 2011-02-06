@@ -51,8 +51,7 @@ set showmatch
 set comments=sl:/*,mb:\ *,elx:\ */
 
 " recreate tags file with F5
-map ;c :!ctags -R .<CR>
-"map <Leader>/ "yy/<C-r>y<CR>
+nmap \c :!ctags -R .<CR>
 " Ruler.
 set ruler<
 " Set backspace
@@ -94,29 +93,29 @@ let g:vimclojure#WantNailgun=1
 let g:vimclojure#HighlightBuiltins=1
 let g:vimclojure#ParenRainbow=1
 let g:vimclojure#DynamicHighlighting=1
-nnoremap \ch :set autochdir<CR>
+nmap ,a :set autochdir<CR>
 set noautochdir
-nmap \n :nohl<CR>
-nmap \t :NERDTreeToggle<CR>
+nmap ,n :nohl<CR>
+nmap ,t :NERDTreeToggle<CR>
 "nmap \t :Ve<CR><CR>
-nmap \l :TlistToggle<CR>
-nmap \y :FufFile<CR>
-autocmd FileType python nmap \x :w<CR>:!/usr/bin/env python % <CR>
+nmap ,l :TlistToggle<CR>
+nmap ,y :FufFile<CR>
+autocmd FileType python nmap ,x :w<CR>:!/usr/bin/env python % <CR>
 autocmd FileType python set nosmartindent 
 autocmd FileType python set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;py_compile.compile(r'%')\" 
 autocmd BufRead python set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m 
 autocmd FileType python set path+=$PYTHONDIRS 
-autocmd FileType perl nmap  \x :w<CR>:!/usr/bin/env perl % <CR>
+autocmd FileType perl nmap  ,x :w<CR>:!/usr/bin/env perl % <CR>
 autocmd FileType perl set path+=$PERLDIRS 
 autocmd FileType perl set makeprg=/usr/bin/env\ perl\ -c\ % 
 autocmd FileType c set makeprg=gcc\ -g\ -o\ %<\ %
 autocmd FileType cpp set makeprg=g++\ -g\ -o\ %<\ %
-autocmd FileType c,cpp,perl,python nmap \c :w<CR>:make<CR>
-autocmd FileType c,cpp nmap \x :!./%<<CR>
+autocmd FileType c,cpp,perl,python nmap ,c :w<CR>:make<CR>
+autocmd FileType c,cpp nmap ,x :!./%<<CR>
 autocmd FileType java set makeprg=javac\ %
-autocmd FileType java nmap \c :w<CR>:make<CR> | nmap \x :!java %<<CR> | nmap \o :call JCommentWriter()<CR>
-autocmd FileType java,c,perl nmap \j :cn<CR> | nmap \k :cp<CR> | nmap \h :cr<CR> | nmap \l :cl<CR> | nmap \i :cw<CR><C-w><C-w>
-nmap \i <C-w><C-w><C-w>c 
+autocmd FileType java nmap ,c :w<CR>:make<CR> | nmap ,x :!java %<<CR> | nmap ,o :call JCommentWriter()<CR>
+autocmd FileType java,c,perl nmap ,j :cn<CR> | nmap ,k :cp<CR> | nmap ,h :cr<CR> | nmap ,l :cl<CR> | nmap ,i :cw<CR><C-w><C-w>
+nmap ,i <C-w><C-w><C-w>c 
 let g:netrw_menu = 0
 let g:netrw_altv = 1
 let g:netrw_hide = 0
@@ -125,7 +124,7 @@ let g:netrw_browse_split = 4
 let g:netrw_winsize = 35 
 let g:netrw_hide = 1
 inoremap <Nul> <C-x><C-o>
-nnoremap \m :TOhtml<CR>
+nnoremap ,m :TOhtml<CR>
 colorscheme ir_black
 " For full syntax highlighting:
 let python_highlight_all=1
@@ -156,7 +155,7 @@ set history=1000
 set undolevels=1000
 set directory=/tmp//
 let html_use_css=1
-nnoremap \f :RecoverPluginFinish<CR>
+nnoremap ,f :RecoverPluginFinish<CR>
 nnoremap / /\v
 vnoremap / /\v
 set lbr
@@ -192,19 +191,23 @@ autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 autocmd FileType c set omnifunc=ccomplete#Complete
-nmap <Leader>dj :set filetype=django<CR>
-nmap <Leader>jj :set filetype=jinja<CR>
-nmap <Leader>hd :set filetype=htmldjango<CR>
-nmap <Leader>hj :set filetype=htmljinja<CR>
+nmap ,dj :set filetype=django<CR>
+nmap ,jj :set filetype=jinja<CR>
+nmap ,hd :set filetype=htmldjango<CR>
+nmap ,hj :set filetype=htmljinja<CR>
 let g:ragtag_global_maps = 1
-nnoremap <leader>w :%s/\s\+$//<cr>:let @/=''<CR>
-inoremap qq <ESC> 
-nnoremap <leader>v <C-w>v<C-w>l
-nnoremap <leader>s <C-w>s<C-w>j
+nnoremap ,w :%s/\s\+$//<cr>:let @/=''<CR>
+nnoremap \v <C-w>v<C-w>l
+nnoremap \s <C-w>s<C-w>j
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-inoremap <C-o> <Esc>o
 nnoremap ,v :e ~/.vimrc<CR>
 nnoremap ,V :so ~/.vimrc<CR>
+inoremap \1 <%<Space><Space>%><Esc>2hi
+inoremap \2 <%=<Space><Space>%><Esc>2hi
+inoremap \3 {%<Space><Space>%}<Esc>2hi
+inoremap \4 {{<Space><Space>}}<Esc>2hi
+inoremap \< </<C-X><C-O>
+au BufRead,BufNewFile *.less set ft=less syntax=less
