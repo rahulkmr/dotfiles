@@ -15,10 +15,8 @@ startup_message off             # Disable startup messages
 # Display a caption string below, appearing like tabs and
 # displaying the window number and application name (by default).
 caption always
-#caption string "%{kw}%-w%{wr}%n %t%H%{-}%+w"
 caption string "%{kw}%-w%{wr}%n %t%{-}%+w"
 
-#hardstatus alwayslastline
-#hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{=kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B}%Y-%m-%d %{W}%c %{g}]'
+
 termcapinfo xterm ti@:te@
 multiuser on
