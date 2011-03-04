@@ -211,3 +211,6 @@ inoremap \3 {%<Space><Space>%}<Esc>2hi
 inoremap \4 {{<Space><Space>}}<Esc>2hi
 inoremap \< </<C-X><C-O>
 au BufRead,BufNewFile *.less set ft=less syntax=less
+inoremap <C-h> <C-g>u<C-h>
+inoremap <C-w> <C-g>u<C-w>
+inoremap <C-u> <C-g>u<C-u>
