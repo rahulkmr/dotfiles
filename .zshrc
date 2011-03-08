@@ -246,7 +246,7 @@ compctl -/ cd
 bindkey -e
 
 preexec () {
-    if [[ "$TERM" == "screen" ]]; then
+    if [[ "$STY" != "" ]]; then
         if [ -n "$ST" ]; then
             title=$ST
         else
@@ -323,4 +323,4 @@ setopt PUSHD_MINUS
 # blank pushd goes to home
 setopt PUSHD_TO_HOME
 alias nodei="NODE_NO_READLINE=1 rlwrap node"
-
+TERM=xterm
