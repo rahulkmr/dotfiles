@@ -4582,6 +4582,9 @@ function! s:BufSettings()
     endif
   endif
   if ft == 'ruby'
+    call self.setvar('&shiftwidth',2)
+    call self.setvar('&softtabstop',2)
+    call self.setvar('&expandtab',1)
     call self.setvar('&suffixesadd',".rb,.".s:gsub(s:view_types,',',',.').",.yml,.csv,.rake,s.rb")
     call self.setvar('&define',self.define_pattern())
     " This really belongs in after/ftplugin/ruby.vim but we'll be nice
