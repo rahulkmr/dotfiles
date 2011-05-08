@@ -324,3 +324,4 @@ setopt PUSHD_MINUS
 setopt PUSHD_TO_HOME
 alias nodei="NODE_NO_READLINE=1 rlwrap node"
 TERM=xterm
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # This loads RVM into a shell session.

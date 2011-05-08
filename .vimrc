@@ -218,3 +218,5 @@ autocmd BufNewFile,BufRead *.slim set filetype=slim
 autocmd FileType ruby set tabstop=2
 autocmd FileType ruby set shiftwidth=2
 autocmd FileType ruby set softtabstop=2
+au BufNewFile,BufRead *.rkt set filetype=scheme
+autocmd FileType scheme runtime plugin/rainbow.vim
