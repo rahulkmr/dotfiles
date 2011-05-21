@@ -101,18 +101,18 @@ nmap ,t :NERDTreeToggle<CR>
 nmap ,l :TlistToggle<CR>
 nmap ,y :FufFile<CR>
 autocmd FileType python nmap ,x :w<CR>:!/usr/bin/env python % <CR>
-autocmd FileType python set nosmartindent 
-autocmd FileType python set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;py_compile.compile(r'%')\" 
-autocmd BufRead python set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m 
-autocmd FileType python set path+=$PYTHONDIRS 
+autocmd FileType python setlocal nosmartindent 
+autocmd FileType python setlocal makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;py_compile.compile(r'%')\" 
+autocmd BufRead python setlocal efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m 
+autocmd FileType python setlocal path+=$PYTHONDIRS 
 autocmd FileType perl nmap  ,x :w<CR>:!/usr/bin/env perl % <CR>
-autocmd FileType perl set path+=$PERLDIRS 
-autocmd FileType perl set makeprg=/usr/bin/env\ perl\ -c\ % 
-autocmd FileType c set makeprg=gcc\ -g\ -o\ %<\ %
-autocmd FileType cpp set makeprg=g++\ -g\ -o\ %<\ %
-autocmd FileType c,cpp,perl,python nmap ,c :w<CR>:make<CR>
+autocmd FileType perl setlocal path+=$PERLDIRS 
+autocmd FileType perl setlocal makeprg=/usr/bin/env\ perl\ -c\ % 
+autocmd FileType c setlocal makeprg=gcc\ -g\ -o\ %<\ %
+autocmd FileType cpp setlocal makeprg=g++\ -g\ -o\ %<\ %
+autocmd FileType c,cpp,perl,python,ruby nmap ,c :w<CR>:make<CR>
 autocmd FileType c,cpp nmap ,x :!./%<<CR>
-autocmd FileType java set makeprg=javac\ %
+autocmd FileType java setlocal makeprg=javac\ %
 autocmd FileType java nmap ,c :w<CR>:make<CR> | nmap ,x :!java %<<CR> | nmap ,o :call JCommentWriter()<CR>
 autocmd FileType java,c,perl nmap ,j :cn<CR> | nmap ,k :cp<CR> | nmap ,h :cr<CR> | nmap ,l :cl<CR> | nmap ,i :cw<CR><C-w><C-w>
 nmap ,i <C-w><C-w><C-w>c 
@@ -173,24 +173,24 @@ cnoremap <c-d> <del>
 cnoremap <c-f> <right>
 " Set filetype for f#"
 au BufNewFile,BufRead *.fs set filetype=fs 
-autocmd FileType fs set autoindent
-autocmd FileType fs set smartindent
+autocmd FileType fs setlocal autoindent
+autocmd FileType fs setlocal smartindent
 " configure tabwidth and insert spaces instead of tabs
-autocmd FileType fs set tabstop=4        " tab width is 4 spaces
-autocmd FileType fs set shiftwidth=4     " indent also with 4 spaces
-autocmd FileType fs set softtabstop=4
-autocmd FileType fs set expandtab        " expand tabs to spaces
+autocmd FileType fs setlocal tabstop=4        " tab width is 4 spaces
+autocmd FileType fs setlocal shiftwidth=4     " indent also with 4 spaces
+autocmd FileType fs setlocal softtabstop=4
+autocmd FileType fs setlocal expandtab        " expand tabs to spaces
 nnoremap ` @@
 vnoremap . :normal .<CR>
 vnoremap ` :normal @@<CR>
 set omnifunc=syntaxcomplete#Complete
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-autocmd FileType c set omnifunc=ccomplete#Complete
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
+autocmd FileType c setlocal omnifunc=ccomplete#Complete
 nmap ,dj :set filetype=django<CR>
 nmap ,jj :set filetype=jinja<CR>
 nmap ,hd :set filetype=htmldjango<CR>
@@ -215,8 +215,12 @@ inoremap <C-h> <C-g>u<C-h>
 inoremap <C-w> <C-g>u<C-w>
 inoremap <C-u> <C-g>u<C-u>
 autocmd BufNewFile,BufRead *.slim set filetype=slim
-autocmd FileType ruby set tabstop=2
-autocmd FileType ruby set shiftwidth=2
-autocmd FileType ruby set softtabstop=2
+autocmd FileType ruby setlocal tabstop=2
+autocmd FileType ruby setlocal shiftwidth=2
+autocmd FileType ruby setlocal softtabstop=2
 au BufNewFile,BufRead *.rkt set filetype=scheme
 autocmd FileType scheme runtime plugin/rainbow.vim
+let g:rubycomplete_classes_in_global = 1
+let g:rubycomplete_buffer_loading = 1
+autocmd FileType ruby nmap  ,x :w<CR>:!ruby % <CR>
+autocmd FileType ruby setlocal makeprg=ruby\ -c\ % 

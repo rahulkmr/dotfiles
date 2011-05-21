@@ -8,7 +8,7 @@ if exists("b:did_indent")
 endif
 let b:did_indent = 1
 
-setlocal autoindent sw=2 et
+setlocal autoindent sw=2 ts=2 sts=2 et
 setlocal indentexpr=GetSassIndent()
 setlocal indentkeys=o,O,*<Return>,<:>,!^F
 
@@ -36,4 +36,4 @@ function! GetSassIndent()
   endif
 endfunction
 
-" vim:set sw=2:
+" vim:set sw=2 ts=2 sts=2:

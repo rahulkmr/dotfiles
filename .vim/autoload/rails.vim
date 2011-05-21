@@ -4573,9 +4573,19 @@ function! s:BufSettings()
   call self.setvar('&includeexpr','RailsIncludeexpr()')
   call self.setvar('&suffixesadd', ".rb,.".s:gsub(s:view_types,',',',.').",.css,.js,.yml,.csv,.rake,.sql,.html,.xml")
   let ft = self.getvar('&filetype')
-  if ft =~ '^\%(e\=ruby\|[yh]aml\|javascript\|css\|sass\)$'
+  if ft =~ '^\%(e\=ruby\|[yh]aml\|javascript\|css\)$'
     call self.setvar('&shiftwidth',4)
     call self.setvar('&softtabstop',4)
+    call self.setvar('&tabstop',4)
+    call self.setvar('&expandtab',1)
+    if exists('+completefunc') && self.getvar('&completefunc') == ''
+      call self.setvar('&completefunc','syntaxcomplete#Complete')
+    endif
+  endif
+  if ft == 'sass'
+    call self.setvar('&shiftwidth',2)
+    call self.setvar('&softtabstop',2)
+    call self.setvar('&tabstop',2)
     call self.setvar('&expandtab',1)
     if exists('+completefunc') && self.getvar('&completefunc') == ''
       call self.setvar('&completefunc','syntaxcomplete#Complete')
@@ -4584,6 +4594,7 @@ function! s:BufSettings()
   if ft == 'ruby'
     call self.setvar('&shiftwidth',2)
     call self.setvar('&softtabstop',2)
+    call self.setvar('&tabstop',2)
     call self.setvar('&expandtab',1)
     call self.setvar('&suffixesadd',".rb,.".s:gsub(s:view_types,',',',.').",.yml,.csv,.rake,s.rb")
     call self.setvar('&define',self.define_pattern())
