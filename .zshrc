@@ -300,8 +300,8 @@ yank() {
 zle -N yank yank 
 bindkey "^y" yank 
 # F# aliases
-alias fsi='mono ~/Downloads/swsetup/FSharp/bin/fsi.exe'
-alias fsc='mono ~/Downloads/swsetup/FSharp/bin/fsc.exe --resident'
+alias fsi='mono ~/Downloads/sw/FSharp/bin/fsi.exe'
+alias fsc='mono ~/Downloads/sw/FSharp/bin/fsc.exe --resident'
 function calc() { echo "$1" | bc - l}
 function bat()
 {
