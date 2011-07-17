@@ -114,8 +114,12 @@ autocmd FileType c,cpp,perl,python,ruby nmap ,c :w<CR>:make<CR>
 autocmd FileType c,cpp nmap ,x :!./%<<CR>
 autocmd FileType java setlocal makeprg=javac\ %
 autocmd FileType java nmap ,c :w<CR>:make<CR> | nmap ,x :!java %<<CR> | nmap ,o :call JCommentWriter()<CR>
-autocmd FileType java,c,perl nmap ,j :cn<CR> | nmap ,k :cp<CR> | nmap ,h :cr<CR> | nmap ,l :cl<CR> | nmap ,i :cw<CR><C-w><C-w>
-nmap ,i <C-w><C-w><C-w>c 
+"autocmd FileType java,c,perl nmap ,j :cn<CR> | nmap ,k :cp<CR> | nmap ,h :cr<CR> | nmap ,l :cl<CR> | nmap ,i :cw<CR><C-w><C-w>
+nmap \j :cn<CR> 
+nmap \k :cp<CR> 
+nmap \h :cr<CR> 
+nmap \l :cl<CR> 
+nmap \i <C-w><C-w><C-w>c 
 let g:netrw_menu = 0
 let g:netrw_altv = 1
 let g:netrw_hide = 0
@@ -138,7 +142,7 @@ for p in sys.path:
 EOF
 set smartindent
 set autoindent
-set pastetoggle=<Leader>g
+set pastetoggle=<F6>
 set scrolljump=10
 set hidden
 set whichwrap=b,s,h,l,<,>,~,[,]
@@ -173,13 +177,16 @@ cnoremap <c-d> <del>
 cnoremap <c-f> <right>
 " Set filetype for f#"
 au BufNewFile,BufRead *.fs set filetype=fs 
-autocmd FileType fs setlocal autoindent
-autocmd FileType fs setlocal smartindent
+autocmd FileType fs set autoindent
+autocmd FileType fs set smartindent
 " configure tabwidth and insert spaces instead of tabs
-autocmd FileType fs setlocal tabstop=4        " tab width is 4 spaces
-autocmd FileType fs setlocal shiftwidth=4     " indent also with 4 spaces
-autocmd FileType fs setlocal softtabstop=4
-autocmd FileType fs setlocal expandtab        " expand tabs to spaces
+autocmd FileType fs set tabstop=4        " tab width is 4 spaces
+autocmd FileType fs set shiftwidth=4     " indent also with 4 spaces
+autocmd FileType fs set softtabstop=4
+autocmd FileType fs set expandtab        " expand tabs to spaces
+autocmd FileType fs setlocal makeprg=fsc_sh\ % 
+autocmd FileType fs nmap ,c :w<CR>:make<CR>
+autocmd FileType fs nmap ,x :!./%<.exe<CR>
 nnoremap ` @@
 vnoremap . :normal .<CR>
 vnoremap ` :normal @@<CR>
@@ -224,3 +231,4 @@ let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby nmap  ,x :w<CR>:!ruby % <CR>
 autocmd FileType ruby setlocal makeprg=ruby\ -c\ % 
+inoremap \q <Esc>O

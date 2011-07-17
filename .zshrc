@@ -38,7 +38,7 @@ export PERLDIRS=$(/usr/bin/env perl -e 'print join(",", @INC)')
 PERLDIRS=$(echo $PERLDIRS | sed -e 's;\\;/;g')
 export PYTHONDIRS=$(/usr/bin/env python -c 'import sys; sys.stdout.write(",".join(sys.path))')
 PYTHONDIRS=$(echo $PYTHONDIRS | sed -e 's;\\;/;g')
-export PATH=$HOME/bin:/var/lib/gems/1.9.1/bin:$PATH
+export PATH=$HOME/bin:$HOME/scala/bin:/var/lib/gems/1.9.1/bin:$PATH
 ###
 # Autoload zsh modules when they are referenced
 ###
@@ -310,7 +310,7 @@ function bat()
     echo "${bat_cap}, ${adapter}"
 }
 setopt prompt_subst
-RPROMPT="\$(bat)"
+#RPROMPT="\$(bat)"
 alias urxvt="urxvt  -sr -g '80x30' -fn 'xft:DejaVu Sans Mono-12:dpi=75'"
 alias run_gae='python2.5 ~/google_appengine/dev_appserver.py'
 # If we have a glob this will expand it
