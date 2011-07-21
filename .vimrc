@@ -232,3 +232,6 @@ let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby nmap  ,x :w<CR>:!ruby % <CR>
 autocmd FileType ruby setlocal makeprg=ruby\ -c\ % 
 inoremap \q <Esc>O
+autocmd FileType coffee setlocal ts=2 sts=2 sw=2
+autocmd FileType scss setlocal ts=2 sts=2 sw=2
+autocmd FileType haml setlocal ts=2 sts=2 sw=2

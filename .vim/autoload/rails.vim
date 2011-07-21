@@ -4694,6 +4694,6 @@ endif
 
 " }}}1
 
+autocmd FileType haml setlocal ts=2 sts=2 sw=2
 let &cpo = s:cpo_save
-
 " vim:set sw=2 sts=2:

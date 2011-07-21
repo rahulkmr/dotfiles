@@ -62,5 +62,5 @@ let b:undo_ftplugin = "setl cms< com< "
       \ " | unlet! b:browsefilter b:match_words | " . s:undo_ftplugin
 
 let &cpo = s:save_cpo
-
+setlocal sw=2 sts=2 ts=2
 " vim:set sw=2:
