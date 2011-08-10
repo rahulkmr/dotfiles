@@ -1,7 +1,7 @@
 " Vim indent file
-" Language:	HAML
-" Maintainer:	Tim Pope <vimNOSPAM@tpope.info>
-" Last Change:	2007 Dec 16
+" Language:	Haml
+" Maintainer:	Tim Pope <vimNOSPAM@tpope.org>
+" Last Change:	2010 May 21
 
 if exists("b:did_indent")
   finish
@@ -10,7 +10,7 @@ runtime! indent/ruby.vim
 unlet! b:did_indent
 let b:did_indent = 1
 
-setlocal autoindent sw=2 sts=2 sw=2 et
+setlocal autoindent sw=2 et
 setlocal indentexpr=GetHamlIndent()
 setlocal indentkeys=o,O,*<Return>,},],0),!^F,=end,=else,=elsif,=rescue,=ensure,=when
 
@@ -44,8 +44,6 @@ function! GetHamlIndent()
   if indent == indent(lnum)
     let indent = cindent <= indent ? -1 : increase
   endif
-  "let indent = indent == indent(lnum) ? -1 : indent
-  "let indent = indent > indent(lnum) + &sw ? indent(lnum) + &sw : indent
 
   let group = synIDattr(synID(lnum,lastcol,1),'name')
 
@@ -53,9 +51,11 @@ function! GetHamlIndent()
     return indent
   elseif line =~ '^/\%(\[[^]]*\]\)\=$'
     return increase
-  elseif line =~ '^:'
+  elseif group == 'hamlFilter'
     return increase
-  elseif line =~ '^'.s:tag.'[=~-]\s*\%(\%(if\|else\|elsif\|unless\|case\|when\|while\|until\|for\|begin\|module\|class\|def\)\>\%(.*\<end\>\)\@!\|.*do |[^|]*|\s*$\)'
+  elseif line =~ '^'.s:tag.'[&!]\=[=~-]\s*\%(\%(if\|else\|elsif\|unless\|case\|when\|while\|until\|for\|begin\|module\|class\|def\)\>\%(.*\<end\>\)\@!\|.*do\%(\s*|[^|]*|\)\=\s*$\)'
+    return increase
+  elseif line =~ '^'.s:tag.'[&!]\=[=~-].*,\s*$'
     return increase
   elseif line == '-#'
     return increase
@@ -69,5 +69,5 @@ function! GetHamlIndent()
     return indent
   endif
 endfunction
-setlocal sw=2 sts=2 ts=2
+
 " vim:set sw=2:
