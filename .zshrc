@@ -46,14 +46,14 @@ zmodload -a zsh/stat stat
 zmodload -a zsh/zpty zpty
 zmodload -a zsh/zprof zprof
 zmodload -ap zsh/mapfile mapfile
- 
- 
+
+
 ###
 # setup options
 ###
 # use share_history instead of setopt APPEND_HISTORY         # appends history to .zsh_history
 setopt AUTO_CD                # cd if no matching command
-setopt AUTO_PUSHD                # make cd=pushd 
+setopt AUTO_PUSHD                # make cd=pushd
 setopt AUTO_PARAM_SLASH       # adds slash at end of tabbed dirs
 setopt HIST_IGNORE_ALL_DUPS
 setopt CHECK_JOBS             # check bg jobs on exit
@@ -83,26 +83,26 @@ setopt HIST_REDUCE_BLANKS
 setopt HIST_IGNORE_SPACE
 setopt SH_WORD_SPLIT
 setopt nohup
- 
- 
+
+
 ###
 # Setup vars
 ###
- 
+
 HOSTNAME="`hostname`"
 REPORTTIME=120 # print elapsed time when more than 10 seconds
- 
+
 export PAGER='less'
 export SHELL="/bin/zsh"
- 
- 
- 
+
+
+
 ###
 # Emacs shortcut keys
 ###
 bindkey -e
- 
- 
+
+
 ###
 # ssh host completion
 ###
@@ -111,18 +111,18 @@ zstyle -e ':completion:*:(ssh|scp):*' hosts 'reply=(
        /dev/null)"}%%[# ]*}//,/ }
   ${=${(f)"$(cat /etc/hosts(|)(N) <<(ypcat hosts 2>/dev/null))"}%%\#*}
 )'
- 
- 
+
+
 ###
 # Aliases
-### 
- 
+###
+
 # general helpers
 alias l="ls -laFhG"
 alias sr="screen -r"
- 
- 
- 
+
+
+
 ###
 # Bunch of stuff I haven't figured out if I need yet
 ###
@@ -135,10 +135,10 @@ bindkey "^[[F"  end-of-line
 bindkey "^[[4~" end-of-line
 bindkey ' ' magic-space    # also do history expansion on space
 bindkey '^I' complete-word # complete on tab, leave expansion to _expand
- 
+
 zstyle ':completion::complete:*' use-cache on
 zstyle ':completion::complete:*' cache-path ~/.zsh/cache/$HOST
- 
+
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
 zstyle ':completion:*' menu select=1 _complete _ignored _approximate
@@ -151,11 +151,11 @@ zstyle ':completion:*:processes-names' command 'ps -awxho command'
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 # list of completers to use
 zstyle ':completion:*::::' completer _expand _complete _ignored _approximate
- 
+
 # allow one error for every three characters typed in approximate completer
 zstyle -e ':completion:*:approximate:*' max-errors \
     'reply=( $(( ($#PREFIX+$#SUFFIX)/2 )) numeric )'
-    
+
 # insert all expansions for expand completer
 zstyle ':completion:*:expand:*' tag-order all-expansions
 #
@@ -163,7 +163,7 @@ zstyle ':completion:*:expand:*' tag-order all-expansions
 # 1. All /etc/hosts hostnames are in autocomplete
 # 2. If you have a comment in /etc/hosts like #%foobar.domain,
 #    then foobar.domain will show up in autocomplete!
-zstyle ':completion:*' hosts $(awk '/^[^#]/ {print $2 $3" "$4" "$5}' /etc/hosts | grep -v ip6- && grep "^#%" /etc/hosts | awk -F% '{print $2}') 
+zstyle ':completion:*' hosts $(awk '/^[^#]/ {print $2 $3" "$4" "$5}' /etc/hosts | grep -v ip6- && grep "^#%" /etc/hosts | awk -F% '{print $2}')
 # formatting and messages
 zstyle ':completion:*' verbose yes
 zstyle ':completion:*:descriptions' format '%B%d%b'
@@ -171,24 +171,24 @@ zstyle ':completion:*:messages' format '%d'
 zstyle ':completion:*:warnings' format 'No matches for: %d'
 zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
 zstyle ':completion:*' group-name ''
- 
+
 # match uppercase from lowercase
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
- 
+
 # offer indexes before parameters in subscripts
 zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
- 
+
 # command for process lists, the local web server details and host completion
 #zstyle ':completion:*:processes' command 'ps -o pid,s,nice,stime,args'
 #zstyle ':completion:*:urls' local 'www' '/var/www/htdocs' 'public_html'
 zstyle '*' hosts $hosts
- 
+
 # Filename suffixes to ignore during completion (except after rm command)
 zstyle ':completion:*:*:(^rm):*:*files' ignored-patterns '*?.o' '*?.c~' \
     '*?.old' '*?.pro'
 # the same for old style completion
 #fignore=(.o .c~ .old .pro)
- 
+
 # ignore completion functions (until the _ignored completer)
 zstyle ':completion:*:functions' ignored-patterns '_*'
 zstyle ':completion:*:scp:*' tag-order \
@@ -200,8 +200,8 @@ zstyle ':completion:*:ssh:*' tag-order \
 zstyle ':completion:*:ssh:*' group-order \
    hosts-domain hosts-host users hosts-ipaddr
 zstyle '*' single-ignored show
- 
- 
+
+
 case $TERM in
     *xterm*|ansi)
 		function settab { print -Pn "\e]1;%n@%m: %~\a" }
@@ -210,34 +210,23 @@ case $TERM in
 		settab;settitle
         ;;
 esac
- 
-if [ "$TERM" = "dumb" ]                                                                                            
-then                                                                                                               
-  unsetopt zle                                                                                                     
-  unsetopt prompt_cr                                                                                               
-  unsetopt prompt_subst                                                                                            
-  unfunction precmd                                                                                                
-  unfunction preexec                                                                                               
-  PS1='$ '                                                                                                         
-fi               
- 
- 
+
 if [ -s ~/.profile ] ; then
     source ~/.profile
 fi
- 
+
 export GOROOT=~/go
 export GOOS=linux
 export GOARCH=386
-                           
+
 # PS1 and PS2
 function prompt_char {
     git branch >/dev/null 2>/dev/null && echo '±' && return
     hg root >/dev/null 2>/dev/null && echo "☿($(hg branch))" && return
-    echo '○'
+    echo -n '○'
 }
-export PS1="$(print '%{\e[1;34m%}%n@%m%{\e[0m%}'): $(print '%{\e[0;34m%}%~%{\e[0m%}') 
-\$(prompt_char) $ "
+export PS1="$(print '%{\e[1;34m%}%n@%m%{\e[0m%}'): $(print '%{\e[0;34m%}%~%{\e[0m%}')
+$(print $(prompt_char) $) "
 export PS2="$(print '%{\e[0;34m%}>%{\e[0m%}')"
 
 # Vars used later on by Zsh
@@ -281,7 +270,7 @@ alias clj="rlwrap -r java clojure.main"
 alias x=exit
 #source ~/remap.key
 # Silence the cpan.
-export PERL_MM_USE_DEFAULT=1	
+export PERL_MM_USE_DEFAULT=1
 eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
 alias ipython="/usr/bin/env python `which ipython`"
 paste-from-clipboard() {
@@ -297,8 +286,8 @@ yank() {
     CLIPOUT=`xclip -o`
     BUFFER="${BUFFER}${CLIPOUT}"
 }
-zle -N yank yank 
-bindkey "^y" yank 
+zle -N yank yank
+bindkey "^y" yank
 # F# aliases
 alias fsi='mono ~/Downloads/sw/FSharp/bin/fsi.exe'
 alias fsc='mono ~/Downloads/sw/FSharp/bin/fsc.exe --resident'
