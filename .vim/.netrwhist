@@ -1,6 +1,3 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
-let g:netrw_dirhist_1='/home/rahul/.vim/autoload'
-let g:netrw_dirhist_2='/home/rahul/.vim/plugin'
-let g:netrw_dirhist_3='/home/rahul/musings/fs'
-let g:netrw_dirhist_4='/home/rahul'
+let g:netrw_dirhist_cnt =1
+let g:netrw_dirhist_1='/home/rahul/musings/clj/src/clj'
