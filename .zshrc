@@ -38,7 +38,7 @@ export PERLDIRS=$(/usr/bin/env perl -e 'print join(",", @INC)')
 PERLDIRS=$(echo $PERLDIRS | sed -e 's;\\;/;g')
 export PYTHONDIRS=$(/usr/bin/env python -c 'import sys; sys.stdout.write(",".join(sys.path))')
 PYTHONDIRS=$(echo $PYTHONDIRS | sed -e 's;\\;/;g')
-export PATH=$HOME/bin:$HOME/scala/bin:/var/lib/gems/1.9.1/bin:$PATH
+export PATH=$HOME/bin:$HOME/scala/bin:/var/lib/gems/1.9.1/bin:$HOME/Downloads/sw/android-sdk-linux_x86/tools:$PATH
 ###
 # Autoload zsh modules when they are referenced
 ###
@@ -221,12 +221,14 @@ export GOARCH=386
 
 # PS1 and PS2
 function prompt_char {
-    git branch >/dev/null 2>/dev/null && echo '±' && return
-    hg root >/dev/null 2>/dev/null && echo "☿($(hg branch))" && return
-    echo -n '○'
+    git branch >/dev/null 2>/dev/null && print '±' && return
+    hg root >/dev/null 2>/dev/null && print "☿($(hg branch))" && return
+    print 'o'
 }
+#export PS1="$(print '%{\e[1;34m%}%n@%m%{\e[0m%}'): $(print '%{\e[0;34m%}%~%{\e[0m%}')
+#$(print $(prompt_char) $) "
 export PS1="$(print '%{\e[1;34m%}%n@%m%{\e[0m%}'): $(print '%{\e[0;34m%}%~%{\e[0m%}')
-$(print $(prompt_char) $) "
+\$(prompt_char) $ "
 export PS2="$(print '%{\e[0;34m%}>%{\e[0m%}')"
 
 # Vars used later on by Zsh
@@ -272,7 +274,6 @@ alias x=exit
 # Silence the cpan.
 export PERL_MM_USE_DEFAULT=1
 eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
-alias ipython="/usr/bin/env python `which ipython`"
 paste-from-clipboard() {
     CLIPOUT=`xclip -o -sel clipboard`
     if [[ "x${CLIPOUT}" == "x" ]]; then
