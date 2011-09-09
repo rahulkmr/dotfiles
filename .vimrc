@@ -1,9 +1,15 @@
-"Format the statusline          
 let g:pydiction_location = '~/.vim/complete-dict'
 "set cfu=VjdeCompletionFun
+set undodir=/opt/tmp//
+set backupdir=/opt/tmp//
+set directory=/opt/tmp//
+set backup
 set complete+=.,w,b,u,t,i
-set showmode            
+set showmode
+set gdefault
+set virtualedit+=block
 set fileformats=unix,mac,dos
+set ttyfast
 set modeline
 set fdm=manual
 set showcmd
@@ -41,7 +47,7 @@ set syntax=auto
 "Show menu with possible tab completions
 set wildmenu
 ""Ignore these files when completing names and in Explorer
-set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pyc,*.so.*
+set wildignore=.svn,CVS,.git,*.o,*.a,*.*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pyc,*.so.*
 set wildmode=list:longest
 " turn line numbers on
 set number
@@ -88,6 +94,9 @@ call pathogen#runtime_append_all_bundles()
 filetype on
 filetype plugin on
 filetype indent on
+
+au FocusLost * :wa
+au VimResized * exe "normal! \<c-w>="
 " clojure settings.
 "let g:vimclojure#WantNailgun=1
 let g:vimclojure#HighlightBuiltins=1
@@ -101,31 +110,29 @@ nmap ,t :NERDTreeToggle<CR>
 nmap ,l :TlistToggle<CR>
 nmap ,y :FufFile<CR>
 autocmd FileType python nmap ,x :w<CR>:!/usr/bin/env python % <CR>
-autocmd FileType python setlocal nosmartindent 
-autocmd FileType python setlocal makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;py_compile.compile(r'%')\" 
-autocmd BufRead python setlocal efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m 
-autocmd FileType python setlocal path+=$PYTHONDIRS 
+autocmd FileType python setlocal nosmartindent
+autocmd FileType python setlocal makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;py_compile.compile(r'%')\"
+autocmd BufRead python setlocal efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+autocmd FileType python setlocal path+=$PYTHONDIRS
 autocmd FileType perl nmap  ,x :w<CR>:!/usr/bin/env perl % <CR>
-autocmd FileType perl setlocal path+=$PERLDIRS 
-autocmd FileType perl setlocal makeprg=/usr/bin/env\ perl\ -c\ % 
-autocmd FileType c setlocal makeprg=gcc\ -g\ -o\ %<\ %
+autocmd FileType perl setlocal path+=$PERLDIRS
+autocmd FileType perl setlocal makeprg=/usr/bin/env\ perl\ -c\ %
+autocmd FileType c setlocal makeprg=clang\ -fsyntax-only\ %
 autocmd FileType cpp setlocal makeprg=g++\ -g\ -o\ %<\ %
 autocmd FileType c,cpp,perl,python,ruby nmap ,c :w<CR>:make<CR>
 autocmd FileType c,cpp nmap ,x :!./%<<CR>
-autocmd FileType java setlocal makeprg=javac\ %
-autocmd FileType java nmap ,c :w<CR>:make<CR> | nmap ,x :!java %<<CR> | nmap ,o :call JCommentWriter()<CR>
 "autocmd FileType java,c,perl nmap ,j :cn<CR> | nmap ,k :cp<CR> | nmap ,h :cr<CR> | nmap ,l :cl<CR> | nmap ,i :cw<CR><C-w><C-w>
-nmap \j :cn<CR> 
-nmap \k :cp<CR> 
-nmap \h :cr<CR> 
-nmap \l :cl<CR> 
-nmap \i <C-w><C-w><C-w>c 
+nmap \j :cn<CR>
+nmap \k :cp<CR>
+nmap \h :cr<CR>
+nmap \l :cl<CR>
+nmap \i :cclose<CR>
 let g:netrw_menu = 0
 let g:netrw_altv = 1
 let g:netrw_hide = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
-let g:netrw_winsize = 35 
+let g:netrw_winsize = 35
 let g:netrw_hide = 1
 inoremap <Nul> <C-x><C-o>
 nnoremap ,m :TOhtml<CR>
@@ -156,8 +163,9 @@ syntax enable
 set copyindent
 set shiftround
 set history=1000
-set undolevels=1000
-set directory=/tmp//
+set undofile
+set undolevels=10000
+set undoreload=10000
 let html_use_css=1
 nnoremap ,f :RecoverPluginFinish<CR>
 nnoremap / /\v
@@ -176,7 +184,7 @@ cnoremap <c-b> <left>
 cnoremap <c-d> <del>
 cnoremap <c-f> <right>
 " Set filetype for f#"
-au BufNewFile,BufRead *.fs set filetype=fs 
+au BufNewFile,BufRead *.fs set filetype=fs
 autocmd FileType fs set autoindent
 autocmd FileType fs set smartindent
 " configure tabwidth and insert spaces instead of tabs
@@ -184,7 +192,7 @@ autocmd FileType fs set tabstop=4        " tab width is 4 spaces
 autocmd FileType fs set shiftwidth=4     " indent also with 4 spaces
 autocmd FileType fs set softtabstop=4
 autocmd FileType fs set expandtab        " expand tabs to spaces
-autocmd FileType fs setlocal makeprg=fsc_sh\ % 
+autocmd FileType fs setlocal makeprg=fsc_sh\ %
 autocmd FileType fs nmap ,c :w<CR>:make<CR>
 autocmd FileType fs nmap ,x :!./%<.exe<CR>
 nnoremap ` @@
@@ -230,8 +238,29 @@ autocmd FileType scheme runtime plugin/rainbow.vim
 let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby nmap  ,x :w<CR>:!ruby % <CR>
-autocmd FileType ruby setlocal makeprg=ruby\ -c\ % 
+autocmd FileType ruby setlocal makeprg=ruby\ -c\ %
 inoremap \q <Esc>O
 autocmd FileType coffee setlocal ts=2 sts=2 sw=2
 autocmd FileType scss setlocal ts=2 sts=2 sw=2
 autocmd FileType haml setlocal ts=2 sts=2 sw=2
+
+" Mappings for eclim.
+autocmd FileType java nnoremap \jg :JavaGet<CR>
+autocmd FileType java nnoremap \js :JavaGet<CR>
+autocmd FileType java nnoremap \ja :JavaGetSet<CR>
+autocmd FileType java nnoremap \jc :JavaConstructor<CR>
+autocmd FileType java nnoremap \jh :JavaHierarchy<CR>
+autocmd FileType java nnoremap \jl :JavaImpl<CR>
+autocmd FileType java nnoremap \jd :JavaDelegate<CR>
+autocmd FileType java nnoremap \ji :JavaImport<CR>
+autocmd FileType java nnoremap \jm :JavaImportMissing<CR>
+autocmd FileType java nnoremap \js :JavaSearchContext<CR>
+autocmd FileType java nnoremap \jx :Java %<CR>
+autocmd FileType java nnoremap \jo :Javac<CR>
+autocmd FileType java nnoremap \jv :Validate<CR>
+autocmd FileType java nnoremap \jt :JavaCorrect<CR>
+autocmd FileType java nnoremap \jr :JavaRename
+autocmd FileType java nnoremap \jw :JavaDocComment
+let g:vimclojure#WantNailgun = 1
+let g:clang_complete_auto = 0
+let g:clang_snippets = 1
