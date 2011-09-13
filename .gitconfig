@@ -1,0 +1,16 @@
+[user]
+	name = Rahul Kumar
+	email = rahulsinner@gmail.com
+[alias]
+    l = log
+    co = checkout
+    ci = commit
+    h = help
+    a = add
+    r = rm
+    f = fetch
+    d = diff
+    s = status
+    b = branch
+    u = pull
+    p = push

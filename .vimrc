@@ -153,7 +153,7 @@ set pastetoggle=<F6>
 set scrolljump=10
 set hidden
 set whichwrap=b,s,h,l,<,>,~,[,]
-set lazyredraw
+set nolazyredraw
 set nostartofline
 set report=0
 set sidescrolloff=10
@@ -224,7 +224,6 @@ inoremap \1 <%<Space><Space>%><Esc>2hi
 inoremap \2 <%=<Space><Space>%><Esc>2hi
 inoremap \3 {%<Space><Space>%}<Esc>2hi
 inoremap \4 {{<Space><Space>}}<Esc>2hi
-inoremap \< </<C-X><C-O>
 au BufRead,BufNewFile *.less set ft=less syntax=less
 inoremap <C-h> <C-g>u<C-h>
 inoremap <C-w> <C-g>u<C-w>
@@ -264,3 +263,4 @@ autocmd FileType java nnoremap \jw :JavaDocComment
 let g:vimclojure#WantNailgun = 1
 let g:clang_complete_auto = 0
 let g:clang_snippets = 1
+nmap \w :Ack <cword><CR>

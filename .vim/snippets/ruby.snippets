@@ -68,24 +68,18 @@ snippet cla class .. initialize .. end
 		def initialize(${2:args})
 			${3}
 		end
-
-
 	end
 snippet cla class .. < ParentClass .. initialize .. end
 	class ${1:`substitute(Filename(), '^.', '\u&', '')`} < ${2:ParentClass}
 		def initialize(${3:args})
 			${4}
 		end
-
-
 	end
 snippet cla ClassName = Struct .. do .. end
 	${1:`substitute(Filename(), '^.', '\u&', '')`} = Struct.new(:${2:attr_names}) do
 		def ${3:method_name}
 			${4}
 		end
-
-
 	end
 snippet cla class BlankSlate .. initialize .. end
 	class ${1:BlankSlate}
@@ -102,8 +96,6 @@ snippet cla-
 
 			${5}
 		end
-
-
 	end
 snippet mod module .. end
 	module ${1:`substitute(Filename(), '^.', '\u&', '')`}
@@ -189,7 +181,7 @@ snippet usau
 snippet array
 	Array.new(${1:10}) { |${2:i}| ${3} }
 snippet hash
-	Hash.new { |${1:hash}, ${2:key}| $1[$2] = ${3} }
+	Hash.new {|${1:hash}, ${2:key}| $1[$2] = ${3} }
 snippet file File.foreach() { |line| .. }
 	File.foreach(${1:"path/to/file"}) { |${2:line}| ${3} }
 snippet file File.read()
@@ -201,95 +193,103 @@ snippet Dir Dir[".."]
 snippet dir
 	Filename.dirname(__FILE__)
 snippet deli
-	delete_if { |${1:e}| ${2} }
+	delete_if {|${1:e}| ${2} }
 snippet fil
-	fill(${1:range}) { |${2:i}| ${3} }
+	fill(${1:range}) {|${2:i}| ${3} }
 # flatten_once()
 snippet flao
-	inject(Array.new) { |${1:arr}, ${2:a}| $1.push(*$2)}${3}
+	inject(Array.new) {|${1:arr}, ${2:a}| $1.push(*$2)}${3}
 snippet zip
-	zip(${1:enums}) { |${2:row}| ${3} }
+	zip(${1:enums}) {|${2:row}| ${3} }
 # downto(0) { |n| .. }
 snippet dow
-	downto(${1:0}) { |${2:n}| ${3} }
+	downto(${1:0}) {|${2:n}| ${3} }
 snippet ste
-	step(${1:2}) { |${2:n}| ${3} }
+	step(${1:2}) {|${2:n}| ${3} }
 snippet tim
-	times { |${1:n}| ${2} }
+	times {|${1:n}| ${2} }
 snippet upt
-	upto(${1:1.0/0.0}) { |${2:n}| ${3} }
+	upto(${1:1.0/0.0}) {|${2:n}| ${3} }
 snippet loo
-	loop { ${1} }
+	loop {${1} }
 snippet ea
-	each { |${1:e}| ${2} }
+	each {|${1:e}| ${2} }
 snippet eab
-	each_byte { |${1:byte}| ${2} }
+	each_byte {|${1:byte}| ${2} }
 snippet eac- each_char { |chr| .. }
-	each_char { |${1:chr}| ${2} }
+	each_char {|${1:chr}| ${2} }
 snippet eac- each_cons(..) { |group| .. }
-	each_cons(${1:2}) { |${2:group}| ${3} }
+	each_cons(${1:2}) {|${2:group}| ${3} }
 snippet eai
-	each_index { |${1:i}| ${2} }
+	each_index {|${1:i}| ${2} }
 snippet eak
-	each_key { |${1:key}| ${2} }
+	each_key {|${1:key}| ${2} }
 snippet eal
-	each_line { |${1:line}| ${2} }
+	each_line {|${1:line}| ${2} }
 snippet eap
-	each_pair { |${1:name}, ${2:val}| ${3} }
+	each_pair {|${1:name}, ${2:val}| ${3} }
 snippet eas-
-	each_slice(${1:2}) { |${2:group}| ${3} }
+	each_slice(${1:2}) {|${2:group}| ${3} }
 snippet eav
-	each_value { |${1:val}| ${2} }
+	each_value {|${1:val}| ${2} }
 snippet eawi
-	each_with_index { |${1:e}, ${2:i}| ${3} }
+	each_with_index {|${1:e}, ${2:i}| ${3} }
 snippet reve
-	reverse_each { |${1:e}| ${2} }
+	reverse_each {|${1:e}| ${2} }
 snippet inj
-	inject(${1:init}) { |${2:mem}, ${3:var}| ${4} }
+	inject(${1:init}) {|${2:mem}, ${3:var}| ${4} }
+snippet inj 
+	inject {|${1:mem}, ${2:var}| ${3} }
+snippet red 
+	reduce(${1:init})
 snippet map
-	map { |${1:e}| ${2} }
+	map {|${1:e}| ${2} }
 snippet mapwi-
 	enum_with_index.map { |${1:e}, ${2:i}| ${3} }
 snippet sor
-	sort { |a, b| ${1} }
+	sort {|a, b| ${1} }
 snippet sorb
-	sort_by { |${1:e}| ${2} }
+	sort_by {|${1:e}| ${2} }
 snippet ran
 	sort_by { rand }
 snippet all
-	all? { |${1:e}| ${2} }
+	all? {|${1:e}| ${2} }
 snippet any
-	any? { |${1:e}| ${2} }
+	any? {|${1:e}| ${2} }
 snippet cl
-	classify { |${1:e}| ${2} }
+	classify {|${1:e}| ${2} }
 snippet col
-	collect { |${1:e}| ${2} }
+	collect {|${1:e}| ${2} }
 snippet det
-	detect { |${1:e}| ${2} }
+	detect {|${1:e}| ${2} }
 snippet fet
 	fetch(${1:name}) { |${2:key}| ${3} }
 snippet fin
-	find { |${1:e}| ${2} }
+	find {|${1:e}| ${2} }
 snippet fina
-	find_all { |${1:e}| ${2} }
+	find_all {|${1:e}| ${2} }
 snippet gre
-	grep(${1:/pattern/}) { |${2:match}| ${3} }
+	grep(${1:/pattern/}) {|${2:match}| ${3} }
+snippet gre
+	grep(${1:/pattern/})
 snippet sub
-	${1:g}sub(${2:/pattern/}) { |${3:match}| ${4} }
+	${1:g}sub(${2:/pattern/}) {|${3:match}| ${4} }
 snippet sca
-	scan(${1:/pattern/}) { |${2:match}| ${3} }
+	scan(${1:/pattern/}) {|${2:match}| ${3} }
 snippet max
-	max { |a, b|, ${1} }
+	max {|a, b|, ${1} }
 snippet min
-	min { |a, b|, ${1} }
+	min {|a, b|, ${1} }
 snippet par
-	partition { |${1:e}|, ${2} }
+	partition {|${1:e}|, ${2} }
 snippet rej
-	reject { |${1:e}|, ${2} }
+	reject {|${1:e}|, ${2} }
 snippet sel
-	select { |${1:e}|, ${2} }
+	select {|${1:e}|, ${2} }
 snippet lam
-	lambda { |${1:args}| ${2} }
+	lambda {|${1:args}| ${2} }
+snippet lam
+	->(${1:args}) { ${2} }
 snippet do
 	do |${1:variable}|
 		${2}
@@ -297,7 +297,7 @@ snippet do
 snippet :
 	:${1:key} => ${2:"value"}${3}
 snippet ope
-	open(${1:"path/or/url/or/pipe"}, "${2:w}") { |${3:io}| ${4} }
+	open(${1:"path/or/url/or/pipe"}, "${2:w}") {|${3:io}| ${4} }
 # path_from_here()
 snippet patfh
 	File.join(File.dirname(__FILE__), *%2[${1:rel path here}])${2}
@@ -405,7 +405,7 @@ snippet xpa
 	end
 # class_from_name()
 snippet clafn
-	split("::").inject(Object) { |par, const| par.const_get(const) }
+	split("::").inject(Object) {|par, const| par.const_get(const) }
 # singleton_class()
 snippet sinc
 	class << self; self end
