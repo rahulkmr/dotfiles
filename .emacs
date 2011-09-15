@@ -49,5 +49,5 @@
 ;; Set color theme.
 (require 'color-theme)
 (color-theme-initialize)
-(load (concat themes "color-theme-ir-black.el"))
+(load (concat themes "color-theme-irblack.el"))
 (color-theme-ir-black)
