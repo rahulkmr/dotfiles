@@ -1,5 +1,4 @@
 let g:pydiction_location = '~/.vim/complete-dict'
-"set cfu=VjdeCompletionFun
 set undodir=/opt/tmp//
 set backupdir=/opt/tmp//
 set directory=/opt/tmp//
@@ -42,6 +41,7 @@ set wrap
 " Incremental search.
 set incsearch
 set hlsearch
+set ignorecase
 set smartcase
 set syntax=auto
 "Show menu with possible tab completions
@@ -57,7 +57,8 @@ set showmatch
 set comments=sl:/*,mb:\ *,elx:\ */
 
 " recreate tags file with F5
-nmap \c :!ctags -R .<CR>
+nnoremap \c :!ctags -R .<CR>
+nnoremap \rc :!ctags --extra=+f --exclude=.git --exclude=log -R . `rvm gemdir`/gems/* `rvm gemdir`/bundler/gems/*<CR>
 " Ruler.
 set ruler<
 " Set backspace
@@ -102,31 +103,31 @@ au VimResized * exe "normal! \<c-w>="
 let g:vimclojure#HighlightBuiltins=1
 let g:vimclojure#ParenRainbow=1
 let g:vimclojure#DynamicHighlighting=1
-nmap ,a :set autochdir<CR>
+nnoremap ,a :set autochdir<CR>
 set noautochdir
-nmap ,n :nohl<CR>
-nmap ,t :NERDTreeToggle<CR>
-"nmap \t :Ve<CR><CR>
-nmap ,l :TlistToggle<CR>
-nmap ,y :FufFile<CR>
-autocmd FileType python nmap ,x :w<CR>:!/usr/bin/env python % <CR>
+nnoremap ,n :nohl<CR>
+nnoremap ,t :NERDTreeToggle<CR>
+"nnoremap \t :Ve<CR><CR>
+nnoremap ,l :TlistToggle<CR>
+nnoremap ,y :FufFile<CR>
+autocmd FileType python nnoremap ,x :w<CR>:!/usr/bin/env python % <CR>
 autocmd FileType python setlocal nosmartindent
 autocmd FileType python setlocal makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;py_compile.compile(r'%')\"
 autocmd BufRead python setlocal efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
 autocmd FileType python setlocal path+=$PYTHONDIRS
-autocmd FileType perl nmap  ,x :w<CR>:!/usr/bin/env perl % <CR>
+autocmd FileType perl nnoremap  ,x :w<CR>:!/usr/bin/env perl % <CR>
 autocmd FileType perl setlocal path+=$PERLDIRS
 autocmd FileType perl setlocal makeprg=/usr/bin/env\ perl\ -c\ %
 autocmd FileType c setlocal makeprg=clang\ -fsyntax-only\ %
 autocmd FileType cpp setlocal makeprg=g++\ -g\ -o\ %<\ %
-autocmd FileType c,cpp,perl,python,ruby nmap ,c :w<CR>:make<CR>
-autocmd FileType c,cpp nmap ,x :!./%<<CR>
-"autocmd FileType java,c,perl nmap ,j :cn<CR> | nmap ,k :cp<CR> | nmap ,h :cr<CR> | nmap ,l :cl<CR> | nmap ,i :cw<CR><C-w><C-w>
-nmap \j :cn<CR>
-nmap \k :cp<CR>
-nmap \h :cr<CR>
-nmap \l :cl<CR>
-nmap \i :cclose<CR>
+autocmd FileType c,cpp,perl,python,ruby nnoremap ,c :w<CR>:make<CR>
+autocmd FileType c,cpp nnoremap ,x :!./%<<CR>
+"autocmd FileType java,c,perl nnoremap ,j :cn<CR> | nnoremap ,k :cp<CR> | nnoremap ,h :cr<CR> | nnoremap ,l :cl<CR> | nnoremap ,i :cw<CR><C-w><C-w>
+nnoremap \j :cn<CR>
+nnoremap \k :cp<CR>
+nnoremap \h :cr<CR>
+nnoremap \l :cl<CR>
+nnoremap \i :cclose<CR>:pclose<CR>
 let g:netrw_menu = 0
 let g:netrw_altv = 1
 let g:netrw_hide = 0
@@ -178,8 +179,8 @@ set guioptions-=T
 inoremap <c-b> <left>
 inoremap <c-f> <right>
 "readline like mapping for command mode."
-cmap <c-a> <home>
-cmap <c-e> <end>
+cnoremap <c-a> <home>
+cnoremap <c-e> <end>
 cnoremap <c-b> <left>
 cnoremap <c-d> <del>
 cnoremap <c-f> <right>
@@ -193,23 +194,16 @@ autocmd FileType fs set shiftwidth=4     " indent also with 4 spaces
 autocmd FileType fs set softtabstop=4
 autocmd FileType fs set expandtab        " expand tabs to spaces
 autocmd FileType fs setlocal makeprg=fsc_sh\ %
-autocmd FileType fs nmap ,c :w<CR>:make<CR>
-autocmd FileType fs nmap ,x :!./%<.exe<CR>
+autocmd FileType fs nnoremap ,c :w<CR>:make<CR>
+autocmd FileType fs nnoremap ,x :!./%<.exe<CR>
 nnoremap ` @@
 vnoremap . :normal .<CR>
 vnoremap ` :normal @@<CR>
 set omnifunc=syntaxcomplete#Complete
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
-autocmd FileType c setlocal omnifunc=ccomplete#Complete
-nmap ,dj :set filetype=django<CR>
-nmap ,jj :set filetype=jinja<CR>
-nmap ,hd :set filetype=htmldjango<CR>
-nmap ,hj :set filetype=htmljinja<CR>
+nnoremap ,dj :set filetype=django<CR>
+nnoremap ,jj :set filetype=jinja<CR>
+nnoremap ,hd :set filetype=htmldjango<CR>
+nnoremap ,hj :set filetype=htmljinja<CR>
 let g:ragtag_global_maps = 1
 nnoremap ,w :%s/\s\+$//<cr>:let @/=''<CR>
 nnoremap \v <C-w>v<C-w>l
@@ -236,7 +230,8 @@ au BufNewFile,BufRead *.rkt set filetype=scheme
 autocmd FileType scheme runtime plugin/rainbow.vim
 let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_buffer_loading = 1
-autocmd FileType ruby nmap  ,x :w<CR>:!ruby % <CR>
+let g:rubycomplete_rails = 1
+autocmd FileType ruby nnoremap  ,x :w<CR>:!ruby % <CR>
 autocmd FileType ruby setlocal makeprg=ruby\ -c\ %
 inoremap \q <Esc>O
 autocmd FileType coffee setlocal ts=2 sts=2 sw=2
@@ -263,4 +258,8 @@ autocmd FileType java nnoremap \jw :JavaDocComment
 let g:vimclojure#WantNailgun = 1
 let g:clang_complete_auto = 0
 let g:clang_snippets = 1
-nmap \w :Ack <cword><CR>
+nnoremap \w :Ack <cword><CR>
+autocmd FileType *.cljs set ft=clojure
+
+" Highlight VCS conflict markers
+match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'

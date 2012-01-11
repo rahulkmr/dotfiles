@@ -38,7 +38,7 @@ export PERLDIRS=$(/usr/bin/env perl -e 'print join(",", @INC)')
 PERLDIRS=$(echo $PERLDIRS | sed -e 's;\\;/;g')
 export PYTHONDIRS=$(/usr/bin/env python -c 'import sys; sys.stdout.write(",".join(sys.path))')
 PYTHONDIRS=$(echo $PYTHONDIRS | sed -e 's;\\;/;g')
-export PATH=$HOME/bin:$HOME/scala/bin:/var/lib/gems/1.9.1/bin:$HOME/Downloads/sw/android-sdk-linux_x86/tools:$PATH
+export PATH=$HOME/bin:$HOME/scala/bin:/var/lib/gems/1.9.1/bin:$HOME/Downloads/sw/android-sdk-linux_x86/tools:$HOME/projects/clojurescript/bin:$PATH
 ###
 # Autoload zsh modules when they are referenced
 ###
@@ -267,30 +267,29 @@ setopt HASH_LIST_ALL
 autoload edit-command-line
 zle -N edit-command-line
 bindkey '^Xe' edit-command-line
-alias ghci="rlwrap -r ghcii.sh"
 alias clj="rlwrap -r java clojure.main"
 alias x=exit
 #source ~/remap.key
 # Silence the cpan.
 export PERL_MM_USE_DEFAULT=1
 eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
-paste-from-clipboard() {
+tmux-to-clipboard() {
+    tmux show-buffer | xclip -sel clip
+    tmux show-buffer | xclip -sel primary 
+}
+zle -N tmux-to-clipboard 
+bindkey "^y" tmux-to-clipboard 
+yank() {
     CLIPOUT=`xclip -o -sel clipboard`
     if [[ "x${CLIPOUT}" == "x" ]]; then
         CLIPOUT=`xclip -o`
     fi
     BUFFER="${BUFFER}${CLIPOUT}"
 }
-zle -N paste-from-clipboard paste-from-clipboard
-bindkey "^v" paste-from-clipboard
-yank() {
-    CLIPOUT=`xclip -o`
-    BUFFER="${BUFFER}${CLIPOUT}"
-}
 zle -N yank yank
-bindkey "^y" yank
+#bindkey "^y" yank
 # F# aliases
-alias fsi='mono ~/Downloads/sw/FSharp/bin/fsi.exe'
+alias fsi='mono ~/Downloads/sw/FSharp/bin/fsi.exe --quiet'
 alias fsc='mono ~/Downloads/sw/FSharp/bin/fsc.exe --resident'
 function calc() { echo "$1" | bc - l}
 function bat()
@@ -302,6 +301,7 @@ function bat()
 setopt prompt_subst
 #RPROMPT="\$(bat)"
 alias urxvt="urxvt  -sr -g '80x30' -fn 'xft:DejaVu Sans Mono-12:dpi=75'"
+alias xterm="xterm -g '80x30' -fa 'xft:DejaVu Sans Mono-12:dpi=75'"
 alias run_gae='python2.5 ~/google_appengine/dev_appserver.py'
 # If we have a glob this will expand it
 setopt GLOB_COMPLETE
@@ -315,3 +315,17 @@ setopt PUSHD_TO_HOME
 alias nodei="NODE_NO_READLINE=1 rlwrap node"
 TERM=xterm
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # This loads RVM into a shell session.
+ssh-reagent () {
+    for agent in /tmp/ssh-*/agent.*; do
+        export SSH_AUTH_SOCK=$agent
+        if ssh-add -l 2>&1 > /dev/null; then
+            echo Found working SSH Agent:
+            ssh-add -l
+            return
+        fi
+    done
+    echo Cannot find ssh agent - maybe you should reconnect and forward it?
+}
+CLOJURESCRIPT_HOME='/home/rahul/projects/clojurescript'
+alias vi=/usr/local/bin/vim
+alias vim=/usr/local/bin/vim

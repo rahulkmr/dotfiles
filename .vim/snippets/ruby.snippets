@@ -5,7 +5,6 @@ snippet #!
 # New Block
 snippet =b
 	=begin rdoc
-		${1}
 	=end
 snippet y
 	:yields: ${1:arguments}
@@ -13,114 +12,79 @@ snippet rb
 	#!/usr/bin/env ruby -wKU
 
 snippet req
-	require '${1}'${2}
+	require '${1}'
 snippet #
 	# =>
 snippet end
 	__END__
-snippet case
+snippet cas
 	case ${1:object}
 	when ${2:condition}
-		${3}
 	end
-snippet when
+snippet whe
 	when ${1:condition}
-		${2}
 snippet def
 	def ${1:method_name}
-		${2}
 	end
 snippet deft
 	def test_${1:case_name}
-		${2}
 	end
 snippet if
 	if ${1:condition}
-		${2}
 	end
 snippet ife
 	if ${1:condition}
-		${2}
 	else
-		${3}
 	end
-snippet elsif
+snippet elsi
 	elsif ${1:condition}
-		${2}
-snippet unless
+snippet unl
 	unless ${1:condition}
-		${2}
 	end
-snippet while
+snippet whi
 	while ${1:condition}
-		${2}
 	end
-snippet until
+snippet unt
 	until ${1:condition}
-		${2}
 	end
 snippet cla class .. end
 	class ${1:`substitute(Filename(), '^.', '\u&', '')`}
-		${2}
 	end
 snippet cla class .. initialize .. end
 	class ${1:`substitute(Filename(), '^.', '\u&', '')`}
-		def initialize(${2:args})
-			${3}
-		end
+	  def initialize(${2:args})
+	  end
 	end
 snippet cla class .. < ParentClass .. initialize .. end
 	class ${1:`substitute(Filename(), '^.', '\u&', '')`} < ${2:ParentClass}
-		def initialize(${3:args})
-			${4}
-		end
+	  def initialize(${3:args})
+	  end
 	end
 snippet cla ClassName = Struct .. do .. end
 	${1:`substitute(Filename(), '^.', '\u&', '')`} = Struct.new(:${2:attr_names}) do
-		def ${3:method_name}
-			${4}
-		end
+	  def ${3:method_name}
+	  end
 	end
 snippet cla class BlankSlate .. initialize .. end
 	class ${1:BlankSlate}
-		instance_methods.each { |meth| undef_method(meth) unless meth =~ /\A__/ }
+	  instance_methods.each { |meth| undef_method(meth) unless meth =~ /\A__/ }
 snippet cla class << self .. end
 	class << ${1:self}
-		${2}
 	end
 # class .. < DelegateClass .. initialize .. end
 snippet cla-
 	class ${1:`substitute(Filename(), '^.', '\u&', '')`} < DelegateClass(${2:ParentClass})
-		def initialize(${3:args})
-			super(${4:del_obj})
-
-			${5}
-		end
+	  def initialize(${3:args})
+	    super(${4:del_obj})
+		${5}
+	  end
 	end
 snippet mod module .. end
 	module ${1:`substitute(Filename(), '^.', '\u&', '')`}
-		${2}
 	end
 snippet mod module .. module_function .. end
 	module ${1:`substitute(Filename(), '^.', '\u&', '')`}
-		module_function
-
-		${2}
-	end
-snippet mod module .. ClassMethods .. end
-	module ${1:`substitute(Filename(), '^.', '\u&', '')`}
-		module ClassMethods
-			${2}
-		end
-
-		module InstanceMethods
-
-		end
-
-		def self.included(receiver)
-			receiver.extend         ClassMethods
-			receiver.send :include, InstanceMethods
-		end
+	  module_function
 	end
 # attr_reader
 snippet r
@@ -132,61 +96,57 @@ snippet w
 snippet rw
 	attr_accessor :${1:attr_names}
 # include Enumerable
-snippet Enum
+snippet Enu
 	include Enumerable
 
 	def each(&block)
-		${1}
 	end
 # include Comparable
-snippet Comp
+snippet Com
 	include Comparable
 
 	def <=>(other)
-		${1}
 	end
 # extend Forwardable
-snippet Forw-
+snippet For
 	extend Forwardable
 # def self
 snippet defs
 	def self.${1:class_method_name}
-		${2}
 	end
 # def method_missing
 snippet defmm
 	def method_missing(meth, *args, &blk)
-		${1}
 	end
 snippet defd
-	def_delegator :${1:@del_obj}, :${2:del_meth}, :${3:new_name}
+	def_delegator :${1:@del_obj}
 snippet defds
-	def_delegators :${1:@del_obj}, :${2:del_methods}
+	def_delegators :${1:@del_obj}
 snippet am
-	alias_method :${1:new_name}, :${2:old_name}
+	alias_method :${1:new_name}
 snippet app
 	if __FILE__ == $PROGRAM_NAME
-		${1}
+	  ${1}
 	end
 # usage_if()
 snippet usai
 	if ARGV.${1}
-		abort "Usage: #{$PROGRAM_NAME} ${2:ARGS_GO_HERE}"${3}
+	  abort "Usage: #{$PROGRAM_NAME} ${2:ARGS_GO_HERE}"${3}
 	end
 # usage_unless()
 snippet usau
 	unless ARGV.${1}
-		abort "Usage: #{$PROGRAM_NAME} ${2:ARGS_GO_HERE}"${3}
+	  abort "Usage: #{$PROGRAM_NAME} ${2:ARGS_GO_HERE}"${3}
 	end
-snippet array
+snippet arr
 	Array.new(${1:10}) { |${2:i}| ${3} }
-snippet hash
+snippet has
 	Hash.new {|${1:hash}, ${2:key}| $1[$2] = ${3} }
-snippet file File.foreach() { |line| .. }
+snippet fil File.foreach() { |line| .. }
 	File.foreach(${1:'path/to/file'}) { |${2:line}| ${3} }
-snippet file File.read()
+snippet fil File.read()
 	File.read(${1:'path/to/file'})${2}
-snippet Dir Dir.global() { |file| .. }
+snippet Dir Dir.glob() { |file| .. }
 	Dir.glob(${1:'dir/glob/*'}) { |${2:file}| ${3} }
 snippet Dir Dir['..']
 	Dir[${1:'glob/**/*.rb'}]${2}
@@ -216,9 +176,9 @@ snippet ea
 	each {|${1:e}| ${2} }
 snippet eab
 	each_byte {|${1:byte}| ${2} }
-snippet eac- each_char { |chr| .. }
+snippet eac each_char {|chr| .. }
 	each_char {|${1:chr}| ${2} }
-snippet eac- each_cons(..) { |group| .. }
+snippet eac each_cons(..) {|group| .. }
 	each_cons(${1:2}) {|${2:group}| ${3} }
 snippet eai
 	each_index {|${1:i}| ${2} }
@@ -228,7 +188,7 @@ snippet eal
 	each_line {|${1:line}| ${2} }
 snippet eap
 	each_pair {|${1:name}, ${2:val}| ${3} }
-snippet eas-
+snippet eas
 	each_slice(${1:2}) {|${2:group}| ${3} }
 snippet eav
 	each_value {|${1:val}| ${2} }
@@ -240,8 +200,8 @@ snippet inj inject() { }
 	inject(${1:init}) {|${2:mem}, ${3:var}| ${4} }
 snippet inj  inject { }
 	inject {|${1:mem}, ${2:var}| ${3} }
-snippet red 
-	reduce(${1:init})
+snippet red
+	reduce {|${1:mem}, ${2:var}| ${3} }
 snippet map
 	map {|${1:e}| ${2} }
 snippet mapwi-
@@ -286,13 +246,21 @@ snippet rej
 	reject {|${1:e}|, ${2} }
 snippet sel
 	select {|${1:e}|, ${2} }
-snippet lam lambda { }
+snippet lam
 	lambda {|${1:args}| ${2} }
-snippet lam -> { }
+snippet lm
 	->(${1:args}) { ${2} }
+snippet pro
+	proc {|${1:args}| ${2} }
+snippet prod
+	proc do |${1:args}|
+	end
 snippet do
 	do |${1:variable}|
-		${2}
+	end
+snippet doe
+	do
+	  ${1}
 	end
 snippet :
 	:${1:key} => ${2:'value'}${3}
@@ -304,7 +272,6 @@ snippet patfh
 # unix_filter {}
 snippet unif
 	ARGF.each_line${1} do |${2:line}|
-		${3}
 	end
 # option_parse {}
 snippet optp
@@ -313,21 +280,21 @@ snippet optp
 	options = {${1:default => 'args'}}
 
 	ARGV.options do |opts|
-		opts.banner = "Usage: #{File.basename($PROGRAM_NAME)}
+	  opts.banner = "Usage: #{File.basename($PROGRAM_NAME)}
+	end
 snippet opt
 	opts.on( "-${1:o}", "--${2:long-option-name}", ${3:String},
 	         "${4:Option description.}") do |${5:opt}|
-		${6}
+	  ${6}
 	end
 snippet tc
 	require 'test/unit'
-
 	require '${1:library_file_name}'
 
 	class Test${2:$1} < Test::Unit::TestCase
-		def test_${3:case_name}
-			${4}
-		end
+	  def test_${3:case_name}
+	    ${4}
+	  end
 	end
 snippet ts
 	require 'test/unit'
@@ -375,10 +342,10 @@ snippet asnt
 snippet fl
 	flunk('${1:Failure message.}')${2}
 # Benchmark.bmbm do .. end
-snippet bm-
+snippet bm
 	TESTS = ${1:10_000}
 	Benchmark.bmbm do |results|
-		${2}
+	  ${2}
 	end
 snippet rep
 	results.report('${1:name}:') { TESTS.times { ${2} }}
@@ -401,20 +368,20 @@ snippet xml-
 # xpath(..) { .. }
 snippet xpa
 	elements.each(${1:'//Xpath'}) do |${2:node}|
-		${3}
+	  ${3}
 	end
 # class_from_name()
 snippet clafn
 	split('::').inject(Object) {|par, const| par.const_get(const) }
 # singleton_class()
-snippet sinc
+snippet sin
 	class << self; self end
 snippet nam
 	namespace :${1:`Filename()`} do
-		${2}
+	  ${2}
 	end
 snippet tas
 	desc '${1:Task description\}'
 	task :${2:task_name => [:dependent, :tasks]} do
-		${3}
+	  ${3}
 	end
