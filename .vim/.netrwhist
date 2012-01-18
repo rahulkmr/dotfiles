@@ -1,0 +1,5 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_1='/home/rahul/.rvm/gems/ruby-1.9.2-p290@compass-accounts/bundler/gems/compass-common-1e6be2f1a69e/lib'
+let g:netrw_dirhist_2='/home/rahul/.rvm/gems/ruby-1.9.2-p290@compass-accounts/bundler/gems/compass-common-1e6be2f1a69e/lib/compass_common'
+let g:netrw_dirhist_3='/home/rahul/Documents/docs'

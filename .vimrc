@@ -91,7 +91,7 @@ endif
 "syntax highlight shell scripts as per POSIX,
 "not the original Bourne shell which very few use
 let g:is_posix = 1
-call pathogen#runtime_append_all_bundles()
+call pathogen#infect()
 filetype on
 filetype plugin on
 filetype indent on
