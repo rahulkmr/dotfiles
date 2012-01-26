@@ -101,7 +101,6 @@ au VimResized * exe "normal! \<c-w>="
 " clojure settings.
 "let g:vimclojure#WantNailgun=1
 let g:vimclojure#HighlightBuiltins=1
-let g:vimclojure#ParenRainbow=1
 let g:vimclojure#DynamicHighlighting=1
 nnoremap ,a :set autochdir<CR>
 set noautochdir
@@ -263,3 +262,4 @@ autocmd FileType *.cljs set ft=clojure
 
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
+inoremap  u03bb
