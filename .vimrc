@@ -98,7 +98,7 @@ filetype indent on
 au FocusLost * :wa
 au VimResized * exe "normal! \<c-w>="
 " clojure settings.
-"let g:vimclojure#WantNailgun=1
+let g:vimclojure#WantNailgun=1
 let g:vimclojure#HighlightBuiltins=1
 let g:vimclojure#DynamicHighlighting=1
 nnoremap ,a :set autochdir<CR>
@@ -234,9 +234,6 @@ let g:rubycomplete_rails = 1
 autocmd FileType ruby nnoremap  ,x :w<CR>:!ruby % <CR>
 autocmd FileType ruby setlocal makeprg=ruby\ -c\ %
 inoremap \q <Esc>O
-autocmd FileType coffee setlocal ts=2 sts=2 sw=2
-autocmd FileType scss setlocal ts=2 sts=2 sw=2
-autocmd FileType haml setlocal ts=2 sts=2 sw=2
 
 " Mappings for eclim.
 autocmd FileType java nnoremap \jg :JavaGet<CR>
@@ -255,7 +252,6 @@ autocmd FileType java nnoremap \jv :Validate<CR>
 autocmd FileType java nnoremap \jt :JavaCorrect<CR>
 autocmd FileType java nnoremap \jr :JavaRename
 autocmd FileType java nnoremap \jw :JavaDocComment
-let g:vimclojure#WantNailgun = 1
 let g:clang_complete_auto = 0
 let g:clang_snippets = 1
 nnoremap \w :Ack <cword><CR>
