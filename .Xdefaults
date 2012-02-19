@@ -27,3 +27,5 @@ URxvt.scrollBar_right: True
 *color13: #fba1fb
 *color14: #d7d9fc
 *color15: #e2e2e2
+*customization: -color
+XTerm*termName:  xterm-256color

@@ -1,4 +1,3 @@
-let g:pydiction_location = '~/.vim/complete-dict'
 set undodir=/opt/tmp//
 set backupdir=/opt/tmp//
 set directory=/opt/tmp//
@@ -107,11 +106,13 @@ set noautochdir
 nnoremap ,n :nohl<CR>
 nnoremap ,t :NERDTreeToggle<CR>
 "nnoremap \t :Ve<CR><CR>
-nnoremap ,l :TlistToggle<CR>
+nnoremap ,l :TagbarToggle<CR>
 nnoremap ,y :FufFile<CR>
 autocmd FileType python nnoremap ,x :w<CR>:!/usr/bin/env python % <CR>
 autocmd FileType python setlocal nosmartindent
-autocmd FileType python setlocal makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;py_compile.compile(r'%')\"
+"autocmd FileType python setlocal makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;py_compile.compile(r'%')\"
+autocmd FileType python setlocal makeprg=pylint\ --reports=n\ --output-format=parseable\ %:p
+autocmd FileType python setlocal errorformat=%f:%l:\ %m
 autocmd BufRead python setlocal efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
 autocmd FileType python setlocal path+=$PYTHONDIRS
 autocmd FileType perl nnoremap  ,x :w<CR>:!/usr/bin/env perl % <CR>
@@ -210,7 +211,7 @@ nnoremap \s <C-w>s<C-w>j
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+"nnoremap <C-l> <C-w>l
 nnoremap ,v :e ~/.vimrc<CR>
 nnoremap ,V :so ~/.vimrc<CR>
 inoremap \1 <%<Space><Space>%><Esc>2hi

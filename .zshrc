@@ -38,7 +38,7 @@ export PERLDIRS=$(/usr/bin/env perl -e 'print join(",", @INC)')
 PERLDIRS=$(echo $PERLDIRS | sed -e 's;\\;/;g')
 export PYTHONDIRS=$(/usr/bin/env python -c 'import sys; sys.stdout.write(",".join(sys.path))')
 PYTHONDIRS=$(echo $PYTHONDIRS | sed -e 's;\\;/;g')
-export PATH=$HOME/bin:$HOME/scala/bin:/var/lib/gems/1.9.1/bin:$HOME/Downloads/sw/android-sdk-linux_x86/tools:$HOME/projects/clojurescript/bin:$PATH
+export PATH=$HOME/bin:$HOME/scala/bin:$HOME/Downloads/sw/android-sdk-linux_x86/tools:$HOME/projects/clojurescript/bin:$PATH
 ###
 # Autoload zsh modules when they are referenced
 ###
