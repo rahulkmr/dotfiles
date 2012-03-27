@@ -95,8 +95,15 @@ filetype on
 filetype plugin on
 filetype indent on
 
-au FocusLost * :wa
-au VimResized * exe "normal! \<c-w>="
+augroup global
+    au!
+    au FocusLost * :wa
+    au VimResized * exe "normal! \<c-w>="
+    autocmd BufNewFile,BufRead *.slim set filetype=slim
+    au BufNewFile,BufRead *.rkt set filetype=scheme
+    autocmd FileType scheme runtime plugin/rainbow.vim
+    autocmd FileType *.cljs set ft=clojure
+augroup end
 " clojure settings.
 let g:vimclojure#WantNailgun=1
 let g:vimclojure#HighlightBuiltins=1
@@ -108,33 +115,40 @@ nnoremap ,t :NERDTreeToggle<CR>
 "nnoremap \t :Ve<CR><CR>
 nnoremap ,l :TagbarToggle<CR>
 nnoremap ,y :FufFile<CR>
-autocmd FileType python nnoremap ,x :w<CR>:!/usr/bin/env python % <CR>
-autocmd FileType python setlocal nosmartindent
-"autocmd FileType python setlocal makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;py_compile.compile(r'%')\"
-autocmd FileType python setlocal makeprg=pylint\ --reports=n\ --output-format=parseable\ %:p
-autocmd FileType python setlocal errorformat=%f:%l:\ %m
-autocmd BufRead python setlocal efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
-autocmd FileType python setlocal path+=$PYTHONDIRS
-autocmd FileType perl nnoremap  ,x :w<CR>:!/usr/bin/env perl % <CR>
-autocmd FileType perl setlocal path+=$PERLDIRS
-autocmd FileType perl setlocal makeprg=/usr/bin/env\ perl\ -c\ %
-autocmd FileType c setlocal makeprg=clang\ -fsyntax-only\ %
-autocmd FileType cpp setlocal makeprg=g++\ -g\ -o\ %<\ %
-autocmd FileType c,cpp,perl,python,ruby nnoremap ,c :w<CR>:make<CR>
-autocmd FileType c,cpp nnoremap ,x :!./%<<CR>
-"autocmd FileType java,c,perl nnoremap ,j :cn<CR> | nnoremap ,k :cp<CR> | nnoremap ,h :cr<CR> | nnoremap ,l :cl<CR> | nnoremap ,i :cw<CR><C-w><C-w>
-nnoremap \j :cn<CR>
-nnoremap \k :cp<CR>
-nnoremap \h :cr<CR>
-nnoremap \l :cl<CR>
-nnoremap \i :cclose<CR>:pclose<CR>
+augroup python
+    au!
+    autocmd FileType python nnoremap<buffer> ,x :w<CR>:!/usr/bin/env python % <CR>
+    autocmd FileType python setlocal nosmartindent
+    autocmd FileType python setlocal makeprg=pylint\ --reports=n\ --output-format=parseable\ %:p
+    autocmd FileType python setlocal errorformat=%f:%l:\ %m
+    autocmd BufRead python setlocal efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+    autocmd FileType python setlocal path+=$PYTHONDIRS
+    "autocmd FileType python setlocal makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;py_compile.compile(r'%')\"
+augroup end
+augroup perl
+    au!
+    autocmd FileType perl nnoremap<buffer>  ,x :w<CR>:!/usr/bin/env perl % <CR>
+    autocmd FileType perl setlocal path+=$PERLDIRS
+    autocmd FileType perl setlocal makeprg=/usr/bin/env\ perl\ -c\ %
+augroup end
+augroup c
+    au!
+    autocmd FileType c setlocal makeprg=clang\ -fsyntax-only\ %
+    autocmd FileType cpp setlocal makeprg=g++\ -g\ -o\ %<\ %
+    autocmd FileType c,cpp,perl,python,ruby nnoremap<buffer> ,c :w<CR>:make<CR>
+augroup end
+augroup common
+    au!
+    autocmd FileType c,cpp nnoremap<buffer> ,x :!./%<<CR>
+augroup end
+nnoremap \i :cclose<CR>:pclose<CR>:lclose<CR>
 let g:netrw_menu = 0
+let g:netrw_banner = 0
 let g:netrw_altv = 1
 let g:netrw_hide = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
-let g:netrw_winsize = 35
-let g:netrw_hide = 1
+let g:netrw_winsize = 85
 inoremap <Nul> <C-x><C-o>
 nnoremap ,m :TOhtml<CR>
 colorscheme ir_black
@@ -184,18 +198,19 @@ cnoremap <c-e> <end>
 cnoremap <c-b> <left>
 cnoremap <c-d> <del>
 cnoremap <c-f> <right>
-" Set filetype for f#"
-au BufNewFile,BufRead *.fs set filetype=fs
-autocmd FileType fs set autoindent
-autocmd FileType fs set smartindent
-" configure tabwidth and insert spaces instead of tabs
-autocmd FileType fs set tabstop=4        " tab width is 4 spaces
-autocmd FileType fs set shiftwidth=4     " indent also with 4 spaces
-autocmd FileType fs set softtabstop=4
-autocmd FileType fs set expandtab        " expand tabs to spaces
-autocmd FileType fs setlocal makeprg=fsc_sh\ %
-autocmd FileType fs nnoremap ,c :w<CR>:make<CR>
-autocmd FileType fs nnoremap ,x :!./%<.exe<CR>
+augroup fsharp
+    au!
+    autocmd FileType fsharp set autoindent
+    autocmd FileType fsharp set smartindent
+    " configure tabwidth and insert spaces instead of tabs
+    autocmd FileType fsharp set tabstop=4        " tab width is 4 spaces
+    autocmd FileType fsharp set shiftwidth=4     " indent also with 4 spaces
+    autocmd FileType fsharp set softtabstop=4
+    autocmd FileType fsharp set expandtab        " expand tabs to spaces
+    autocmd FileType fsharp setlocal makeprg=fsc_sh\ %
+    autocmd FileType fsharp nnoremap<buffer> ,c :w<CR>:make<CR>
+    autocmd FileType fsharp nnoremap<buffer> ,x :!./%<.exe<CR>
+augroup end
 nnoremap ` @@
 vnoremap . :normal .<CR>
 vnoremap ` :normal @@<CR>
@@ -222,41 +237,41 @@ au BufRead,BufNewFile *.less set ft=less syntax=less
 inoremap <C-h> <C-g>u<C-h>
 inoremap <C-w> <C-g>u<C-w>
 inoremap <C-u> <C-g>u<C-u>
-autocmd BufNewFile,BufRead *.slim set filetype=slim
-autocmd FileType ruby setlocal tabstop=2
-autocmd FileType ruby setlocal shiftwidth=2
-autocmd FileType ruby setlocal softtabstop=2
-au BufNewFile,BufRead *.rkt set filetype=scheme
-autocmd FileType scheme runtime plugin/rainbow.vim
 let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_rails = 1
-autocmd FileType ruby nnoremap  ,x :w<CR>:!ruby % <CR>
-autocmd FileType ruby setlocal makeprg=ruby\ -c\ %
+augroup ruby
+    au!
+    autocmd FileType ruby nnoremap<buffer>  ,x :w<CR>:!ruby % <CR>
+    autocmd FileType ruby setlocal makeprg=ruby\ -c\ %
+augroup end
 inoremap \q <Esc>O
-
-" Mappings for eclim.
-autocmd FileType java nnoremap \jg :JavaGet<CR>
-autocmd FileType java nnoremap \js :JavaGet<CR>
-autocmd FileType java nnoremap \ja :JavaGetSet<CR>
-autocmd FileType java nnoremap \jc :JavaConstructor<CR>
-autocmd FileType java nnoremap \jh :JavaHierarchy<CR>
-autocmd FileType java nnoremap \jl :JavaImpl<CR>
-autocmd FileType java nnoremap \jd :JavaDelegate<CR>
-autocmd FileType java nnoremap \ji :JavaImport<CR>
-autocmd FileType java nnoremap \jm :JavaImportMissing<CR>
-autocmd FileType java nnoremap \js :JavaSearchContext<CR>
-autocmd FileType java nnoremap \jx :Java %<CR>
-autocmd FileType java nnoremap \jo :Javac<CR>
-autocmd FileType java nnoremap \jv :Validate<CR>
-autocmd FileType java nnoremap \jt :JavaCorrect<CR>
-autocmd FileType java nnoremap \jr :JavaRename
-autocmd FileType java nnoremap \jw :JavaDocComment
+augroup java
+    au!
+    " Mappings for eclim.
+    autocmd FileType java nnoremap<buffer> \jg :JavaGet<CR>
+    autocmd FileType java nnoremap<buffer> \js :JavaGet<CR>
+    autocmd FileType java nnoremap<buffer> \ja :JavaGetSet<CR>
+    autocmd FileType java nnoremap<buffer> \jc :JavaConstructor<CR>
+    autocmd FileType java nnoremap<buffer> \jh :JavaHierarchy<CR>
+    autocmd FileType java nnoremap<buffer> \jl :JavaImpl<CR>
+    autocmd FileType java nnoremap<buffer> \jd :JavaDelegate<CR>
+    autocmd FileType java nnoremap<buffer> \ji :JavaImport<CR>
+    autocmd FileType java nnoremap<buffer> \jm :JavaImportMissing<CR>
+    autocmd FileType java nnoremap<buffer> \js :JavaSearchContext<CR>
+    autocmd FileType java nnoremap<buffer> \jx :Java %<CR>
+    autocmd FileType java nnoremap<buffer> \jo :Javac<CR>
+    autocmd FileType java nnoremap<buffer> \jv :Validate<CR>
+    autocmd FileType java nnoremap<buffer> \jt :JavaCorrect<CR>
+    autocmd FileType java nnoremap<buffer> \jr :JavaRename
+    autocmd FileType java nnoremap<buffer> \jw :JavaDocComment
+augroup end
 let g:clang_complete_auto = 0
 let g:clang_snippets = 1
 nnoremap \w :Ack <cword><CR>
-autocmd FileType *.cljs set ft=clojure
 
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 inoremap  u03bb
+nnoremap ,g :GundoToggle<CR>
+let g:paredit_leader = '\'

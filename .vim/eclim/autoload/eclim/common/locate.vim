@@ -5,7 +5,7 @@
 "
 " License:
 "
-" Copyright (C) 2005 - 2010  Eric Van Dewoestine
+" Copyright (C) 2005 - 2011  Eric Van Dewoestine
 "
 " This program is free software: you can redistribute it and/or modify
 " it under the terms of the GNU General Public License as published by
@@ -131,7 +131,7 @@ function! eclim#common#locate#LocateFile(action, file, ...)
     unlet! b:project
   endtry
 
-  call map(results, "split(v:val, '|')[2]")
+  call map(results, "v:val.path")
 
   let result = ''
   " One result.
@@ -181,11 +181,10 @@ function! eclim#common#locate#LocateFileCompletion()
     let results = s:LocateFileFunction(b:scope)(pattern)
     if !empty(results)
       for result in results
-        let parts = split(result, '|')
-        let rel = eclim#util#Simplify(parts[1])
-        let dict = {'word': parts[0], 'menu': rel, 'info': parts[2]}
+        let rel = eclim#util#Simplify(get(result, 'projectPath', result.path))
+        let dict = {'word': result.name, 'menu': rel, 'info': result.path}
         call add(completions, dict)
-        call add(display, parts[0] . '  ' . rel)
+        call add(display, result.name . '  ' . rel)
       endfor
     endif
   endif
@@ -259,6 +258,7 @@ function! s:LocateFileCompletionInit(action, scope, project, workspace)
   let b:results_bufnum = results_bufnum
   let b:help_bufnum = 0
   let b:selection = 1
+  let b:winrestcmd = winrestcmd
 
   set updatetime=300
 
@@ -367,20 +367,28 @@ endfunction " }}}
 " s:LocateFileSelect(action) {{{
 function! s:LocateFileSelect(action)
   if exists('b:completions') && !empty(b:completions)
-    let winnr = winnr()
+    let &updatetime = g:eclim_locate_default_updatetime
+
     let file = eclim#util#Simplify(b:completions[b:selection - 1].info)
     if has('win32unix')
       let file = eclim#cygwin#CygwinPath(file)
     endif
-    let bufnum = bufnr('%')
-    let results_bufnum = b:results_bufnum
-    let &updatetime = g:eclim_locate_default_updatetime
-    call eclim#util#GoToBufferWindow(b:bufnum)
+
+    let bufnum = b:bufnum
+    let winrestcmd = b:winrestcmd
+
+    " close locate windows
+    exec 'bdelete ' . b:results_bufnum
+    exec 'bdelete ' . bufnr('%')
+
+    " reset windows to pre-locate sizes
+    exec winrestcmd
+
+    " open the selected result
+    call eclim#util#GoToBufferWindow(bufnum)
     call eclim#util#GoToBufferWindowOrOpen(file, a:action)
-    call feedkeys(
-      \ "\<esc>:bd " . bufnum . " | " .
-      \ "bd " . results_bufnum . " | " .
-      \ "doautocmd WinEnter\<cr>", 'n')
+    call feedkeys("\<esc>", 'n')
+    doautocmd WinEnter
   endif
   return ''
 endfunction " }}}
@@ -541,8 +549,8 @@ function! s:LocateFile_workspace(pattern)
   let command = substitute(command, '<scope>', 'workspace', '')
   let command .= ' -p "' . a:pattern . '"'
   let port = eclim#client#nailgun#GetNgPort(b:workspace)
-  let results = split(eclim#ExecuteEclim(command, port), '\n')
-  if len(results) == 1 && results[0] == '0'
+  let results = eclim#ExecuteEclim(command, port)
+  if type(results) != g:LIST_TYPE
     return []
   endif
   return results
@@ -555,8 +563,8 @@ function! s:LocateFile_project(pattern)
   let command .= ' -p "' . a:pattern . '"'
   let command .= ' -n "' . b:project . '"'
   let port = eclim#client#nailgun#GetNgPort(b:workspace)
-  let results = split(eclim#ExecuteEclim(command, port), '\n')
-  if len(results) == 1 && results[0] == '0'
+  let results = eclim#ExecuteEclim(command, port)
+  if type(results) != g:LIST_TYPE
     return []
   endif
   return results
@@ -624,8 +632,8 @@ function! eclim#common#locate#LocateFileFromFileList(pattern, file)
   let command .= ' -p "' . a:pattern . '"'
   let command .= ' -f "' . file . '"'
   let port = eclim#client#nailgun#GetNgPort(b:workspace)
-  let results = split(eclim#ExecuteEclim(command, port), '\n')
-  if len(results) == 1 && results[0] == '0'
+  let results = eclim#ExecuteEclim(command, port)
+  if type(results) != g:LIST_TYPE
     return []
   endif
   return results

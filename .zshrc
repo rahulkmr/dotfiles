@@ -38,7 +38,12 @@ export PERLDIRS=$(/usr/bin/env perl -e 'print join(",", @INC)')
 PERLDIRS=$(echo $PERLDIRS | sed -e 's;\\;/;g')
 export PYTHONDIRS=$(/usr/bin/env python -c 'import sys; sys.stdout.write(",".join(sys.path))')
 PYTHONDIRS=$(echo $PYTHONDIRS | sed -e 's;\\;/;g')
-export PATH=$HOME/bin:$HOME/scala/bin:$HOME/Downloads/sw/android-sdk-linux_x86/tools:$HOME/projects/clojurescript/bin:$PATH
+
+export GOROOT=~/Downloads/sw/go
+export GOOS=linux
+export GOARCH=amd64
+
+export PATH=$HOME/bin:$HOME/scala/bin:$HOME/Downloads/sw/android-sdk-linux_x86/tools:$HOME/projects/clojurescript/bin:$GOROOT/bin:$PATH
 ###
 # Autoload zsh modules when they are referenced
 ###
@@ -215,10 +220,6 @@ if [ -s ~/.profile ] ; then
     source ~/.profile
 fi
 
-export GOROOT=~/go
-export GOOS=linux
-export GOARCH=386
-
 # PS1 and PS2
 function prompt_char {
     git branch >/dev/null 2>/dev/null && print '±' && return
@@ -275,10 +276,10 @@ export PERL_MM_USE_DEFAULT=1
 eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
 tmux-to-clipboard() {
     tmux show-buffer | xclip -sel clip
-    tmux show-buffer | xclip -sel primary 
+    tmux show-buffer | xclip -sel primary
 }
-zle -N tmux-to-clipboard 
-bindkey "^y" tmux-to-clipboard 
+zle -N tmux-to-clipboard
+bindkey "^y" tmux-to-clipboard
 yank() {
     CLIPOUT=`xclip -o -sel clipboard`
     if [[ "x${CLIPOUT}" == "x" ]]; then
@@ -289,7 +290,7 @@ yank() {
 zle -N yank yank
 #bindkey "^y" yank
 # F# aliases
-alias fsi='mono ~/Downloads/sw/FSharp/bin/fsi.exe --quiet'
+alias fsi='mono ~/Downloads/sw/FSharp/bin/fsi.exe'
 alias fsc='mono ~/Downloads/sw/FSharp/bin/fsc.exe --resident'
 function calc() { echo "$1" | bc - l}
 function bat()
@@ -329,3 +330,19 @@ ssh-reagent () {
 CLOJURESCRIPT_HOME='/home/rahul/projects/clojurescript'
 alias vi=/usr/local/bin/vim
 alias vim=/usr/local/bin/vim
+
+
+# gc
+prefixes=(5 6 8)
+for p in $prefixes; do
+	compctl -g "*.${p}" ${p}l
+	compctl -g "*.go" ${p}g
+done
+
+# standard go tools
+compctl -g "*.go" gofmt
+
+# gccgo
+compctl -g "*.go" gccgo
+export GOPATH=$HOME/musings/go
+
