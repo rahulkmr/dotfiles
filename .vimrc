@@ -68,10 +68,6 @@ set magic
 set noerrorbells
 set novisualbell
 
-" Comment for C like language
-if has("autocmd")
-    au BufNewFile,BufRead *.js,*.htc,*.c,*.tmpl,*.css ino $c /** **/O
-endif
 "Enable folding, I find it very useful
 set fen
 set fdl=0
@@ -103,6 +99,7 @@ augroup global
     au BufNewFile,BufRead *.rkt set filetype=scheme
     autocmd FileType scheme runtime plugin/rainbow.vim
     autocmd FileType *.cljs set ft=clojure
+    au BufRead,BufNewFile *.less set ft=less syntax=less
 augroup end
 " clojure settings.
 let g:vimclojure#WantNailgun=1
@@ -135,11 +132,11 @@ augroup c
     au!
     autocmd FileType c setlocal makeprg=clang\ -fsyntax-only\ %
     autocmd FileType cpp setlocal makeprg=g++\ -g\ -o\ %<\ %
-    autocmd FileType c,cpp,perl,python,ruby nnoremap<buffer> ,c :w<CR>:make<CR>
+    autocmd FileType c,cpp nnoremap<buffer> ,x :!./%<<CR>
 augroup end
 augroup common
     au!
-    autocmd FileType c,cpp nnoremap<buffer> ,x :!./%<<CR>
+    autocmd FileType c,cpp,perl,python,ruby nnoremap<buffer> ,c :w<CR>:make<CR>
 augroup end
 nnoremap \i :cclose<CR>:pclose<CR>:lclose<CR>
 let g:netrw_menu = 0
@@ -233,7 +230,6 @@ inoremap \1 <%<Space><Space>%><Esc>2hi
 inoremap \2 <%=<Space><Space>%><Esc>2hi
 inoremap \3 {%<Space><Space>%}<Esc>2hi
 inoremap \4 {{<Space><Space>}}<Esc>2hi
-au BufRead,BufNewFile *.less set ft=less syntax=less
 inoremap <C-h> <C-g>u<C-h>
 inoremap <C-w> <C-g>u<C-w>
 inoremap <C-u> <C-g>u<C-u>

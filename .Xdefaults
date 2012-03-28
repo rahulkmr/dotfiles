@@ -6,26 +6,24 @@ Rxvt.scrollBar: True
 Rxvt.scrollBar_right: True
 URxvt.scrollBar: True
 URxvt.scrollBar_right: True
-*foreground: #f2f2f2
-!*background: #101010
+
 *background: #000000
+*foreground: #f2f2f2
 
-*color0: #6c6c6c
-*color1: #e9897c
-*color2: #b6e77d
-*color3: #ecebbe
-*color4: #a9cdeb
-*color5: #ea96eb
-*color6: #c9caec
-*color7: #f2f2f2
+*color0: #4E4E4E     
+*color1: #FF6C60     
+*color2: #A8FF60     
+*color3: #FFFFB6     
+*color4: #96CBFE     
+*color5: #FF73FD     
+*color6: #C6C5FE     
+*color7: #EEEEEE     
 
-*color8: #747474
-*color9: #f99286
-*color10: #c3f786
-*color11: #fcfbcc
-*color12: #b6defb
-*color13: #fba1fb
-*color14: #d7d9fc
-*color15: #e2e2e2
-*customization: -color
-XTerm*termName:  xterm-256color
+*color8: #7C7C7C
+*color9: #FFB6B0
+*color10: #CEFFAB
+*color11: #FFFFCB
+*color12: #B5DCFE
+*color13: #FF9CFE
+*color14: #DFDFFE
+*color15: #FFFFFF
