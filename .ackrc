@@ -1,1 +1,4 @@
+--ignore-dir=coverage
+--ignore-dir=tmp
 --type-add=ruby=.haml,.rake,.slim
+--type-add=js=.coffee
