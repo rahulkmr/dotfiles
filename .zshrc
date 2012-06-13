@@ -1,5 +1,4 @@
 # The following lines were added by compinstall
-
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' insert-unambiguous true
@@ -7,139 +6,6 @@ zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character t
 zstyle ':completion:*' matcher-list '' '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[._-]=* r:|=*'
 zstyle ':completion:*' original true
 zstyle :compinstall filename '/home/rahulkum/.zshrc'
-
-autoload -Uz compinit promptinit
-compinit
-promptinit
-autoload -U colors
-# End of lines added by compinstall
-# Lines configured by zsh-newuser-install
-HISTFILE=~/.histfile
-HISTSIZE=50000
-SAVEHIST=50000
-setopt appendhistory extendedglob
-unsetopt beep
-bindkey -e
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    eval "`dircolors -b`"
-    alias ls='ls --color=auto'
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
-# some more ls aliases
-alias ll='ls -l'
-alias la='ls -A'
-alias l='ls -CF'
-export EDITOR=vim
-export PERLDIRS=$(/usr/bin/env perl -e 'print join(",", @INC)')
-PERLDIRS=$(echo $PERLDIRS | sed -e 's;\\;/;g')
-export PYTHONDIRS=$(/usr/bin/env python -c 'import sys; sys.stdout.write(",".join(sys.path))')
-PYTHONDIRS=$(echo $PYTHONDIRS | sed -e 's;\\;/;g')
-
-export GOROOT=~/Downloads/sw/go
-export GOOS=linux
-export GOARCH=amd64
-
-export PATH=$HOME/bin:$HOME/scala/bin:$HOME/Downloads/sw/android-sdk-linux_x86/tools:$HOME/projects/clojurescript/bin:$GOROOT/bin:$PATH
-###
-# Autoload zsh modules when they are referenced
-###
-zmodload -a zsh/stat stat
-zmodload -a zsh/zpty zpty
-zmodload -a zsh/zprof zprof
-zmodload -ap zsh/mapfile mapfile
-
-
-###
-# setup options
-###
-# use share_history instead of setopt APPEND_HISTORY         # appends history to .zsh_history
-setopt AUTO_CD                # cd if no matching command
-setopt AUTO_PUSHD                # make cd=pushd
-setopt AUTO_PARAM_SLASH       # adds slash at end of tabbed dirs
-setopt HIST_IGNORE_ALL_DUPS
-setopt CHECK_JOBS             # check bg jobs on exit
-setopt CORRECT                # corrects spelling
-setopt CORRECT_ALL            # corrects spelling
-setopt EXTENDED_GLOB          # globs #, ~ and ^
-setopt EXTENDED_HISTORY       # saves timestamps on history
-setopt GLOB_DOTS              # find dotfiles easier
-setopt HASH_CMDS              # save cmd location to skip PATH lookup
-setopt HIST_EXPIRE_DUPS_FIRST # expire duped history first
-setopt HIST_NO_STORE          # don't save 'history' cmd in history
-setopt INC_APPEND_HISTORY     # append history as command are entered
-setopt LIST_ROWS_FIRST        # completion options left-to-right, top-to-bottom
-setopt LIST_TYPES             # show file types in list
-setopt MARK_DIRS              # adds slash to end of completed dirs
-setopt NUMERIC_GLOB_SORT      # sort numerically first, before alpha
-setopt PROMPT_SUBST           # sub values in prompt (though it seems to work anyway haha)
-#setopt RM_STAR_WAIT           # pause before confirming rm *
-setopt SHARE_HISTORY          # share history between open shells
-setopt autopushd pushdminus pushdsilent pushdtohome
-setopt autocd
-setopt cdablevars
-setopt ignoreeof
-setopt interactivecomments
-setopt noclobber
-setopt HIST_REDUCE_BLANKS
-setopt HIST_IGNORE_SPACE
-setopt SH_WORD_SPLIT
-setopt nohup
-
-
-###
-# Setup vars
-###
-
-HOSTNAME="`hostname`"
-REPORTTIME=120 # print elapsed time when more than 10 seconds
-
-export PAGER='less'
-export SHELL="/bin/zsh"
-
-
-
-###
-# Emacs shortcut keys
-###
-bindkey -e
-
-
-###
-# ssh host completion
-###
-zstyle -e ':completion:*:(ssh|scp):*' hosts 'reply=(
-  ${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) \
-       /dev/null)"}%%[# ]*}//,/ }
-  ${=${(f)"$(cat /etc/hosts(|)(N) <<(ypcat hosts 2>/dev/null))"}%%\#*}
-)'
-
-
-###
-# Aliases
-###
-
-# general helpers
-alias l="ls -laFhG"
-alias sr="screen -r"
-
-
-
-###
-# Bunch of stuff I haven't figured out if I need yet
-###
-bindkey '^r' history-incremental-search-backward
-bindkey "^[[5~" up-line-or-history
-bindkey "^[[6~" down-line-or-history
-bindkey "^[[H" beginning-of-line
-bindkey "^[[1~" beginning-of-line
-bindkey "^[[F"  end-of-line
-bindkey "^[[4~" end-of-line
-bindkey ' ' magic-space    # also do history expansion on space
-bindkey '^I' complete-word # complete on tab, leave expansion to _expand
 
 zstyle ':completion::complete:*' use-cache on
 zstyle ':completion::complete:*' cache-path ~/.zsh/cache/$HOST
@@ -207,18 +73,161 @@ zstyle ':completion:*:ssh:*' group-order \
 zstyle '*' single-ignored show
 
 
-case $TERM in
-    *xterm*|ansi)
-		function settab { print -Pn "\e]1;%n@%m: %~\a" }
-		function settitle { print -Pn "\e]2;%n@%m: %~\a" }
-		function chpwd { settab;settitle }
-		settab;settitle
-        ;;
-esac
+# ssh host completion
+zstyle -e ':completion:*:(ssh|scp):*' hosts 'reply=(
+  ${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) \
+       /dev/null)"}%%[# ]*}//,/ }
+  ${=${(f)"$(cat /etc/hosts(|)(N) <<(ypcat hosts 2>/dev/null))"}%%\#*}
+)'
 
-if [ -s ~/.profile ] ; then
-    source ~/.profile
+autoload -Uz compinit promptinit
+compinit
+promptinit
+autoload -U colors
+autoload edit-command-line
+# End of lines added by compinstall
+
+# Autoload zsh modules when they are referenced
+zmodload -a zsh/stat stat
+zmodload -a zsh/zpty zpty
+zmodload -a zsh/zprof zprof
+zmodload -ap zsh/mapfile mapfile
+
+# Bunch of stuff I haven't figured out if I need yet
+bindkey '^r' history-incremental-search-backward
+bindkey "^[[5~" up-line-or-history
+bindkey "^[[6~" down-line-or-history
+bindkey "^[[H" beginning-of-line
+bindkey "^[[1~" beginning-of-line
+bindkey "^[[F"  end-of-line
+bindkey "^[[4~" end-of-line
+bindkey ' ' magic-space    # also do history expansion on space
+bindkey '^I' complete-word # complete on tab, leave expansion to _expand
+
+
+# setup options
+setopt glob_complete
+setopt auto_cd                # cd if no matching command
+setopt auto_pushd                # make cd=pushd
+setopt auto_param_slash       # adds slash at end of tabbed dirs
+setopt hist_ignore_all_dups
+setopt check_jobs             # check bg jobs on exit
+setopt correct                # corrects spelling
+setopt correct_all            # corrects spelling
+setopt extended_glob          # globs #, ~ and ^
+setopt extended_history       # saves timestamps on history
+setopt glob_dots              # find dotfiles easier
+setopt hash_cmds              # save cmd location to skip PATH lookup
+setopt hist_expire_dups_first # expire duped history first
+setopt hist_no_store          # don't save 'history' cmd in history
+setopt inc_append_history     # append history as command are entered
+setopt list_rows_first        # completion options left-to-right, top-to-bottom
+setopt list_types             # show file types in list
+setopt mark_dirs              # adds slash to end of completed dirs
+setopt numeric_glob_sort      # sort numerically first, before alpha
+setopt prompt_subst           # sub values in prompt (though it seems to work anyway haha)
+#setopt rm_star_wait           # pause before confirming rm *
+setopt share_history          # share history between open shells
+setopt pushdminus pushdsilent pushdtohome
+setopt cdablevars
+setopt ignoreeof
+setopt interactivecomments
+setopt noclobber
+setopt hist_reduce_blanks
+setopt hist_ignore_space
+setopt sh_word_split
+setopt nohup
+setopt all_export
+setopt chase_dots
+setopt chase_links
+setopt complete_aliases
+setopt complete_in_word
+setopt equals
+setopt hash_dirs
+setopt hash_list_all
+
+compctl -/ cd
+
+# User configurations.
+
+HISTFILE=~/.histfile
+HISTSIZE=50000
+SAVEHIST=50000
+unsetopt beep
+bindkey -e  # Emacs key bindings.
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    eval "`dircolors -b`"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
 fi
+
+# some more ls aliases
+alias ll='ls -l'
+alias la='ls -A'
+alias l='ls -CF'
+
+export EDITOR=vim
+
+export PERLDIRS=$(/usr/bin/env perl -e 'print join(",", @INC)')
+PERLDIRS=$(echo $PERLDIRS | sed -e 's;\\;/;g')
+# Silence the cpan.
+export PERL_MM_USE_DEFAULT=1
+eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
+
+export PYTHONDIRS=$(/usr/bin/env python -c 'import sys; sys.stdout.write(",".join(sys.path))')
+PYTHONDIRS=$(echo $PYTHONDIRS | sed -e 's;\\;/;g')
+
+export GOROOT=~/Downloads/sw/go
+export GOOS=linux
+export GOARCH=amd64
+
+export PATH=$HOME/bin:$HOME/scala/bin:$HOME/Downloads/sw/android-sdk-linux_x86/tools:$HOME/projects/clojurescript/bin:$GOROOT/bin:$PATH
+
+HOSTNAME="`hostname`"
+REPORTTIME=120 # print elapsed time when more than 10 seconds
+
+export PAGER='less'
+export SHELL="/bin/zsh"
+
+# format titles for screen and rxvt
+function title() {
+    # escape '%' chars in $1, make nonprintables visible
+    a=${(V)1//\%/\%\%}
+
+    # Truncate command, and join lines.
+    a=$(print -Pn "%40>...>$a" | tr -d "\n")
+
+    case $TERM in
+    screen)
+        print -Pn "\ek$a:$3\e\\"      # screen title (in ^A")
+        ;;
+    xterm*|rxvt)
+        print -Pn "\e]2;$2 | $a:$3\a" # plain xterm title
+        ;;
+    esac
+}
+
+# precmd is called just before the prompt is printed
+function precmd() {
+    title "zsh" "$USER@%m" "%55<...<%~"
+}
+
+# preexec is called just before any command line is executed
+function preexec() {
+    title "$1" "$USER@%m" "%35<...<%~"
+}
+
+function git_info () {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(git::\1)/'
+}
+
+function virtualenv_info {
+    [ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
+}
 
 # PS1 and PS2
 function prompt_char {
@@ -226,69 +235,26 @@ function prompt_char {
     hg root >/dev/null 2>/dev/null && print "☿($(hg branch))" && return
     print 'o'
 }
-#export PS1="$(print '%{\e[1;34m%}%n@%m%{\e[0m%}'): $(print '%{\e[0;34m%}%~%{\e[0m%}')
-#$(print $(prompt_char) $) "
-export PS1="$(print '%{\e[1;34m%}%n@%m%{\e[0m%}'): $(print '%{\e[0;34m%}%~%{\e[0m%}')
+export PS1="$(print '%{\e[1;34m%}%n@%m%{\e[0m%}'): $(print '%{\e[0;34m%}%~%{\e[0m%}') \$(git_info)
 \$(prompt_char) $ "
 export PS2="$(print '%{\e[0;34m%}>%{\e[0m%}')"
-
-# Vars used later on by Zsh
-# type a directory's name to cd to it
-compctl -/ cd
-bindkey -e
-
-preexec () {
-    if [[ "$STY" != "" ]]; then
-        if [ -n "$ST" ]; then
-            title=$ST
-        else
-            title="`hostname`"
-        fi
-        echo -ne "\ek$title\e\\"
-    fi
-}
-
-precmd () {
-    preexec
-}
 
 function ni() { ST=$1; }
 function nr() { unset ST; }
 
-
-setopt ALL_EXPORT
-setopt CHASE_DOTS
-setopt CHASE_LINKS
-setopt NO_CLOBBER
-setopt COMPLETE_ALIASES
-setopt COMPLETE_IN_WORD
-setopt EQUALS
-setopt HASH_DIRS
-setopt HASH_LIST_ALL
-autoload edit-command-line
 zle -N edit-command-line
 bindkey '^Xe' edit-command-line
+
 alias clj="rlwrap -r java clojure.main"
 alias x=exit
-#source ~/remap.key
-# Silence the cpan.
-export PERL_MM_USE_DEFAULT=1
-eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
+
 tmux-to-clipboard() {
     tmux show-buffer | xclip -sel clip
     tmux show-buffer | xclip -sel primary
 }
 zle -N tmux-to-clipboard
 bindkey "^y" tmux-to-clipboard
-yank() {
-    CLIPOUT=`xclip -o -sel clipboard`
-    if [[ "x${CLIPOUT}" == "x" ]]; then
-        CLIPOUT=`xclip -o`
-    fi
-    BUFFER="${BUFFER}${CLIPOUT}"
-}
-zle -N yank yank
-#bindkey "^y" yank
+
 # F# aliases
 alias fsi='mono ~/Downloads/sw/FSharp/bin/fsi.exe'
 alias fsc='mono ~/Downloads/sw/FSharp/bin/fsc.exe --resident'
@@ -299,23 +265,15 @@ function bat()
     adapter=$(acpi -a | awk -F: '{print $2}')
     echo "${bat_cap}, ${adapter}"
 }
-setopt prompt_subst
 #RPROMPT="\$(bat)"
+
 alias urxvt="urxvt  -sr -g '80x30' -fn 'xft:DejaVu Sans Mono-12:dpi=75'"
 alias xterm="xterm -g '80x30' -fa 'xft:DejaVu Sans Mono-12:dpi=75'"
 alias run_gae='python2.5 ~/google_appengine/dev_appserver.py'
-# If we have a glob this will expand it
-setopt GLOB_COMPLETE
-setopt PUSHD_MINUS
-
-# No more annoying pushd messages...
-# setopt PUSHD_SILENT
-
-# blank pushd goes to home
-setopt PUSHD_TO_HOME
 alias nodei="NODE_NO_READLINE=1 rlwrap node"
-TERM=xterm
+
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # This loads RVM into a shell session.
+
 ssh-reagent () {
     for agent in /tmp/ssh-*/agent.*; do
         export SSH_AUTH_SOCK=$agent
@@ -327,10 +285,11 @@ ssh-reagent () {
     done
     echo Cannot find ssh agent - maybe you should reconnect and forward it?
 }
+
 CLOJURESCRIPT_HOME='/home/rahul/projects/clojurescript'
+
 alias vi=/usr/local/bin/vim
 alias vim=/usr/local/bin/vim
-
 
 # gc
 prefixes=(5 6 8)
