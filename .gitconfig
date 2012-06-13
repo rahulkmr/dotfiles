@@ -2,7 +2,7 @@
 	name = Rahul Kumar
 	email = rahulsinner@gmail.com
 [alias]
-    l = log
+    l = log --stat
     co = checkout
     ci = commit
     h = help
@@ -11,6 +11,8 @@
     f = fetch
     d = diff
     s = status
-    b = branch
+    b = branch --color -a -v
     u = pull
     p = push
+    unstage = reset HEAD --
+    last = log --stat -1 HEAD
