@@ -40,9 +40,8 @@ set wrap
 " Incremental search.
 set incsearch
 set hlsearch
-set ignorecase
-set smartcase
 set syntax=auto
+set cursorline
 "Show menu with possible tab completions
 set wildmenu
 ""Ignore these files when completing names and in Explorer
@@ -208,9 +207,8 @@ augroup fsharp
     autocmd FileType fsharp nnoremap<buffer> ,c :w<CR>:make<CR>
     autocmd FileType fsharp nnoremap<buffer> ,x :!./%<.exe<CR>
 augroup end
-nnoremap ` @@
 vnoremap . :normal .<CR>
-vnoremap ` :normal @@<CR>
+vnoremap @@ :normal @@<CR>
 set omnifunc=syntaxcomplete#Complete
 nnoremap ,dj :set filetype=django<CR>
 nnoremap ,jj :set filetype=jinja<CR>
@@ -240,13 +238,14 @@ augroup ruby
     au!
     autocmd FileType ruby nnoremap<buffer>  ,x :w<CR>:!ruby % <CR>
     autocmd FileType ruby setlocal makeprg=ruby\ -c\ %
+    autocmd FileType ruby setlocal ts=2 sts=2 sw=2
 augroup end
 inoremap \q <Esc>O
 augroup java
     au!
     " Mappings for eclim.
     autocmd FileType java nnoremap<buffer> \jg :JavaGet<CR>
-    autocmd FileType java nnoremap<buffer> \js :JavaGet<CR>
+    autocmd FileType java nnoremap<buffer> \js :JavaSet<CR>
     autocmd FileType java nnoremap<buffer> \ja :JavaGetSet<CR>
     autocmd FileType java nnoremap<buffer> \jc :JavaConstructor<CR>
     autocmd FileType java nnoremap<buffer> \jh :JavaHierarchy<CR>
@@ -271,3 +270,35 @@ match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 inoremap  u03bb
 nnoremap ,g :GundoToggle<CR>
 let g:paredit_leader = '\'
+
+nnoremap \g :set operatorfunc=CalcOperator<cr>g@
+vnoremap \g :<c-u>call CalcOperator(visualmode())<cr>
+
+function! CalcOperator(type)
+    let saved_unnamed_register = @@
+
+    if a:type ==# 'v'
+        normal! `<v`>y
+    elseif a:type ==# 'V'
+        normal! `<V`>y
+    elseif a:type ==# 'char'
+        normal! `[v`]y
+    else
+        return
+    endif
+
+    let result = string(eval(substitute(@@, '\n', ' ', 'g')))
+    if a:type ==# 'v'
+        execute "normal! `<v`>c" . result
+    elseif a:type ==# 'V'
+        execute "normal! `<V`>c" . result
+    elseif a:type ==# 'char'
+        execute "normal! `[v`]c" . result
+    endif
+    let @@ = saved_unnamed_register
+endfunction
+
+let g:LargeFile = 1024 * 1024 * 10
+augroup LargeFile
+    au BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
+augroup END
