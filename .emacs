@@ -32,22 +32,19 @@
 ;; Configuration and vendor files loading.
 (setq root "~/.emacs.d/")
 (setq vendor-dir (concat root "vendor/"))
-(setq themes (concat vendor-dir "themes/"))
+(setq themes (concat root "themes/"))
 (setq configs (concat root "configs/"))
 (add-to-list 'load-path root)
 (add-to-list 'load-path vendor-dir)
 (add-to-list 'load-path themes)
-
 
 (defun load-cfg-files (filelist)
   (dolist (file filelist)
     (load (expand-file-name
            (concat configs file)))))
 
-(setq custom-file (concat root "custom.el"))
-
 ;; Set color theme.
 (require 'color-theme)
 (color-theme-initialize)
-(load (concat themes "color-theme-irblack.el"))
+(load "color-theme-ir-black.el")
 (color-theme-ir-black)
