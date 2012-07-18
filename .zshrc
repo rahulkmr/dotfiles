@@ -213,12 +213,16 @@ function title() {
 
 # precmd is called just before the prompt is printed
 function precmd() {
-    title "zsh" "$USER@%m" "%55<...<%~"
+    if [ -z "${ST}" ]; then 
+        title "zsh" "$USER@%m" "%55<...<%~"
+    fi 
 }
 
 # preexec is called just before any command line is executed
 function preexec() {
-    title "$1" "$USER@%m" "%35<...<%~"
+    if [ -z "${ST}" ]; then 
+        title "$1" "$USER@%m" "%35<...<%~"
+    fi 
 }
 
 function git_info () {
@@ -239,7 +243,7 @@ export PS1="$(print '%{\e[1;34m%}%n@%m%{\e[0m%}'): $(print '%{\e[0;34m%}%~%{\e[0
 \$(prompt_char) $ "
 export PS2="$(print '%{\e[0;34m%}>%{\e[0m%}')"
 
-function ni() { ST=$1; }
+function ni() { ST=1; }
 function nr() { unset ST; }
 
 zle -N edit-command-line

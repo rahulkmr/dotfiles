@@ -2,7 +2,7 @@
 	name = Rahul Kumar
 	email = rahulsinner@gmail.com
 [alias]
-    l = log --stat
+    l = log --stat --decorate --graph
     co = checkout
     ci = commit
     h = help
@@ -16,3 +16,5 @@
     p = push
     unstage = reset HEAD --
     last = log --stat -1 HEAD
+[color]
+	ui = auto

@@ -99,6 +99,7 @@ augroup global
     autocmd FileType scheme runtime plugin/rainbow.vim
     autocmd FileType *.cljs set ft=clojure
     au BufRead,BufNewFile *.less set ft=less syntax=less
+    au BufNewFile,BufRead *.go set ft=go
 augroup end
 " clojure settings.
 let g:vimclojure#WantNailgun=1
@@ -108,6 +109,7 @@ nnoremap ,a :set autochdir<CR>
 set noautochdir
 nnoremap ,n :nohl<CR>
 nnoremap ,t :NERDTreeToggle<CR>
+nnoremap ,i :NERDTreeFind<CR><c-w><c-w>
 "nnoremap \t :Ve<CR><CR>
 nnoremap ,l :TagbarToggle<CR>
 nnoremap ,y :FufFile<CR>
@@ -302,3 +304,10 @@ let g:LargeFile = 1024 * 1024 * 10
 augroup LargeFile
     au BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
 augroup END
+
+function! ChangeBuffer()
+    if bufwinnr(t:NERDTreeBufName) != -1
+        exe "normal! :NERDTreeFind\<cr>\<c-w>\<c-w>"
+    endif
+endfunction
+let g:BufExplorerFuncRef = function('ChangeBuffer')
