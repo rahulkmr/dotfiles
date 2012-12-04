@@ -1,5 +1,5 @@
 set undodir=/opt/tmp//
-set backupdir=/opt/tmp//
+set backupdir=/opt/tmp//   
 set directory=/opt/tmp//
 set backup
 set complete+=.,w,b,u,t,i
@@ -11,6 +11,7 @@ set ttyfast
 set modeline
 set fdm=manual
 set showcmd
+set cmdheight=2
 set statusline+=%f "path to the file in the buffer, relative to current directory
 set statusline+=\ %h%1*%m%r%w%0* " flag
 set statusline+=\ [%{strlen(&ft)?&ft:'none'}, " filetype
@@ -34,6 +35,8 @@ set shiftwidth=4     " indent also with 4 spaces
 set softtabstop=4
 set expandtab        " expand tabs to spaces
 set smarttab
+set list
+set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
 " wrap lines at 120 chars. 80 is somewaht antiquated with nowadays displays.
 set textwidth=120
 set wrap
@@ -42,6 +45,7 @@ set incsearch
 set hlsearch
 set syntax=auto
 set cursorline
+set cursorcolumn
 "Show menu with possible tab completions
 set wildmenu
 ""Ignore these files when completing names and in Explorer
@@ -109,7 +113,6 @@ nnoremap ,a :set autochdir<CR>
 set noautochdir
 nnoremap ,n :nohl<CR>
 nnoremap ,t :NERDTreeToggle<CR>
-nnoremap ,i :NERDTreeFind<CR><c-w><c-w>
 "nnoremap \t :Ve<CR><CR>
 nnoremap ,l :TagbarToggle<CR>
 nnoremap ,y :FufFile<CR>
@@ -122,6 +125,14 @@ augroup python
     autocmd BufRead python setlocal efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
     autocmd FileType python setlocal path+=$PYTHONDIRS
     "autocmd FileType python setlocal makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;py_compile.compile(r'%')\"
+augroup end
+augroup go
+    au!
+    autocmd FileType go setlocal makeprg=go\ build\ %
+    autocmd FileType go nnoremap<buffer> ,x :w<CR>:!go run % <CR>
+    autocmd FileType go nnoremap<buffer> ,o :w<CR>:!go fmt %<cr>
+    autocmd FileType go nnoremap<buffer> ,i :w<CR>:!go install
+    autocmd FileType go nnoremap<buffer> ,e :w<CR>:!go clean<cr>
 augroup end
 augroup perl
     au!
@@ -137,7 +148,7 @@ augroup c
 augroup end
 augroup common
     au!
-    autocmd FileType c,cpp,perl,python,ruby nnoremap<buffer> ,c :w<CR>:make<CR>
+    autocmd FileType c,cpp,perl,python,ruby,go nnoremap<buffer> ,c :w<CR>:make<CR>
 augroup end
 nnoremap \i :cclose<CR>:pclose<CR>:lclose<CR>
 let g:netrw_menu = 0
@@ -149,7 +160,7 @@ let g:netrw_browse_split = 4
 let g:netrw_winsize = 85
 inoremap <Nul> <C-x><C-o>
 nnoremap ,m :TOhtml<CR>
-colorscheme ir_black
+colorscheme grb256
 " For full syntax highlighting:
 let python_highlight_all=1
 python << EOF
@@ -233,9 +244,11 @@ inoremap \4 {{<Space><Space>}}<Esc>2hi
 inoremap <C-h> <C-g>u<C-h>
 inoremap <C-w> <C-g>u<C-w>
 inoremap <C-u> <C-g>u<C-u>
-let g:rubycomplete_classes_in_global = 1
-let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_rails = 1
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_classes_in_global = 1
+let g:rubycomplete_include_object = 1
+let g:rubycomplete_include_objectspace = 1
 augroup ruby
     au!
     autocmd FileType ruby nnoremap<buffer>  ,x :w<CR>:!ruby % <CR>
@@ -254,11 +267,11 @@ augroup java
     autocmd FileType java nnoremap<buffer> \jl :JavaImpl<CR>
     autocmd FileType java nnoremap<buffer> \jd :JavaDelegate<CR>
     autocmd FileType java nnoremap<buffer> \ji :JavaImport<CR>
-    autocmd FileType java nnoremap<buffer> \jm :JavaImportMissing<CR>
-    autocmd FileType java nnoremap<buffer> \js :JavaSearchContext<CR>
+    autocmd FileType java nnoremap<buffer> \jm :w<CR>:JavaImportMissing<CR>:w<CR>
+    autocmd FileType java nnoremap<buffer> \jj :JavaSearchContext<CR>
     autocmd FileType java nnoremap<buffer> \jx :Java %<CR>
-    autocmd FileType java nnoremap<buffer> \jo :Javac<CR>
-    autocmd FileType java nnoremap<buffer> \jv :Validate<CR>
+    autocmd FileType java nnoremap<buffer> \jo :w<CR>:Javac<CR>
+    autocmd FileType java nnoremap<buffer> \jv :w<CR>:Validate<CR>
     autocmd FileType java nnoremap<buffer> \jt :JavaCorrect<CR>
     autocmd FileType java nnoremap<buffer> \jr :JavaRename
     autocmd FileType java nnoremap<buffer> \jw :JavaDocComment
@@ -304,10 +317,26 @@ let g:LargeFile = 1024 * 1024 * 10
 augroup LargeFile
     au BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
 augroup END
+let NERDTreeCursorLine=0
+let NERDTreeHijackNetrw=0
+let NERDTreeShowHidden=1
 
+" sudo write this
+cmap W! w !sudo tee % >/dev/null
+
+nnoremap ,r :NERDTreeFind<CR><c-w><c-w>
 function! ChangeBuffer()
-    if bufwinnr(t:NERDTreeBufName) != -1
-        exe "normal! :NERDTreeFind\<cr>\<c-w>\<c-w>"
-    endif
+    if stridx(expand("%:t"), ".") != 0
+        if exists("t:NERDTreeBufName")
+            if bufwinnr(t:NERDTreeBufName) != -1
+                exe "normal ,r"
+            endif
+        end
+    end
 endfunction
 let g:BufExplorerFuncRef = function('ChangeBuffer')
+"autocmd BufWinEnter * call ChangeBuffer()
+augroup PreviewWin
+autocmd! CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd! InsertLeave * if pumvisible() == 0|pclose|endif
+augroup end

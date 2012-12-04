@@ -10,14 +10,14 @@ URxvt.scrollBar_right: True
 *background: #000000
 *foreground: #f2f2f2
 
-*color0: #4E4E4E     
-*color1: #FF6C60     
-*color2: #A8FF60     
-*color3: #FFFFB6     
-*color4: #96CBFE     
-*color5: #FF73FD     
-*color6: #C6C5FE     
-*color7: #EEEEEE     
+*color0: #4E4E4E
+*color1: #FF6C60
+*color2: #A8FF60
+*color3: #FFFFB6
+*color4: #96CBFE
+*color5: #FF73FD
+*color6: #C6C5FE
+*color7: #EEEEEE
 
 *color8: #7C7C7C
 *color9: #FFB6B0

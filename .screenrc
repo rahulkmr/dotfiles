@@ -1,5 +1,6 @@
 # set some options
-shell /usr/bin/zsh 
+shell /usr/bin/zsh
+term screen-256color
 activity "activity: window ~%"  # Message when activity occurs in a window
 vbell off
 autodetach on                   # Autodetach session on hangup instead of
@@ -20,3 +21,6 @@ caption string "%{kw}%-w%{wr}%n %t%{-}%+w"
 
 termcapinfo xterm ti@:te@
 multiuser on
+altscreen on
+bind b eval "writebuf" "!/bin/sh -c 'xclip -sel clipboard < /tmp/screen-exchange'"
+

@@ -44,7 +44,7 @@
            (concat configs file)))))
 
 ;; Set color theme.
-(require 'color-theme)
-(color-theme-initialize)
-(load "color-theme-ir-black.el")
-(color-theme-ir-black)
+;(require 'color-theme)
+;(color-theme-initialize)
+;(load "color-theme-irblack.el")
+;(color-theme-irblack)
