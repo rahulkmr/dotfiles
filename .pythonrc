@@ -1,12 +1,8 @@
 import atexit
 import os
-import re
 import readline
 import rlcompleter
-import socket
-import _socket
 import sys
-import time
 import timeit
 
 history = os.path.expanduser('~/.python_history')
@@ -18,6 +14,6 @@ def t(*args):
     return timeit.Timer(*args).timeit()
 
 
-if os.getenv('TERM') in ('xterm', 'xterm-color', 'rxvt'):
+if os.getenv('TERM') in ('xterm', 'xterm-color', 'xterm-256color', 'rxvt', 'screen', 'screen-256color'):
 	sys.ps1 = '\033[1;34m>>> \033[0m'
 	sys.ps2 = '\033[1;34m... \033[0m'

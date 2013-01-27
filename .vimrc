@@ -1,5 +1,5 @@
 set undodir=/opt/tmp//
-set backupdir=/opt/tmp//   
+set backupdir=/opt/tmp//
 set directory=/opt/tmp//
 set backup
 set complete+=.,w,b,u,t,i
@@ -99,8 +99,11 @@ augroup global
     au FocusLost * :wa
     au VimResized * exe "normal! \<c-w>="
     autocmd BufNewFile,BufRead *.slim set filetype=slim
-    au BufNewFile,BufRead *.rkt set filetype=scheme
+    au BufNewFile,BufRead *.ss set filetype=racket
+    au BufNewFile,BufRead *.ss call PareditInitBuffer()
     autocmd FileType scheme runtime plugin/rainbow.vim
+    autocmd FileType racket runtime plugin/rainbow.vim
+    autocmd FileType racket nnoremap<buffer> ,x :w<CR>:!/usr/bin/env racket % <CR>
     autocmd FileType *.cljs set ft=clojure
     au BufRead,BufNewFile *.less set ft=less syntax=less
     au BufNewFile,BufRead *.go set ft=go
@@ -157,9 +160,10 @@ let g:netrw_altv = 1
 let g:netrw_hide = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
-let g:netrw_winsize = 85
+let g:netrw_preview=1
 inoremap <Nul> <C-x><C-o>
 nnoremap ,m :TOhtml<CR>
+"colorscheme ir_black
 colorscheme grb256
 " For full syntax highlighting:
 let python_highlight_all=1
@@ -220,8 +224,8 @@ augroup fsharp
     autocmd FileType fsharp nnoremap<buffer> ,c :w<CR>:make<CR>
     autocmd FileType fsharp nnoremap<buffer> ,x :!./%<.exe<CR>
 augroup end
-vnoremap . :normal .<CR>
-vnoremap @@ :normal @@<CR>
+vnoremap . :normal! .<CR>
+vnoremap @@ :normal! @@<CR>
 set omnifunc=syntaxcomplete#Complete
 nnoremap ,dj :set filetype=django<CR>
 nnoremap ,jj :set filetype=jinja<CR>
@@ -274,7 +278,9 @@ augroup java
     autocmd FileType java nnoremap<buffer> \jv :w<CR>:Validate<CR>
     autocmd FileType java nnoremap<buffer> \jt :JavaCorrect<CR>
     autocmd FileType java nnoremap<buffer> \jr :JavaRename
-    autocmd FileType java nnoremap<buffer> \jw :JavaDocComment
+    autocmd FileType java nnoremap<buffer> \jw :JavaDocComment<CR>
+    autocmd FileType java nnoremap<buffer> \jf :w<CR>:%JavaFormat<CR>
+
 augroup end
 let g:clang_complete_auto = 0
 let g:clang_snippets = 1
@@ -284,7 +290,7 @@ nnoremap \w :Ack <cword><CR>
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 inoremap  u03bb
 nnoremap ,g :GundoToggle<CR>
-let g:paredit_leader = '\'
+let g:paredit_leader = ','
 
 nnoremap \g :set operatorfunc=CalcOperator<cr>g@
 vnoremap \g :<c-u>call CalcOperator(visualmode())<cr>
@@ -315,6 +321,7 @@ endfunction
 
 let g:LargeFile = 1024 * 1024 * 10
 augroup LargeFile
+    au!
     au BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
 augroup END
 let NERDTreeCursorLine=0
@@ -329,7 +336,7 @@ function! ChangeBuffer()
     if stridx(expand("%:t"), ".") != 0
         if exists("t:NERDTreeBufName")
             if bufwinnr(t:NERDTreeBufName) != -1
-                exe "normal ,r"
+                exe "normal! ,r"
             endif
         end
     end
@@ -337,6 +344,13 @@ endfunction
 let g:BufExplorerFuncRef = function('ChangeBuffer')
 "autocmd BufWinEnter * call ChangeBuffer()
 augroup PreviewWin
-autocmd! CursorMovedI * if pumvisible() == 0|pclose|endif
-autocmd! InsertLeave * if pumvisible() == 0|pclose|endif
+    au!
+    autocmd! CursorMovedI * if pumvisible() == 0|pclose|endif
+    autocmd! InsertLeave * if pumvisible() == 0|pclose|endif
 augroup end
+
+function! RefreshAll()
+    set noconfirm
+    bufdo e!
+    set confirm
+endfunction
