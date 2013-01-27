@@ -82,9 +82,27 @@ function! eclim#java#complete#CodeComplete(findstart, base)
     let command = substitute(command, '<layout>', g:EclimJavaCompleteLayout, '')
 
     let completions = []
-    let results = eclim#ExecuteEclim(command)
-    if type(results) != 3
+    let response = eclim#ExecuteEclim(command)
+    if type(response) != g:DICT_TYPE
       return
+    endif
+
+    if has_key(response, 'imports') && len(response.imports)
+      let imports = response.imports
+      if exists('g:TestEclimWorkspace') " allow this to be tested somewhat
+        call eclim#java#complete#ImportThenComplete(imports)
+      else
+        let func = "eclim#java#complete#ImportThenComplete(" . string(imports) . ")"
+        call feedkeys("\<c-e>\<c-r>=" . func . "\<cr>", 'n')
+      endif
+      " prevents supertab's completion chain from attempting the next
+      " completion in the chain.
+      return -1
+    endif
+
+    if has_key(response, 'error') && len(response.completions) == 0
+      call eclim#util#EchoError(response.error.message)
+      return -1
     endif
 
     " if the word has a '.' in it (like package completion) then we need to
@@ -100,7 +118,7 @@ function! eclim#java#complete#CodeComplete(findstart, base)
     " when completing imports, the completions include ending ';'
     let semicolon = getline('.') =~ '\%' . col('.') . 'c\s*;'
 
-    for result in results
+    for result in response.completions
       let word = result.completion
 
       " strip off prefix if necessary.
@@ -148,6 +166,23 @@ function! eclim#java#complete#CodeComplete(findstart, base)
 
     return completions
   endif
+endfunction " }}}
+
+" ImportThenComplete {{{
+" Called by CodeComplete when the completion depends on a missing import.
+function! eclim#java#complete#ImportThenComplete(choices)
+  let choice = ''
+  if len(a:choices) > 1
+    let choice = eclim#java#import#ImportPrompt(a:choices)
+  elseif len(a:choices)
+    let choice = a:choices[0]
+  endif
+
+  if choice != ''
+    call eclim#java#import#Import(choice)
+    call feedkeys("\<c-x>\<c-u>", 'tn')
+  endif
+  return ''
 endfunction " }}}
 
 " vim:ft=vim:fdm=marker

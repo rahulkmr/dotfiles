@@ -1,4 +1,3 @@
-" Based on
 set t_Co=256
 runtime colors/ir_black.vim
 

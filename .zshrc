@@ -205,26 +205,28 @@ function title() {
     screen*)
         print -Pn "\ek$a:$3 $2\e\\"      # screen title (in ^A")
         ;;
+    xterm*|rxvt*|urxvt*)
+        print -Pn "\e]0;$2 | $a:$3\a" # plain xterm title
+        ;;
     esac
-    print -Pn "\e]0;$2 | $a:$3\a" # plain xterm title
 }
 
 # precmd is called just before the prompt is printed
 function precmd() {
-    if [ -z "${ST}" ]; then 
+    if [ -z "${ST}" ]; then
         title "zsh" "%n@%m" "%55<...<%~"
     else
         title "$ST" "%n@%m" "%55<...<%~"
-    fi 
+    fi
 }
 
 # preexec is called just before any command line is executed
 function preexec() {
-    if [ -z "${ST}" ]; then 
+    if [ -z "${ST}" ]; then
         title "$1" "%n@%m" "%55<...<%~"
     else
         title "$ST" "%n@%m" "%55<...<%~"
-    fi 
+    fi
 }
 
 function git_info () {
@@ -241,7 +243,7 @@ function prompt_char {
     hg root >/dev/null 2>/dev/null && print "☿($(hg branch))" && return
     print 'o'
 }
-export PS1="$(print '%{\e[0;36m%}%n@%m%{\e[0m%}'): $(print '%{\e[0;34m%}%~%{\e[0m%}') \$(git_info)
+export PS1="$(print '%{\e[1;36m%}%n@%m%{\e[0m%}'): $(print '%{\e[1;34m%}%~%{\e[0m%}') $(print '%{\e[1;31m%}%?%{\e[0m%}') \$(git_info)
 \$(prompt_char) $ "
 export PS2="$(print '%{\e[0;34m%}>%{\e[0m%}')"
 
@@ -309,3 +311,4 @@ compctl -g "*.go" gofmt
 # gccgo
 compctl -g "*.go" gccgo
 export GOPATH=$HOME/musings/go
+export PYTHONSTARTUP=~/.pythonrc

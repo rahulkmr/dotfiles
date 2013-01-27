@@ -78,7 +78,8 @@ hi StatusLineNC     guifg=black       guibg=#202020     gui=NONE      ctermfg=bl
 
 hi Folded           guifg=#a0a8b0     guibg=#384048     gui=NONE      ctermfg=NONE        ctermbg=NONE        cterm=NONE
 hi Title            guifg=#f6f3e8     guibg=NONE        gui=bold      ctermfg=NONE        ctermbg=NONE        cterm=NONE
-hi Visual           guifg=NONE        guibg=#262D51     gui=NONE      ctermfg=NONE  ctermbg=234 cterm=NONE
+"hi Visual           guifg=NONE        guibg=#262D51     gui=NONE      ctermfg=NONE  ctermbg=234 cterm=NONE
+hi Visual           guifg=NONE        guibg=#262D51     gui=NONE      ctermfg=black ctermbg=lightcyan cterm=NONE
 
 hi SpecialKey       guifg=#808080     guibg=#343434     gui=NONE      ctermfg=NONE        ctermbg=NONE        cterm=NONE
 
@@ -95,7 +96,7 @@ hi LongLineWarning  guifg=NONE        guibg=#371F1C     gui=underline ctermfg=NO
 hi ModeMsg          guifg=black       guibg=#C6C5FE     gui=BOLD      ctermfg=black       ctermbg=cyan        cterm=BOLD
 
 if version >= 700 " Vim 7.x specific colors
-  hi CursorLine     guifg=NONE        guibg=#121212     gui=NONE      ctermfg=none ctermbg=none cterm=reverse
+  hi CursorLine     guifg=NONE        guibg=#121212     gui=NONE      ctermfg=none ctermbg=none cterm=bold
   hi CursorColumn   guifg=NONE        guibg=#121212     gui=NONE      ctermfg=darkred   ctermbg=NONE cterm=bold
   hi MatchParen     guifg=#f6f3e8     guibg=#857b6f     gui=BOLD      ctermfg=white       ctermbg=darkgray    cterm=NONE
   hi Pmenu          guifg=#f6f3e8     guibg=#444444     gui=NONE      ctermfg=NONE        ctermbg=NONE        cterm=NONE
