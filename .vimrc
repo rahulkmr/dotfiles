@@ -101,8 +101,6 @@ augroup global
     autocmd BufNewFile,BufRead *.slim set filetype=slim
     au BufNewFile,BufRead *.ss set filetype=racket
     au BufNewFile,BufRead *.ss call PareditInitBuffer()
-    autocmd FileType scheme runtime plugin/rainbow.vim
-    autocmd FileType racket runtime plugin/rainbow.vim
     autocmd FileType racket nnoremap<buffer> ,x :w<CR>:!/usr/bin/env racket % <CR>
     autocmd FileType *.cljs set ft=clojure
     au BufRead,BufNewFile *.less set ft=less syntax=less
@@ -112,7 +110,7 @@ augroup end
 let g:vimclojure#WantNailgun=1
 let g:vimclojure#HighlightBuiltins=1
 let g:vimclojure#DynamicHighlighting=1
-nnoremap ,a :set autochdir<CR>
+nnoremap ,a :reg [0123456789"]<CR>
 set noautochdir
 nnoremap ,n :nohl<CR>
 nnoremap ,t :NERDTreeToggle<CR>
@@ -131,6 +129,7 @@ augroup python
 augroup end
 augroup go
     au!
+    autocmd FileType go setlocal noexpandtab
     autocmd FileType go setlocal makeprg=go\ build\ %
     autocmd FileType go nnoremap<buffer> ,x :w<CR>:!go run % <CR>
     autocmd FileType go nnoremap<buffer> ,o :w<CR>:!go fmt %<cr>
@@ -162,6 +161,7 @@ let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
 let g:netrw_preview=1
 inoremap <Nul> <C-x><C-o>
+inoremap \; </<C-x><C-o>
 nnoremap ,m :TOhtml<CR>
 "colorscheme ir_black
 colorscheme grb256
@@ -205,12 +205,12 @@ set guioptions-=T
 "convenience mapping for insert mode."
 inoremap <c-b> <left>
 inoremap <c-f> <right>
+inoremap <c-e> <esc>$i<right>
 "readline like mapping for command mode."
 cnoremap <c-a> <home>
-cnoremap <c-e> <end>
 cnoremap <c-b> <left>
-cnoremap <c-d> <del>
 cnoremap <c-f> <right>
+cnoremap <c-d> <del>
 augroup fsharp
     au!
     autocmd FileType fsharp set autoindent
@@ -354,3 +354,15 @@ function! RefreshAll()
     bufdo e!
     set confirm
 endfunction
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ }
+nnoremap <c-y> :CtrlPCurWD<CR>
+let g:ctrlp_user_command = {
+    \ 'types': {
+        \ 1: ['.git', 'cd %s && git ls-files'],
+        \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+        \ },
+    \ 'fallback': 'find %s -type f'
+    \ }
