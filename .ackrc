@@ -1,3 +1,4 @@
+--ignore-dir=venv
 --ignore-dir=coverage
 --ignore-dir=tmp
 --type-add=ruby=.haml,.rake,.slim
