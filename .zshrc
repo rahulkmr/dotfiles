@@ -250,6 +250,9 @@ export PS2="$(print '%{\e[0;34m%}>%{\e[0m%}')"
 function ni() { ST="${1}"; }
 function nr() { unset ST; }
 
+function glb() { git rev-parse --abbrev-ref HEAD }
+function grb() { git rev-parse --symbolic-full-name --abbrev-ref HEAD }
+
 zle -N edit-command-line
 bindkey '^Xe' edit-command-line
 
@@ -312,3 +315,9 @@ compctl -g "*.go" gofmt
 compctl -g "*.go" gccgo
 export GOPATH=$HOME/musings/go
 export PYTHONSTARTUP=~/.pythonrc
+alias screen='TERM=xterm-256color screen'
+export WORKON_HOME=/opt/venvs
+source /usr/local/bin/virtualenvwrapper.sh
+
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
