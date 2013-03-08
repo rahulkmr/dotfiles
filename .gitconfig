@@ -1,6 +1,6 @@
 [user]
-	name = Rahul Kumar
-	email = rahulsinner@gmail.com
+    name = Rahul Kumar
+    email = rahulsinner@gmail.com
 [alias]
     l = log --stat --decorate --graph
     co = checkout
@@ -16,5 +16,14 @@
     p = push
     unstage = reset HEAD --
     last = log --stat -1 HEAD
+    g = grep --break --heading --line-number
+    lb = rev-parse --abbrev-ref HEAD
+    rb = rev-parse --symbolic-full-name --abbrev-ref HEAD
 [color]
-	ui = auto
+    ui = auto
+[merge]
+    tool = vimdiff
+[grep]
+    extendRegexp = true
+    lineNumber = true
+
