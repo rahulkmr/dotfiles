@@ -1,0 +1,138 @@
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=10000
+bindkey -e
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/rahul/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+setopt share_history          # share history between open shells
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    eval "`dircolors -b`"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# Aliases 
+alias ll='ls -l'
+alias la='ls -A'
+alias l='ls -CF'
+alias clj="rlwrap -r java clojure.main"
+alias x=exit
+alias fsi='mono ~/Downloads/sw/FSharp/bin/fsi.exe'
+alias fsc='mono ~/Downloads/sw/FSharp/bin/fsc.exe --resident'
+alias urxvt="urxvt  -sr -g '80x30' -fn 'xft:DejaVu Sans Mono-12:dpi=75'"
+alias xterm="xterm -g '80x30' -fa 'xft:DejaVu Sans Mono-12:dpi=75'"
+alias screen='TERM=xterm-256color screen'
+
+
+# Exports
+export PS1="$(print '%{\e[1;36m%}%n@%m%{\e[0m%}'): $(print '%{\e[1;34m%}%~%{\e[0m%}') $(print '%{\e[1;31m%}%?%{\e[0m%}') \$(git_info)
+\$(prompt_char) $ "
+export PS2="$(print '%{\e[0;34m%}>%{\e[0m%}')"
+
+export EDITOR=vim
+
+export PYTHONDIRS=$(/usr/bin/env python -c 'import sys; sys.stdout.write(",".join(sys.path))')
+PYTHONDIRS=$(echo $PYTHONDIRS | sed -e 's;\\;/;g')
+
+export GOROOT=~/Downloads/sw/go
+export GOOS=linux
+export GOARCH=amd64
+export GOPATH=$HOME/musings/go
+export WORKON_HOME=/opt/venvs
+source /usr/local/bin/virtualenvwrapper.sh
+
+export PATH=$HOME/bin:$HOME/scala/bin:$GOROOT/bin:$PATH
+
+# Functions
+#
+# format titles for screen and rxvt
+function title() {
+    # escape '%' chars in $1, make nonprintables visible
+    current=${(V)1//\%/\%\%}
+    # Truncate command, and join lines.
+    current=$(print -Pn "%40>..>$current" | tr -d "\n")
+    host_and_user=$(print -Pn "%40>..>$2")
+    working_dir=$(print -Pn "%40<..<$3")
+    case $TERM in
+    screen* 
+        print -Pn "\ek$current:$host_and_user $working_dir\e\\"
+        ;;
+    xterm*|rxvt*|urxvt* 
+        print -Pn "\e]0;$current:$host_and_user $working_dir\a"
+        ;;
+    esac
+}
+
+# precmd is called just before the prompt is printed
+function precmd() {
+    if [ -z "${ST}" ]; then
+        title "$1" "%n@%m" "%~"
+    else
+        title "$ST" "%n@%m" "%~"
+    fi
+}
+
+# preexec is called just before any command line is executed
+function preexec() {
+    if [ -z "${ST}" ]; then
+        title "$1" "%n@%m" "%~"
+    else
+        title "$ST" "%n@%m" "%~"
+    fi
+}
+
+function git_info () {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(git::\1)/'
+}
+
+function virtualenv_info {
+    [ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
+}
+
+# PS1 and PS2
+function prompt_char {
+    git branch >/dev/null 2>/dev/null && print '±' && return
+    hg root >/dev/null 2>/dev/null && print "☿($(hg branch))" && return
+    print 'o'
+}
+
+
+function ni() { ST="${1}"; }
+function nr() { unset ST; }
+
+function glb() { git rev-parse --abbrev-ref HEAD }
+function grb() { git rev-parse --symbolic-full-name --abbrev-ref HEAD }
+
+
+## General configuration
+
+# Golang configuration
+# gc
+prefixes=(5 6 8)
+for p in $prefixes; do
+	compctl -g "*.${p}" ${p}l
+	compctl -g "*.go" ${p}g
+done
+
+# standard go tools
+compctl -g "*.go" gofmt
+
+# gccgo
+compctl -g "*.go" gccgo
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # This loads RVM into a shell session.
+
+export PS1="$(print '%{\e[1;36m%}%n@%m%{\e[0m%}'): $(print '%{\e[1;34m%}%~%{\e[0m%}') $(print '%{\e[1;31m%}%?%{\e[0m%}') \$(git_info)
+\$(prompt_char) $ "
+export PS2="$(print '%{\e[0;34m%}>%{\e[0m%}')"
+
