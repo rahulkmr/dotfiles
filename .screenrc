@@ -1,5 +1,5 @@
 # set some options
-shell /usr/bin/zsh
+#shell /usr/bin/zsh
 #term xterm
 term screen-256color
 activity "activity: window ~%"  # Message when activity occurs in a window
@@ -15,11 +15,12 @@ startup_message off             # Disable startup messages
 
 # Display a caption string below, appearing like tabs and
 # displaying the window number and application name (by default).
+#hardstatus alwayslastline
+#hardstatus string "%{kw}%-Lw%{wr}%50> %n %t%{-}%+Lw%<"
 caption always
-caption string "%{kw}%-w%{wr}%n %t%{-}%+w"
-
+caption string "%{kw}%-Lw%{wr}%50> %n %t%{-}%+Lw%<"
 
 termcapinfo xterm ti@:te@
 multiuser on
 altscreen on
-bind b eval writebuf "!/bin/sh -c 'xclip -sel clipboard < /tmp/screen-exchange'"
+bind ( eval "writebuf" "exec /bin/sh -c '/usr/bin/xclip -sel clipboard < /tmp/screen-exchange'"
