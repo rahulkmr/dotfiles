@@ -1,2 +1,0 @@
-;;; .emms-cache -*- mode: emacs-lisp; coding: utf-8; -*-
-(puthash "/home/rahul/data/music/rockstar/[Songs.PK] Rockstar - 11 - Nadaan Parinde.mp3" '(*track* (type . file) (name . "/home/rahul/data/music/rockstar/[Songs.PK] Rockstar - 11 - Nadaan Parinde.mp3") (info-mtime 21210 12335)) emms-cache-db)
