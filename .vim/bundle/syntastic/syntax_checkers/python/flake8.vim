@@ -5,32 +5,33 @@
 "             kstep <me@kstep.me>
 "
 "============================================================================
-function! SyntaxCheckers_python_Term(i)
-    if a:i['type'] ==# 'E'
-        let a:i['text'] = "Syntax error"
-    endif
-    if match(a:i['text'], 'is assigned to but never used') > -1
-                \ || match(a:i['text'], 'imported but unused') > -1
-                \ || match(a:i['text'], 'undefined name') > -1
-                \ || match(a:i['text'], 'redefinition of') > -1
-                \ || match(a:i['text'], 'referenced before assignment') > -1
-                \ || match(a:i['text'], 'duplicate argument') > -1
-                \ || match(a:i['text'], 'after other statements') > -1
-                \ || match(a:i['text'], 'shadowed by loop variable') > -1
+if exists("g:loaded_syntastic_python_flake8_checker")
+    finish
+endif
+let g:loaded_syntastic_python_flake8_checker=1
 
-        let term = split(a:i['text'], "'", 1)[1]
-        return '\V\<'.term.'\>'
-    endif
-    return ''
+function! SyntaxCheckers_python_flake8_GetHighlightRegex(i)
+    return SyntaxCheckers_python_pyflakes_GetHighlightRegex(a:i)
 endfunction
 
-function! SyntaxCheckers_python_GetLocList()
-    let makeprg = 'flake8 '.g:syntastic_python_checker_args.' '.shellescape(expand('%'))
-    let errorformat = '%E%f:%l: could not compile,%-Z%p^,%W%f:%l:%c: %m,%W%f:%l: %m,%-G%.%#'
+function! SyntaxCheckers_python_flake8_GetLocList() dict
+    let makeprg = self.makeprgBuild({})
 
-    let errors = SyntasticMake({ 'makeprg': makeprg, 'errorformat': errorformat })
+    let errorformat =
+        \ '%E%f:%l: could not compile,%-Z%p^,' .
+        \ '%E%f:%l:%c: F%n %m,' .
+        \ '%W%f:%l:%c: C%n %m,' .
+        \ '%W%f:%l:%c: %.%n %m,' .
+        \ '%W%f:%l: %.%n %m,' .
+        \ '%-G%.%#'
 
-    call SyntasticHighlightErrors(errors, function('SyntaxCheckers_python_Term'))
-
-    return errors
+    return SyntasticMake({
+        \ 'makeprg': makeprg,
+        \ 'errorformat': errorformat })
 endfunction
+
+runtime! syntax_checkers/python/pyflakes.vim
+
+call g:SyntasticRegistry.CreateAndRegisterChecker({
+    \ 'filetype': 'python',
+    \ 'name': 'flake8'})

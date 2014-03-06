@@ -1,16 +1,39 @@
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
-HISTSIZE=1000
+HISTSIZE=10000
 SAVEHIST=10000
 bindkey -e
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
+zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' max-errors 3
+zstyle ':completion:*' original true
+zstyle ':completion:*' use-compctl false
 zstyle :compinstall filename '/home/rahul/.zshrc'
 
-autoload -Uz compinit
+autoload -Uz compinit promptinit
 compinit
+promptinit
+autoload edit-command-line
+zle -N edit-command-line
+bindkey '^Xe' edit-command-line
 # End of lines added by compinstall
+setopt completeinword
+setopt inc_append_history
 setopt share_history          # share history between open shells
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt hist_reduce_blanks
+setopt hist_expire_dups_first # expire duped history first
+setopt promptsubst
+setopt chase_dots
+setopt chase_links
+setopt noclobber
+setopt list_types             # show file types in list
+setopt correct correct_all
+setopt ignoreeof
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -27,13 +50,20 @@ alias la='ls -A'
 alias l='ls -CF'
 alias clj="rlwrap -r java clojure.main"
 alias x=exit
-alias fsi='mono ~/Downloads/sw/FSharp/bin/fsi.exe'
-alias fsc='mono ~/Downloads/sw/FSharp/bin/fsc.exe --resident'
 alias urxvt="urxvt  -sr -g '80x30' -fn 'xft:DejaVu Sans Mono-12:dpi=75'"
 alias xterm="xterm -g '80x30' -fa 'xft:DejaVu Sans Mono-12:dpi=75'"
-alias screen='TERM=xterm-256color screen'
+#alias screen='TERM=xterm-256color screen'
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-
+alias rm='rm -i'
+alias mv='nocorrect mv -i'
+alias cp='nocorrect cp -i'
+alias md='mkdir -p'
+alias em='emacs -nw'
+alias es='emacs --daemon'
+alias ec='emacsclient -t'
 # Exports
 export PS1="$(print '%{\e[1;36m%}%n@%m%{\e[0m%}'): $(print '%{\e[1;34m%}%~%{\e[0m%}') $(print '%{\e[1;31m%}%?%{\e[0m%}') \$(git_info)
 \$(prompt_char) $ "
@@ -44,14 +74,6 @@ export EDITOR=vim
 export PYTHONDIRS=$(/usr/bin/env python -c 'import sys; sys.stdout.write(",".join(sys.path))')
 PYTHONDIRS=$(echo $PYTHONDIRS | sed -e 's;\\;/;g')
 
-export GOROOT=~/Downloads/sw/go
-export GOOS=linux
-export GOARCH=amd64
-export GOPATH=$HOME/musings/go
-export WORKON_HOME=/opt/venvs
-source /usr/local/bin/virtualenvwrapper.sh
-
-export PATH=$HOME/bin:$HOME/scala/bin:$GOROOT/bin:$PATH
 
 # Functions
 #
@@ -64,10 +86,10 @@ function title() {
     host_and_user=$(print -Pn "%40>..>$2")
     working_dir=$(print -Pn "%40<..<$3")
     case $TERM in
-    screen* 
+    screen*)
         print -Pn "\ek$current:$host_and_user $working_dir\e\\"
         ;;
-    xterm*|rxvt*|urxvt* 
+    xterm*|rxvt*|urxvt*)
         print -Pn "\e]0;$current:$host_and_user $working_dir\a"
         ;;
     esac
@@ -76,7 +98,7 @@ function title() {
 # precmd is called just before the prompt is printed
 function precmd() {
     if [ -z "${ST}" ]; then
-        title "$1" "%n@%m" "%~"
+        title "zsh" "%n@%m" "%~"
     else
         title "$ST" "%n@%m" "%~"
     fi
@@ -130,9 +152,25 @@ compctl -g "*.go" gofmt
 # gccgo
 compctl -g "*.go" gccgo
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # This loads RVM into a shell session.
 
 export PS1="$(print '%{\e[1;36m%}%n@%m%{\e[0m%}'): $(print '%{\e[1;34m%}%~%{\e[0m%}') $(print '%{\e[1;31m%}%?%{\e[0m%}') \$(git_info)
 \$(prompt_char) $ "
 export PS2="$(print '%{\e[0;34m%}>%{\e[0m%}')"
+
+
+
+export ORACLE_HOME=/usr/lib/oracle/xe/app/oracle/product/10.2.0/server
+export ORACLE_SID=XE
+
+export GOPATH=$HOME/musings/go
+export WORKON_HOME=~/venvs
+source /usr/local/bin/virtualenvwrapper.sh
+
+export PATH=$HOME/bin:$HOME/scala/bin:$GOPATH/bin:$HOME/.rvm/bin:$PATH
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+export PIP_DOWNLOAD_CACHE=$HOME/.pip-download-cache
+export TERM=xterm-256color
+
+### Added by the Heroku Toolbelt
+export PATH="$PATH:/usr/local/heroku/bin"
 

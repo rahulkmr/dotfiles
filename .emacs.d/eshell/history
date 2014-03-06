@@ -1,0 +1,7 @@
+ls
+ls
+vi
+x
+ls
+pwd
+echo $SHELL

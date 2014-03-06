@@ -1,7 +1,7 @@
 # set some options
 #shell /usr/bin/zsh
-#term xterm
-term screen-256color
+#term xterm-256color
+#term screen-256color
 activity "activity: window ~%"  # Message when activity occurs in a window
 vbell off
 autodetach on                   # Autodetach session on hangup instead of

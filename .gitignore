@@ -3,3 +3,4 @@
 *.exe
 *.out
 .netrwhist*
+.vim/tmp

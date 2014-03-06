@@ -1,0 +1,78 @@
+((("path_importer_cache" .
+   [0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("js" .
+   [1 0])
+  ("add-to-list" .
+   [1 0 0 0 0 0 0 0 0 0 0])
+  ("web-mode" .
+   [1 0 0 0 0 0 0 0])
+  ("Mono" .
+   [0 0 0 1])
+  ("rainbow-mode.el" .
+   [0 0 0 0 0 0 0 1 0 0 0 0 0 0 0])
+  ("rainbow-mode" .
+   [0 0 0 0 0 0 0 0 0 0 0 1])
+  ("smartparens-global-mode" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("background-color" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0])
+  ("Background" .
+   [0 0 0 0 0 1 0 0 0 0])
+  ("yas-global-mode" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("yasnippet" .
+   [0 1 0 0 0 0 0 0 0])
+  ("elpy-enable" .
+   [1 0 0 0 0 0 0 0 0 0 0])
+  ("electric-indent-mode" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("sys" .
+   [5 0 0])
+  ("SystemE" .
+   [0 0 0 1 0 0 0])
+  ("return" .
+   [0 0 0 0 0 1])
+  ("greet" .
+   [1 0 0 0 0])
+  ("__name__" .
+   [0 0 0 0 1 0 0 0])
+  ("nil" .
+   [1 0 0])
+  ("menu-bar-mode" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("what" .
+   [1 0 1 0])
+  ("printf" .
+   [0 0 0 0 0 1])
+  ("defun*" .
+   [0 0 0 0 0 1])
+  ("foo" .
+   [2 0 0])
+  ("require" .
+   [2 0 0 0 0 2 0])
+  ("powerline" .
+   [1 0 0 0 0 0 0 0 0])
+  ("powerline-default-theme" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0])
+  ("elpy" .
+   [1 0 0 0])
+  ("elpy-version" .
+   [0 0 0 0 0 1 0 0 0 0 0 0])
+  ("main" .
+   [1 0 0 0])
+  ("defun" .
+   [1 0 0 0 0])
+  ("point" .
+   [0 0 0 1 0])
+  ("point-to-register" .
+   [0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0])
+  ("point-min" .
+   [0 0 0 0 0 0 1 0 0])
+  ("set-background-color" .
+   [0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("set-fringe-style" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("path_hooks" .
+   [0 1 0 0 0 0 0 0 0 0])
+  ("multiple-cursors" .
+   [0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0])))

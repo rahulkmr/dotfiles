@@ -1,10 +1,14 @@
-
 setlocal textwidth=140
-setlocal tabstop=4
-setlocal shiftwidth=4
-setlocal softtabstop=4
+setlocal shiftwidth=2
+setlocal softtabstop=2
 setlocal expandtab
 setlocal formatoptions=tcqr
+setlocal commentstring=//%s
+
+set makeprg=sbt\ -Dsbt.log.noformat=true\ compile
+set efm=%E\ %#[error]\ %f:%l:\ %m,%C\ %#[error]\ %p^,%-C%.%#,%Z,
+       \%W\ %#[warn]\ %f:%l:\ %m,%C\ %#[warn]\ %p^,%-C%.%#,%Z,
+       \%-G%.%#
 
 if globpath(&rtp, 'plugin/fuf.vim') != ''
     "
@@ -124,3 +128,39 @@ endif
 if get(g:, 'scala_use_default_keymappings', 1)
     nnoremap <buffer> ,jt :call JustifyCurrentLine()<cr>
 endif
+
+"
+" TagBar
+"
+let g:tagbar_type_scala = {
+    \ 'ctagstype' : 'scala',
+    \ 'kinds'     : [
+      \ 'p:packages:1',
+      \ 'V:values',
+      \ 'v:variables',
+      \ 'T:types',
+      \ 't:traits',
+      \ 'o:objects',
+      \ 'a:aclasses',
+      \ 'c:classes',
+      \ 'r:cclasses',
+      \ 'm:methods'
+    \ ],
+    \ 'sro'        : '.',
+    \ 'kind2scope' : {
+        \ 'T' : 'type',
+        \ 't' : 'trait',
+        \ 'o' : 'object',
+        \ 'a' : 'abstract class',
+        \ 'c' : 'class',
+        \ 'r' : 'case class'
+    \ },
+    \ 'scope2kind' : {
+      \ 'type' : 'T',
+      \ 'trait' : 't',
+      \ 'object' : 'o',
+      \ 'abstract class' : 'a',
+      \ 'class' : 'c',
+      \ 'case class' : 'r'
+    \ }
+\ }
