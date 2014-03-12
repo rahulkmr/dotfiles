@@ -4,6 +4,8 @@
 *.out
 .netrwhist*
 .vim/tmp
+*~
+.emacs.d/backup
 .emacs.d/auto-save-list
 .emacs.d/emms
 .emacs.d/eshell
