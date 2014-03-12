@@ -448,13 +448,15 @@ function! ChangeBuffer()
     if stridx(expand("%:t"), ".") != 0
         if exists("t:NERDTreeBufName")
             if bufwinnr(t:NERDTreeBufName) != -1
-                exe "normal! ,r"
+                let win_num = winnr()
+                NERDTreeFind
+                exe win_num . "wincmd w"
             endif
         end
     end
 endfunction
 let g:BufExplorerFuncRef = function('ChangeBuffer')
-"autocmd BufWinEnter * call ChangeBuffer()
+autocmd BufWinEnter * call ChangeBuffer()
 augroup PreviewWin
     au!
     autocmd! CursorMovedI * if pumvisible() == 0|pclose|endif
