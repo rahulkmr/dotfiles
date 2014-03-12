@@ -64,6 +64,13 @@
 (show-paren-mode 1)
 (electric-indent-mode 1)
 
+(setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
+      backup-by-copying t    ; Don't delink hardlinks
+      version-control t      ; Use version numbers on backups
+      delete-old-versions t  ; Automatically delete excess backups
+      kept-new-versions 20   ; how many of the newest versions to keep
+      kept-old-versions 5    ; and how many of the old
+      )
 
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
@@ -81,7 +88,7 @@
 (package-initialize)
 
 (load-theme 'zenburn)
-(set-fringe-style '(0 . 4))
+(set-fringe-style '(0 . 2))
 
 (autoload 'magit-status "magit" nil t)
 
@@ -128,7 +135,7 @@
 
 (require 'rinari)
 
-(autoload 'js2-mode "js2" nil t)
+(autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
 (require 'auto-complete-config)
@@ -147,7 +154,13 @@
 
 (require 'rainbow-mode)
 
+(autoload 'org-mode "org" nil t)
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+
 
 (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode)
 
@@ -159,3 +172,8 @@
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+(autoload 'enh-ruby-mode "enh-ruby-mode" "Major mode for ruby files" t)
+(add-to-list 'auto-mode-alist '("\\.rb$" . enh-ruby-mode))
+(add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
+(add-hook 'enh-ruby-mode-hook 'robe-mode)
