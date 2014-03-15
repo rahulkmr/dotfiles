@@ -8,11 +8,11 @@
     h = help
     a = add
     r = rm
-    f = fetch
+    f = fetch --all -p
     d = diff
     s = status
     b = branch --color -a -v
-    u = pull
+    u = pull --ff-only --all -p
     p = push
     unstage = reset HEAD --
     last = log --stat -1 HEAD
