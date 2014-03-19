@@ -216,14 +216,8 @@ augroup global
     inoremap <C-x>3 {%<Space><Space>%}<Esc>2hi
     inoremap <C-x>4 {{<Space><Space>}}<Esc>2hi
     
-    inoremap <c-a> <c-o>^
-    inoremap <c-x><c-a> <c-a>
-    inoremap <c-b> <left>
-    inoremap <expr> <C-E> col('.')>strlen(getline('.'))?"\<Lt>C-E>":"\<Lt>End>"
-    inoremap <c-f> <right>
-    inoremap <C-h> <C-g>u<C-h>
-    inoremap <C-w> <C-g>u<C-w>
-    inoremap <C-u> <C-g>u<C-u>
+    "inoremap <C-w> <C-g>u<C-w>
+    "inoremap <C-u> <C-g>u<C-u>
     inoremap \q <Esc>O
     inoremap  u03bb
     inoremap <C-x>u <c-o>:update<cr>
@@ -237,16 +231,7 @@ augroup global
 
     " command mode mappings
     " sudo write this
-    cmap W! w !sudo tee % >/dev/null
-    cnoremap <c-a> <home>
-    cnoremap <c-x><c-a> <c-a>
-    cnoremap <Esc>b <S-Left>
-    cnoremap <Esc>f <S-Right>
-    cnoremap <c-b> <left>
-    cnoremap <expr> <C-D> getcmdpos()>strlen(getcmdline())?"\<Lt>C-D>":"\<Lt>Del>"
-    cnoremap <c-f> <right>
-    cnoremap <c-p> <Up>
-    cnoremap <c-n> <Down>
+    cnoremap W! w !sudo tee % >/dev/null
 
 
     " visual mode mapping
