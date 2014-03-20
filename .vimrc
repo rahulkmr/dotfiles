@@ -43,8 +43,7 @@ set expandtab        " expand tabs to spaces
 set smarttab
 set list
 set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
-" wrap lines at 120 chars. 80 is somewaht antiquated with nowadays displays.
-set textwidth=120
+set textwidth=0
 set wrap
 " Incremental search.
 set incsearch
@@ -114,7 +113,6 @@ set sidescrolloff=10
 set formatoptions=qrn1
 syntax enable
 set copyindent
-set shiftround
 set history=10000
 set undofile
 set undolevels=10000
@@ -128,7 +126,6 @@ set guioptions-=T
 
 augroup global
     au!
-    au FocusLost * :wa
     au VimResized * exe "normal! \<c-w>="
     autocmd BufNewFile,BufRead *.slim set filetype=slim
     autocmd FileType racket nnoremap<buffer> ,x :w<CR>:!/usr/bin/env racket %
@@ -237,17 +234,8 @@ augroup global
     " visual mode mapping
     vnoremap . :normal! .<CR>
     vnoremap @@ :normal! @@<CR>
-
-
-    " generic mappings
-    noremap!        <M-b> <S-Left>
 augroup end
 
-
-" clojure settings.
-let g:vimclojure#WantNailgun=1
-let g:vimclojure#HighlightBuiltins=1
-let g:vimclojure#DynamicHighlighting=1
 set noautochdir
 let g:paredit_leader = ','
 
@@ -259,7 +247,6 @@ augroup chicken
     autocmd FileType scheme nnoremap<buffer> ,x :w<CR>:!/usr/bin/env csi -s %
     au FileType scheme setlocal makeprg=csc\ -check-syntax\ %:p
     au FileType scheme setl dictionary+=~/.vim/scheme-word-list
-    "au FileType scheme setl complete+=,k~/.vim/scheme-word-list
     au FileType scheme setl include=\^\(\\(use\\\|require-extension\\)\\s\\+
     au FileType scheme setl includeexpr=substitute(v:fname,'$','.scm','')
     au FileType scheme setl path+=/usr/local/lib/chicken/3
@@ -311,17 +298,17 @@ augroup c
 augroup end
 
 
-let g:netrw_menu = 0
-let g:netrw_banner = 0
-let g:netrw_altv = 1
-let g:netrw_hide = 0
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 4
-let g:netrw_preview=1
-let g:netrw_browsex_viewer="gnome-open"
-let g:netrw_ctags="etags"
-let g:netrw_winsize=20
-let g:netrw_cursor=0
+"let g:netrw_menu = 0
+"let g:netrw_banner = 0
+"let g:netrw_altv = 1
+"let g:netrw_hide = 0
+"let g:netrw_liststyle = 3
+"let g:netrw_browse_split = 4
+"let g:netrw_preview=1
+"let g:netrw_browsex_viewer="gnome-open"
+"let g:netrw_ctags="etags"
+"let g:netrw_winsize=20
+"let g:netrw_cursor=0
 
 
 " For full syntax highlighting:
@@ -335,8 +322,6 @@ for p in sys.path:
         vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
 EOF
 
-
-"readline like mapping for command mode."
 augroup fsharp
     au!
     autocmd FileType fsharp set autoindent
@@ -351,7 +336,7 @@ augroup fsharp
     autocmd FileType fsharp nnoremap<buffer> ,x :!./%.exe
 augroup end
 let g:ragtag_global_maps = 1
-"nnoremap <C-l> <C-w>l
+
 
 let g:rubycomplete_rails = 1
 let g:rubycomplete_buffer_loading = 1
@@ -364,6 +349,8 @@ augroup ruby
     autocmd FileType ruby setlocal makeprg=ruby\ -c\ %
     autocmd FileType ruby setlocal ts=2 sts=2 sw=2
 augroup end
+
+
 augroup java
     au!
     " Mappings for eclim.
@@ -384,8 +371,9 @@ augroup java
     autocmd FileType java nnoremap<buffer> \jr :JavaRename
     autocmd FileType java nnoremap<buffer> \jw :JavaDocComment<CR>
     autocmd FileType java nnoremap<buffer> \jf :w<CR>:%JavaFormat<CR>
-
 augroup end
+
+
 let g:clang_complete_auto = 1
 let g:clang_snippets = 1
 
@@ -419,12 +407,14 @@ function! CalcOperator(type)
     let @@ = saved_unnamed_register
 endfunction
 
+
 let g:LargeFile = 1024 * 1024 * 10
 augroup LargeFile
     au!
     au BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
 augroup END
-let NERDTreeCursorLine=0
+
+
 let NERDTreeHijackNetrw=0
 let NERDTreeShowHidden=1
 
@@ -442,17 +432,23 @@ function! ChangeBuffer()
 endfunction
 let g:BufExplorerFuncRef = function('ChangeBuffer')
 autocmd BufWinEnter * call ChangeBuffer()
+
+
 augroup PreviewWin
     au!
     autocmd! CursorMovedI * if pumvisible() == 0|pclose|endif
     autocmd! InsertLeave * if pumvisible() == 0|pclose|endif
 augroup end
 
+
 function! RefreshAll()
     set noconfirm
     bufdo e!
+    bufdo syntax on
     set confirm
 endfunction
+
+
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn)$',
   \ 'file': '\v\.(exe|so|dll)$',
@@ -464,27 +460,7 @@ let g:ctrlp_user_command = {
         \ },
     \ 'fallback': 'find %s -type f'
     \ }
+
+
 let g:jedi#use_tabs_not_buffers = 0
 let g:jedi#popup_select_first = 0
-"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplcache.
-let g:neocomplcache_enable_at_startup = 1
-" Use smartcase.
-let g:neocomplcache_enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplcache_min_syntax_length = 3
-let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
-
-" Enable heavy features.
-" Use camel case completion.
-"let g:neocomplcache_enable_camel_case_completion = 1
-" Use underbar completion.
-"let g:neocomplcache_enable_underbar_completion = 1
-"
-" Define keyword.
-if !exists('g:neocomplcache_keyword_patterns')
-    let g:neocomplcache_keyword_patterns = {}
-endif
-let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
