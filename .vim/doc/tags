@@ -67,8 +67,6 @@
 :HistoryClear	vim/common/history.txt	/*:HistoryClear*
 :HistoryDiffNext	vim/common/history.txt	/*:HistoryDiffNext*
 :HistoryDiffPrev	vim/common/history.txt	/*:HistoryDiffPrev*
-:IvyDependencySearch	vim/java/classpath.txt	/*:IvyDependencySearch*
-:IvyRepo	vim/java/classpath.txt	/*:IvyRepo*
 :JUnitExecute	vim/java/junit.txt	/*:JUnitExecute*
 :JUnitImpl	vim/java/junit.txt	/*:JUnitImpl*
 :JUnitResult	vim/java/junit.txt	/*:JUnitResult*
@@ -102,17 +100,11 @@
 :LocationListClear	vim/common/util.txt	/*:LocationListClear*
 :Maven	vim/java/maven/execute.txt	/*:Maven*
 :MavenDependencySearch	vim/java/maven/dependencies.txt	/*:MavenDependencySearch*
-:MavenRepo	vim/java/classpath.txt	/*:MavenRepo*
 :Mvn	vim/java/maven/execute.txt	/*:Mvn*
 :MvnDependencySearch	vim/java/maven/dependencies.txt	/*:MvnDependencySearch*
-:MvnRepo	vim/java/classpath.txt	/*:MvnRepo*
-:NewJarEntry	vim/java/classpath.txt	/*:NewJarEntry*
 :NewLibEntry	vim/dltk/buildpath.txt	/*:NewLibEntry*
 :NewProjectEntry	vim/dltk/buildpath.txt	/*:NewProjectEntry*
-:NewProjectEntry	vim/java/classpath.txt	/*:NewProjectEntry*
 :NewSrcEntry	vim/dltk/buildpath.txt	/*:NewSrcEntry*
-:NewSrcEntry	vim/java/classpath.txt	/*:NewSrcEntry*
-:NewVarEntry	vim/java/classpath.txt	/*:NewVarEntry*
 :Only	vim/common/util.txt	/*:Only*
 :OpenUrl	vim/common/web.txt	/*:OpenUrl*
 :PhpSearch	vim/php/search.txt	/*:PhpSearch*
@@ -174,9 +166,6 @@
 :Validate_webxml	vim/java/webxml/validate.txt	/*:Validate_webxml*
 :Validate_xml	vim/xml/validate.txt	/*:Validate_xml*
 :Validate_xsd	vim/xsd/validate.txt	/*:Validate_xsd*
-:VariableCreate	vim/java/classpath.txt	/*:VariableCreate*
-:VariableDelete	vim/java/classpath.txt	/*:VariableDelete*
-:VariableList	vim/java/classpath.txt	/*:VariableList*
 :XmlFormat	vim/xml/format.txt	/*:XmlFormat*
 :XsdDefinition	vim/xml/definition.txt	/*:XsdDefinition*
 AntMappings	vim/mappings.txt	/*AntMappings*
@@ -190,10 +179,6 @@ ShowMarksClearMark	showmarks.txt	/*ShowMarksClearMark*
 ShowMarksOn	showmarks.txt	/*ShowMarksOn*
 ShowMarksPlaceMark	showmarks.txt	/*ShowMarksPlaceMark*
 ShowMarksToggle	showmarks.txt	/*ShowMarksToggle*
-classpath-ivy	vim/java/classpath.txt	/*classpath-ivy*
-classpath-maven	vim/java/classpath.txt	/*classpath-maven*
-classpath-maven-pom	vim/java/classpath.txt	/*classpath-maven-pom*
-classpath-src-javadocs	vim/java/classpath.txt	/*classpath-src-javadocs*
 development-architecture	development/architecture.txt	/*development-architecture*
 development-build	guides/development.txt	/*development-build*
 development-index	development/index.txt	/*development-index*
@@ -386,7 +371,6 @@ vim-java-ant-index	vim/java/ant/index.txt	/*vim-java-ant-index*
 vim-java-ant-validate	vim/java/ant/validate.txt	/*vim-java-ant-validate*
 vim-java-bean	vim/java/bean.txt	/*vim-java-bean*
 vim-java-checkstyle	vim/java/checkstyle.txt	/*vim-java-checkstyle*
-vim-java-classpath	vim/java/classpath.txt	/*vim-java-classpath*
 vim-java-complete	vim/java/complete.txt	/*vim-java-complete*
 vim-java-constructor	vim/java/constructor.txt	/*vim-java-constructor*
 vim-java-correct	vim/java/correct.txt	/*vim-java-correct*
