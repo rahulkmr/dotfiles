@@ -104,14 +104,14 @@ function precmd() {
     fi
 }
 
-# preexec is called just before any command line is executed
-function preexec() {
-    if [ -z "${ST}" ]; then
-        title "$1" "%n@%m" "%~"
-    else
-        title "$ST" "%n@%m" "%~"
-    fi
-}
+## preexec is called just before any command line is executed
+#function preexec() {
+    #if [ -z "${ST}" ]; then
+        #title "$1" "%n@%m" "%~"
+    #else
+        #title "$ST" "%n@%m" "%~"
+    #fi
+#}
 
 function git_info () {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(git::\1)/'
@@ -123,7 +123,7 @@ function virtualenv_info {
 
 # PS1 and PS2
 function prompt_char {
-    git branch >/dev/null 2>/dev/null && print '±' && return
+    git branch >/dev/null 2>/dev/null && print '∞' && return
     hg root >/dev/null 2>/dev/null && print "☿($(hg branch))" && return
     print 'o'
 }
