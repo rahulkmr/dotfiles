@@ -5,6 +5,7 @@
 .netrwhist*
 .vim/tmp
 .vim/bundle/*/doc/tags
+tags
 *~
 .emacs.d/backup
 .emacs.d/auto-save-list
