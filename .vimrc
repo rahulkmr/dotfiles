@@ -234,6 +234,35 @@ augroup global
     " visual mode mapping
     vnoremap . :normal! .<CR>
     vnoremap @@ :normal! @@<CR>
+
+
+    "readline style binding
+    inoremap        <C-A> <C-O>^
+    inoremap   <C-X><C-A> <C-A>
+    cnoremap        <C-A> <Home>
+    cnoremap   <C-X><C-A> <C-A>
+
+    inoremap <expr> <C-B> getline('.')=~'^\s*$'&&col('.')>strlen(getline('.'))?"0\<Lt>C-D>\<Lt>Esc>kJs":"\<Lt>Left>"
+    cnoremap        <C-B> <Left>
+
+    inoremap <expr> <C-D> col('.')>strlen(getline('.'))?"\<Lt>C-D>":"\<Lt>Del>"
+    cnoremap <expr> <C-D> getcmdpos()>strlen(getcmdline())?"\<Lt>C-D>":"\<Lt>Del>"
+
+    inoremap <expr> <C-E> col('.')>strlen(getline('.'))?"\<Lt>C-E>":"\<Lt>End>"
+
+    inoremap <expr> <C-F> col('.')>strlen(getline('.'))?"\<Lt>C-F>":"\<Lt>Right>"
+    cnoremap <expr> <C-F> getcmdpos()>strlen(getcmdline())?&cedit:"\<Lt>Right>"
+    noremap! <expr> <SID>transposition getcmdpos()>strlen(getcmdline())?"\<Left>":getcmdpos()>1?'':"\<Right>"
+    noremap! <expr> <SID>transpose "\<BS>\<Right>".matchstr(getcmdline()[0 : getcmdpos()-2], '.$')
+    cmap   <script> <C-T> <SID>transposition<SID>transpose
+
+    noremap!        <M-b> <S-Left>
+    noremap!        <M-d> <C-O>dw
+    cnoremap        <M-d> <S-Right><C-W>
+    noremap!        <M-BS> <C-W>
+    noremap!        <M-f> <S-Right>
+    noremap!        <M-n> <Down>
+    noremap!        <M-p> <Up>
 augroup end
 
 set noautochdir
@@ -266,6 +295,7 @@ augroup python
     autocmd BufRead python setlocal efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
     autocmd FileType python setlocal path+=$PYTHONDIRS
     let g:jedi#use_tabs_not_buffers = 0
+    let g:jedi#popup_select_first = 0
     "autocmd FileType python setlocal makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;py_compile.compile(r'%')\"
 augroup end
 
@@ -461,6 +491,4 @@ let g:ctrlp_user_command = {
     \ 'fallback': 'find %s -type f'
     \ }
 
-
-let g:jedi#use_tabs_not_buffers = 0
-let g:jedi#popup_select_first = 0
+autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
