@@ -128,6 +128,8 @@ augroup global
     au!
     au VimResized * exe "normal! \<c-w>="
     autocmd BufNewFile,BufRead *.slim set filetype=slim
+    au BufNewFile,BufRead * call PareditInitBuffer()
+    let g:paredit_leader = '\'
     autocmd FileType racket nnoremap<buffer> ,x :w<CR>:!/usr/bin/env racket %
     autocmd FileType *.cljs set ft=clojure
     au BufRead,BufNewFile *.less set ft=less syntax=less
@@ -201,6 +203,7 @@ augroup global
     nnoremap ,t :NERDTreeToggle<CR>
     "nnoremap \t :Ve<CR><CR>
     nnoremap ,l :TagbarToggle<CR>
+    nnoremap do :diffget<cr>
 
     " insert mode mappings
     " autocomplete
@@ -266,7 +269,6 @@ augroup global
 augroup end
 
 set noautochdir
-let g:paredit_leader = ','
 
 
 augroup chicken
@@ -464,11 +466,11 @@ let g:BufExplorerFuncRef = function('ChangeBuffer')
 autocmd BufWinEnter * call ChangeBuffer()
 
 
-augroup PreviewWin
-    au!
-    autocmd! CursorMovedI * if pumvisible() == 0|pclose|endif
-    autocmd! InsertLeave * if pumvisible() == 0|pclose|endif
-augroup end
+"augroup PreviewWin
+    "au!
+    "autocmd! CursorMovedI * if pumvisible() == 0|pclose|endif
+    "autocmd! InsertLeave * if pumvisible() == 0|pclose|endif
+"augroup end
 
 
 function! RefreshAll()
