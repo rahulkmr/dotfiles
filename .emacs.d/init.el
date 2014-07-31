@@ -131,7 +131,6 @@
                       expand-region
                       flx-ido
                       flycheck
-                      golden-ratio
                       haml-mode
                       inf-ruby
                       ipython
@@ -176,6 +175,7 @@
 
 (load-theme 'zenburn)
 (set-fringe-style '(0 . 2))
+
 
 
 (autoload 'magit-status "magit" nil t)
@@ -381,8 +381,6 @@
    python-shell-completion-string-code
    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n"))
 
-(require 'golden-ratio)
-(golden-ratio-mode 1)
 
 (require 'rvm)
 (rvm-use-default) ;; use rvm's default ruby for the current Emacs session
@@ -430,3 +428,6 @@
       (append '(("\\.ml[ily]?$" . tuareg-mode)
                 ("\\.topml$" . tuareg-mode))
               auto-mode-alist))
+(setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
+(add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+(require 'merlin)
