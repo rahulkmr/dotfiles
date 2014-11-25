@@ -1,11 +1,11 @@
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
+  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(blink-cursor-mode nil)
  '(column-number-mode t)
- '(custom-safe-themes (quote ("a774c5551bc56d7a9c362dca4d73a374582caedb110c201a09b410c0ebbb5e70" "11d069fbfb0510e2b32a5787e26b762898c7e480364cbc0779fe841662e4cf5d" "410c47e5b36f3beb70b165b52badc13a77dea96ecea4811ec0f53b9d300be9bf" "41b6698b5f9ab241ad6c30aea8c9f53d539e23ad4e3963abff4b57c0f8bf6730" "e53cc4144192bb4e4ed10a3fa3e7442cae4c3d231df8822f6c02f1220a0d259a" "1affe85e8ae2667fb571fc8331e1e12840746dae5c46112d5abb0c3a973f5f5a" "73fe242ddbaf2b985689e6ec12e29fab2ecd59f765453ad0e93bc502e6e478d6" "7d4d00a2c2a4bba551fcab9bfd9186abe5bfa986080947c2b99ef0b4081cb2a6" "9bcb8ee9ea34ec21272bb6a2044016902ad18646bd09fdd65abae1264d258d89" "e26780280b5248eb9b2d02a237d9941956fc94972443b0f7aeec12b5c15db9f3" "33c5a452a4095f7e4f6746b66f322ef6da0e770b76c0ed98a438e76c497040bb" "90b5269aefee2c5f4029a6a039fb53803725af6f5c96036dee5dc029ff4dff60" "0ebe0307942b6e159ab794f90a074935a18c3c688b526a2035d14db1214cf69c" "ce79400f46bd76bebeba655465f9eadf60c477bd671cbcd091fe871d58002a88" "1989847d22966b1403bab8c674354b4a2adf6e03e0ffebe097a6bd8a32be1e19" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" "4a60f0178f5cfd5eafe73e0fc2699a03da90ddb79ac6dbc73042a591ae216f03" "0f0e3af1ec61d04ff92f238b165dbc6d2a7b4ade7ed9812b4ce6b075e08f49fe" "d7f1c86b425e148be505c689fc157d96323682c947b29ef00cf57b4e4e46e6c7" "9ea054db5cdbd5baa4cda9d373a547435ba88d4e345f4b06f732edbc4f017dc3" "1f3304214265481c56341bcee387ef1abb684e4efbccebca0e120be7b1a13589" "5339210234ec915d7d3fd87bfeb506bfc436ff7277a55516ab1781ec85c57224" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "9f42bccce1e13fa5017eb8718574db099e85358b9f424db78e7318f86d1be08f" "62b86b142b243071b5adb4d48a0ab89aefd3cf79ee3adc0bb297ea873b36d23f" default)))
+ '(custom-safe-themes (quote ("de2c46ed1752b0d0423cde9b6401062b67a6a1300c068d5d7f67725adc6c3afb" "f41fd682a3cd1e16796068a2ca96e82cfd274e58b978156da0acce4d56f2b0d5" "a774c5551bc56d7a9c362dca4d73a374582caedb110c201a09b410c0ebbb5e70" "11d069fbfb0510e2b32a5787e26b762898c7e480364cbc0779fe841662e4cf5d" "410c47e5b36f3beb70b165b52badc13a77dea96ecea4811ec0f53b9d300be9bf" "41b6698b5f9ab241ad6c30aea8c9f53d539e23ad4e3963abff4b57c0f8bf6730" "e53cc4144192bb4e4ed10a3fa3e7442cae4c3d231df8822f6c02f1220a0d259a" "1affe85e8ae2667fb571fc8331e1e12840746dae5c46112d5abb0c3a973f5f5a" "73fe242ddbaf2b985689e6ec12e29fab2ecd59f765453ad0e93bc502e6e478d6" "7d4d00a2c2a4bba551fcab9bfd9186abe5bfa986080947c2b99ef0b4081cb2a6" "9bcb8ee9ea34ec21272bb6a2044016902ad18646bd09fdd65abae1264d258d89" "e26780280b5248eb9b2d02a237d9941956fc94972443b0f7aeec12b5c15db9f3" "33c5a452a4095f7e4f6746b66f322ef6da0e770b76c0ed98a438e76c497040bb" "90b5269aefee2c5f4029a6a039fb53803725af6f5c96036dee5dc029ff4dff60" "0ebe0307942b6e159ab794f90a074935a18c3c688b526a2035d14db1214cf69c" "ce79400f46bd76bebeba655465f9eadf60c477bd671cbcd091fe871d58002a88" "1989847d22966b1403bab8c674354b4a2adf6e03e0ffebe097a6bd8a32be1e19" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" "4a60f0178f5cfd5eafe73e0fc2699a03da90ddb79ac6dbc73042a591ae216f03" "0f0e3af1ec61d04ff92f238b165dbc6d2a7b4ade7ed9812b4ce6b075e08f49fe" "d7f1c86b425e148be505c689fc157d96323682c947b29ef00cf57b4e4e46e6c7" "9ea054db5cdbd5baa4cda9d373a547435ba88d4e345f4b06f732edbc4f017dc3" "1f3304214265481c56341bcee387ef1abb684e4efbccebca0e120be7b1a13589" "5339210234ec915d7d3fd87bfeb506bfc436ff7277a55516ab1781ec85c57224" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "9f42bccce1e13fa5017eb8718574db099e85358b9f424db78e7318f86d1be08f" "62b86b142b243071b5adb4d48a0ab89aefd3cf79ee3adc0bb297ea873b36d23f" default)))
  '(global-hl-line-mode t)
  '(menu-bar-mode nil)
  '(org-agenda-files (quote ("~/outlines.org")))
@@ -89,7 +89,7 @@
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 
 
-(global-set-key "\M-g" 'goto-line)
+;(global-set-key "\M-g" 'goto-line)
 ;(global-set-key "\C-xg" 'what-line)
 (global-set-key "\C-x\C-b" 'ibuffer)
 (global-set-key "\C-s" 'isearch-forward-regexp)
@@ -144,7 +144,11 @@
                       multi-term
                       nose
                       paredit
+                      php-mode
                       powerline
+                      projectile
+                      projectile-rails
+                      helm-projectile
                       pylint
                       python-django
                       pyvenv
@@ -176,16 +180,15 @@
 (load-theme 'zenburn)
 (set-fringe-style '(0 . 2))
 
-
-
 (autoload 'magit-status "magit" nil t)
 
-(require 'flx-ido)
-(ido-mode 1)
-(ido-everywhere 1)
-(flx-ido-mode 1)
-;; disable ido faces to see flx highlights.
-(setq ido-use-faces nil)
+;; (require 'flx-ido)
+;; (ido-mode 1)
+;; (ido-everywhere 1)
+;; (flx-ido-mode 1)
+;; ;; disable ido faces to see flx highlights.
+;; (setq ido-use-faces nil)
+
 
 (require 'undo-tree)
 (global-undo-tree-mode 1)
@@ -281,7 +284,7 @@
 (sp-with-modes '(html-mode sgml-mode)
   (sp-local-pair "<" ">"))
 
-(require 'rinari)
+;(require 'rinari)
 
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
@@ -300,8 +303,8 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
-(require 'rainbow-mode)
-(rainbow-mode t)
+;; (require 'rainbow-mode)
+;; (rainbow-mode t)
 
 (autoload 'org-mode "org" nil t)
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
@@ -385,13 +388,14 @@
 (require 'rvm)
 (rvm-use-default) ;; use rvm's default ruby for the current Emacs session
 ;; dependency: rvm rinari
-(defadvice rinari-web-server (before rvm-switch-rinari-web-server)
-  (rvm-activate-corresponding-ruby))
-(ad-activate 'rinari-web-server)
+;; (defadvice rinari-web-server (before rvm-switch-rinari-web-server)
+;;   (rvm-activate-corresponding-ruby))
+;; (ad-activate 'rinari-web-server)
 
-(defadvice rinari-console (before rvm-switch-rinari-console)
-  (rvm-activate-corresponding-ruby))
-(ad-activate 'rinari-console)
+;; (defadvice rinari-console (before rvm-switch-rinari-console)
+;;   (rvm-activate-corresponding-ruby))
+;; (ad-activate 'rinari-console)
+
 
 (defadvice run-ruby (before rvm-switch-run-ruby)
   (rvm-activate-corresponding-ruby))
@@ -411,18 +415,22 @@
   '(add-to-list 'ac-modes 'cider-repl-mode))
 
 (defun set-auto-complete-as-completion-at-point-function ()
-  (setq completion-at-point-functions '(auto-complete)))
+ (setq completion-at-point-functions '(auto-complete)))
 (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
 (add-hook 'cider-repl-mode-hook 'set-auto-complete-as-completion-at-point-function)
 (add-hook 'cider-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
+
+ ; Set OPAM environment variables
+(dolist (var (car (read-from-string (shell-command-to-string "opam config env --sexp"))))
+  (setenv (car var) (concat (cadr var) (getenv (car var)))))
 (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
 (autoload 'camldebug "camldebug" "Run the Caml debugger" t)
-(autoload 'tuareg-imenu-set-imenu "tuareg-imenu"
-  "Configuration of imenu for tuareg" t)
+;(autoload 'tuareg-imenu-set-imenu "tuareg-imenu"
+;  "Configuration of imenu for tuareg" t)
 
-(add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
+;(add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
 
 (setq auto-mode-alist
       (append '(("\\.ml[ily]?$" . tuareg-mode)
@@ -430,4 +438,60 @@
               auto-mode-alist))
 (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
 (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
-(require 'merlin)
+(setq merlin-command
+    (concat
+    (substring (shell-command-to-string "opam config var bin") 0 -1)
+    "/ocamlmerlin"
+    ))
+
+(autoload 'merlin-mode "merlin" "Merlin mode" t)
+
+
+(add-hook 'tuareg-mode-hook
+        '(lambda ()
+            (merlin-mode)
+            (setq merlin-use-auto-complete-mode t)))
+
+(require 'helm-config)
+;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
+;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
+;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
+(global-set-key (kbd "C-c h") 'helm-command-prefix)
+(global-unset-key (kbd "C-x c"))
+(when (executable-find "curl")
+(setq helm-google-suggest-use-curl-p t))
+
+(helm-mode 1)
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
+(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
+(define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(global-set-key (kbd "C-x b") 'helm-mini)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(when (executable-find "ack-grep")
+  (setq helm-grep-default-command "ack-grep -Hn --no-group --no-color %e %p %f"
+        helm-grep-default-recurse-command "ack-grep -H --no-group --no-color %e %p %f"))
+(add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages)
+
+(projectile-global-mode)
+(setq projectile-completion-system 'helm)
+(add-hook 'projectile-mode-hook 'projectile-rails-on)
+(require 'helm-projectile)
+(helm-projectile-on)
+(defadvice projectile-rails-server (before rvm-switch-projectile-rails-server)
+  (rvm-activate-corresponding-ruby))
+(ad-activate 'projectile-rails-server)
+
+;; (defadvice projectile-rails-consle (before rvm-switch-projectile-rails-console)
+;;   (rvm-activate-corresponding-ruby))
+;; (ad-activate 'projectile-rails-console)
+
+
+(autoload 'php-mode "php-mode" "Major mode for editing php code." t)
+(add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
+
+(setenv "ORACLE_HOME" "/usr/lib/oracle/xe/app/oracle/product/10.2.0/server")
+(setenv "ORACLE_SID" "XE")
+(setq exec-path (append exec-path  (split-string (getenv "PATH") ":")))
