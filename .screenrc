@@ -23,4 +23,4 @@ caption string "%{kw}%-Lw%{wr}%50> %n %t%{-}%+Lw%<"
 termcapinfo xterm ti@:te@
 multiuser on
 altscreen on
-bind ( eval "writebuf" "exec /bin/sh -c '/usr/bin/xclip -sel clipboard < /tmp/screen-exchange'"
+bind ( eval writebuf "exec sh -c 'xsel -bi </tmp/screen-exchange'"
