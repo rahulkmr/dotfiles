@@ -20,7 +20,7 @@ startup_message off             # Disable startup messages
 caption always
 caption string "%{kw}%-Lw%{wr}%50> %n %t%{-}%+Lw%<"
 
-termcapinfo xterm ti@:te@
+# termcapinfo xterm ti@:te@
 multiuser on
 altscreen on
 bind ( eval writebuf "exec sh -c 'xsel -bi </tmp/screen-exchange'"
