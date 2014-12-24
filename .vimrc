@@ -12,7 +12,7 @@ set modeline
 set fdm=manual
 set showcmd
 set cmdheight=2
-set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10 
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
 let g:airline_powerline_fonts = 1
 "set statusline+=%4*%{fugitive#statusline()}%*
 "set statusline+=%3*\ [%{strlen(&ft)?&ft:'none'}, " filetype
@@ -90,7 +90,17 @@ endif
 "not the original Bourne shell which very few use
 let g:is_posix = 1
 call pathogen#infect()
-colorscheme grb256
+if has("gui_running")
+    set background=dark
+    colorscheme base16-default
+else
+    set background=dark
+    colorscheme Tomorrow-Night
+    " " let base16colorspace=256
+    " set background=dark
+    " colorscheme base16-default
+endif
+"
 let g:airline#extensions#tabline#enabled = 1
 
 
@@ -128,13 +138,13 @@ augroup global
     au!
     au VimResized * exe "normal! \<c-w>="
     autocmd BufNewFile,BufRead *.slim set filetype=slim
-    au BufNewFile,BufRead * call PareditInitBuffer()
-    let g:paredit_leader = '\'
+    " au BufNewFile,BufRead * call PareditInitBuffer()
+    " let g:paredit_leader = '\'
     autocmd FileType racket nnoremap<buffer> ,x :w<CR>:!/usr/bin/env racket %
     autocmd FileType *.cljs set ft=clojure
     au BufRead,BufNewFile *.less set ft=less syntax=less
     au BufNewFile,BufRead *.go set ft=go
-    
+
     " normal mode mappings
     " ctags
     nnoremap \c :!ctags -R .<CR>
@@ -174,8 +184,8 @@ augroup global
     nnoremap ,hj :set filetype=htmljinja<CR>
 
     " windows splits
-    nnoremap \v <C-w>v<C-w>l
-    nnoremap \s <C-w>s<C-w>j
+    " nnoremap \v <C-w>v<C-w>l
+    " nnoremap \s <C-w>s<C-w>j
 
     " window navigation
     nnoremap <C-h> <C-w>h
@@ -193,7 +203,7 @@ augroup global
     nnoremap <C-x>4 Ea }}<Esc>BBi{{ <Esc>
 
     " plugin mappings
-    nnoremap \w :Ack <cword><CR>
+    nnoremap \w :Ag <cword><CR>
     nnoremap ,g :GundoToggle<CR>
     nnoremap ,r :NERDTreeFind<CR><c-w><c-w>
     nnoremap <c-y> :CtrlPCurWD<CR>
@@ -210,12 +220,12 @@ augroup global
     inoremap <Nul> <C-x><C-o>
     " autoclose html tags
     inoremap <C-x>; </<C-x><C-o>
-    "convenience mapping for insert mode."
+    " convenience mapping for insert mode.
     inoremap <C-x>1 <%<Space><Space>%><Esc>2hi
     inoremap <C-x>2 <%=<Space><Space>%><Esc>2hi
     inoremap <C-x>3 {%<Space><Space>%}<Esc>2hi
     inoremap <C-x>4 {{<Space><Space>}}<Esc>2hi
-    
+
     "inoremap <C-w> <C-g>u<C-w>
     "inoremap <C-u> <C-g>u<C-u>
     inoremap \q <Esc>O
@@ -239,7 +249,7 @@ augroup global
     vnoremap @@ :normal! @@<CR>
 
 
-    "readline style binding
+    " readline style binding
     inoremap        <C-A> <C-O>^
     inoremap   <C-X><C-A> <C-A>
     cnoremap        <C-A> <Home>
@@ -274,7 +284,7 @@ set noautochdir
 augroup chicken
     au!
     let g:is_chicken=1
-    au BufNewFile,BufRead *.ss call PareditInitBuffer()
+    " au BufNewFile,BufRead *.ss call PareditInitBuffer()
     autocmd FileType scheme nnoremap<buffer> ,x :w<CR>:!/usr/bin/env csi -s %
     au FileType scheme setlocal makeprg=csc\ -check-syntax\ %:p
     au FileType scheme setl dictionary+=~/.vim/scheme-word-list
@@ -334,7 +344,7 @@ augroup end
 "let g:netrw_banner = 0
 "let g:netrw_altv = 1
 "let g:netrw_hide = 0
-"let g:netrw_liststyle = 3
+" let g:netrw_liststyle = 3
 "let g:netrw_browse_split = 4
 "let g:netrw_preview=1
 "let g:netrw_browsex_viewer="gnome-open"
@@ -378,7 +388,7 @@ let g:rubycomplete_include_objectspace = 1
 augroup ruby
     au!
     autocmd FileType ruby nnoremap<buffer>  ,x :w<CR>:!ruby %
-    autocmd FileType ruby setlocal makeprg=ruby\ -c\ %
+    " autocmd FileType ruby setlocal makeprg=ruby\ -c\ %
     autocmd FileType ruby setlocal ts=2 sts=2 sw=2
 augroup end
 
@@ -485,13 +495,25 @@ let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn)$',
   \ 'file': '\v\.(exe|so|dll)$',
   \ }
-let g:ctrlp_user_command = {
-    \ 'types': {
-        \ 1: ['.git', 'cd %s && git ls-files'],
-        \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-        \ },
-    \ 'fallback': 'find %s -type f'
-    \ }
+
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+" let g:ctrlp_user_command = {
+"     \ 'types': {
+"         \ 1: ['.git', 'cd %s && git ls-files'],
+"         \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+"         \ },
+"     \ 'fallback': 'find %s -type f'
+"     \ }
 
 autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
 
@@ -509,3 +531,17 @@ function! QuickfixFilenames()
     endfor
     return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
 endfunction
+
+
+let g:rails_projections = {
+            \ "app/presenters/*_presenter.rb": {
+            \   "command": "presenter",
+            \   "related": "app/helpers/%s_helper.rb"
+            \ },
+            \ "app/processors/*_processor.rb": {
+            \   "command": "processor",
+            \ }}
+
+command! -bar -range Eval silent <line1>,<line2>w .source.vim |
+            \   source .source.vim |
+            \   call delete('.source.vim')
