@@ -65,7 +65,7 @@ alias em='emacs -nw'
 alias es='emacs --daemon'
 alias ec='emacsclient -t'
 # Exports
-export PS1="$(print '%{\e[1;36m%}%n@%m%{\e[0m%}'): $(print '%{\e[1;34m%}%~%{\e[0m%}') $(print '%{\e[1;31m%}%?%{\e[0m%}') \$(git_info)
+export PS1="$(print '%{\e[1;32m%}%n@%m%{\e[0m%}'): $(print '%{\e[1;34m%}%~%{\e[0m%}') $(print '%{\e[1;31m%}%?%{\e[0m%}') \$(git_info)
 \$(prompt_char) $ "
 export PS2="$(print '%{\e[0;34m%}>%{\e[0m%}')"
 
@@ -153,9 +153,9 @@ compctl -g "*.go" gofmt
 compctl -g "*.go" gccgo
 
 
-export PS1="$(print '%{\e[1;36m%}%n@%m%{\e[0m%}'): $(print '%{\e[1;34m%}%~%{\e[0m%}') $(print '%{\e[1;31m%}%?%{\e[0m%}') \$(git_info)
+export PS1="$(print '%{\e[1;30m%}%n@%m%{\e[0m%}'): $(print '%{\e[1;34m%}%~%{\e[0m%}') $(print '%{\e[1;31m%}%?%{\e[0m%}') \$(git_info)
 \$(prompt_char) $ "
-export PS2="$(print '%{\e[0;34m%}>%{\e[0m%}')"
+export PS2="$(print '%{\e[0;33m%}>%{\e[0m%}')"
 
 
 
@@ -176,3 +176,6 @@ export PATH="$PATH:/usr/local/heroku/bin"
 
 # OPAM configuration
 . /home/rahul/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+PERL_MB_OPT="--install_base \"/home/rahul/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/rahul/perl5"; export PERL_MM_OPT;
