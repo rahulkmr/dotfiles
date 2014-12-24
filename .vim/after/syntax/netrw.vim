@@ -1,0 +1,1 @@
+hi netrwMarkFile cterm=reverse
