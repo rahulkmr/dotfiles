@@ -4,7 +4,7 @@
 *.out
 .netrwhist*
 .vim/tmp
-.vim/bundle
+.vim/doc/tags
 .vim/bundle/*/doc/tags
 
 tags
