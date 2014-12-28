@@ -89,7 +89,78 @@ endif
 "syntax highlight shell scripts as per POSIX,
 "not the original Bourne shell which very few use
 let g:is_posix = 1
-call pathogen#infect()
+
+
+" call pathogen#infect()
+call plug#begin('~/.vim/bundle')
+Plug 'Rip-Rip/clang_complete'
+Plug 'quanganhdo/grb256'
+Plug 'tpope/vim-sexp-mappings-for-regular-people'
+Plug 'altercation/vim-colors-solarized'
+Plug 'twerth/ir_black'
+Plug 'marijnh/tern_for_vim'
+Plug 'Shougo/vimproc.vim'
+Plug 'guns/vim-sexp'
+Plug 'mattn/emmet-vim'
+Plug 'rking/ag.vim'
+Plug 'zah/nimrod.vim'
+Plug 'chriskempson/base16-vim'
+Plug 'scrooloose/syntastic'
+Plug 'tpope/vim-rake'
+Plug 'tpope/vim-fugitive'
+Plug 'vim-scripts/a.vim'
+Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-projectionist'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-dispatch'
+Plug 'vim-scripts/gtags.vim'
+Plug 'tpope/vim-markdown'
+Plug 'Lokaltog/vim-distinguished'
+Plug 'Shougo/unite.vim'
+Plug 'bling/vim-airline'
+Plug 'nosami/Omnisharp'
+Plug 'jmcantrell/vim-virtualenv'
+Plug 'majutsushi/tagbar'
+Plug 'tpope/vim-rails'
+Plug 'vim-scripts/dbext.vim'
+Plug 'tpope/vim-scriptease'
+Plug 'davidhalter/jedi-vim'
+Plug 'derekwyatt/vim-scala'
+Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-bundler'
+Plug 'Wolfy87/vim-enmasse'
+Plug 'tkztmk/vim-vala'
+Plug 'tpope/vim-fireplace'
+Plug 'tpope/vim-cucumber'
+Plug 'mileszs/ack.vim'
+Plug 'Townk/vim-autoclose'
+Plug 'kchmck/vim-coffee-script'
+Plug 'kien/ctrlp.vim'
+" Plug 'cwood/vim-django'
+Plug 'vim-scripts/emacsmode'
+Plug 'kongo2002/fsharp-vim'
+Plug 'sjl/gundo.vim'
+Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'tmhedberg/matchit'
+Plug 'scrooloose/nerdtree'
+Plug 'chrisbra/Recover.vim'
+Plug 'klen/rope-vim'
+Plug 'slim-template/vim-slim'
+Plug 'jlanzarotta/bufexplorer'
+Plug 'guns/vim-clojure-static'
+Plug 'gorodinskiy/vim-coloresque'
+Plug 'tpope/vim-endwise'
+Plug 'fatih/vim-go'
+Plug 'tpope/vim-haml'
+Plug 'groenewege/vim-less'
+Plug 'wlangstroth/vim-racket'
+Plug 'tpope/vim-repeat'
+Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+call plug#end()
+
+
 if has("gui_running")
     set background=dark
     colorscheme base16-default
@@ -203,7 +274,6 @@ augroup global
     nnoremap <C-x>4 Ea }}<Esc>BBi{{ <Esc>
 
     " plugin mappings
-    nnoremap \w :Ag <cword><CR>
     nnoremap ,g :GundoToggle<CR>
     nnoremap ,r :NERDTreeFind<CR><c-w><c-w>
     nnoremap <c-y> :CtrlPCurWD<CR>
@@ -542,6 +612,31 @@ let g:rails_projections = {
             \   "command": "processor",
             \ }}
 
-command! -bar -range Eval silent <line1>,<line2>w .source.vim |
-            \   source .source.vim |
-            \   call delete('.source.vim')
+command! -bar -range Eval let b:file_name = '/tmp/temp_source_file_for_vim_eval.vim' |
+            \ exe "silent" <line1> "," <line2> "w" b:file_name |
+            \ exe "source" b:file_name |
+            \ call delete(b:file_name) |
+            \ unlet b:file_name
+
+" nnoremap \w :Ag <cword><CR>
+
+nnoremap <silent> \f :set opfunc=<SID>AckMotion<CR>g@
+xnoremap <silent> \f :<C-U>call <SID>AckMotion(visualmode())<CR>
+
+function! s:CopyMotionForType(type)
+    if a:type ==# 'v'
+        silent execute "normal! `<" . a:type . "`>y"
+    elseif a:type ==# 'char'
+        silent execute "normal! `[v`]y"
+    endif
+endfunction
+
+function! s:AckMotion(type) abort
+    let reg_save = @@
+
+    call s:CopyMotionForType(a:type)
+
+    execute "normal! :Ag " . shellescape(@@) . "\<cr>"
+
+    let @@ = reg_save
+endfunction
