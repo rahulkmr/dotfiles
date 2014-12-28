@@ -4,7 +4,9 @@
 *.out
 .netrwhist*
 .vim/tmp
+.vim/bundle
 .vim/bundle/*/doc/tags
+
 tags
 *~
 .emacs.d/backup
