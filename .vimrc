@@ -175,7 +175,7 @@ endif
 let g:airline#extensions#tabline#enabled = 1
 
 
-set omnifunc=syntaxcomplete#Complete
+" set omnifunc=syntaxcomplete#Complete
 filetype on
 filetype plugin on
 filetype indent on
@@ -546,11 +546,11 @@ let g:BufExplorerFuncRef = function('ChangeBuffer')
 autocmd BufWinEnter * call ChangeBuffer()
 
 
-"augroup PreviewWin
-    "au!
-    "autocmd! CursorMovedI * if pumvisible() == 0|pclose|endif
-    "autocmd! InsertLeave * if pumvisible() == 0|pclose|endif
-"augroup end
+augroup PreviewWin
+    au!
+    autocmd! CursorMovedI * if pumvisible() == 0|pclose|endif
+    autocmd! InsertLeave * if pumvisible() == 0|pclose|endif
+augroup end
 
 
 function! RefreshAll()
