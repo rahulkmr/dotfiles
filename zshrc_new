@@ -1,7 +1,7 @@
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=100000
+SAVEHIST=90000
 bindkey -e
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
@@ -48,14 +48,14 @@ fi
 alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
-alias clj="rlwrap -r java clojure.main"
+# alias clj="rlwrap -r java clojure.main"
 alias x=exit
-alias urxvt="urxvt  -sr -g '80x30' -fn 'xft:DejaVu Sans Mono-12:dpi=75'"
-alias xterm="xterm -g '80x30' -fa 'xft:DejaVu Sans Mono-12:dpi=75'"
+# alias urxvt="urxvt  -sr -g '80x30' -fn 'xft:DejaVu Sans Mono-12:dpi=75'"
+# alias xterm="xterm -g '80x30' -fa 'xft:DejaVu Sans Mono-12:dpi=75'"
 #alias screen='TERM=xterm-256color screen'
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+# alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 alias rm='rm -i'
 alias mv='nocorrect mv -i'
@@ -96,22 +96,22 @@ function title() {
 }
 
 # precmd is called just before the prompt is printed
-function precmd() {
+# function precmd() {
+#     if [ -z "${ST}" ]; then
+#         title "zsh" "%n@%m" "%~"
+#     else
+#         title "$ST" "%n@%m" "%~"
+#     fi
+# }
+
+## preexec is called just before any command line is executed
+function preexec() {
     if [ -z "${ST}" ]; then
-        title "zsh" "%n@%m" "%~"
+        title "$1" "%n@%m" "%~"
     else
         title "$ST" "%n@%m" "%~"
     fi
 }
-
-## preexec is called just before any command line is executed
-#function preexec() {
-    #if [ -z "${ST}" ]; then
-        #title "$1" "%n@%m" "%~"
-    #else
-        #title "$ST" "%n@%m" "%~"
-    #fi
-#}
 
 function git_info () {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(git::\1)/'
@@ -123,9 +123,10 @@ function virtualenv_info {
 
 # PS1 and PS2
 function prompt_char {
-    git branch >/dev/null 2>/dev/null && print '∞' && return
+    git branch >/dev/null 2>/dev/null && print "∞($(glb) -> $(grb))" && return
     hg root >/dev/null 2>/dev/null && print "☿($(hg branch))" && return
-    print 'o'
+    # print 'o'
+    print ''
 }
 
 
@@ -153,9 +154,11 @@ compctl -g "*.go" gofmt
 compctl -g "*.go" gccgo
 
 
-export PS1="$(print '%{\e[1;30m%}%n@%m%{\e[0m%}'): $(print '%{\e[1;34m%}%~%{\e[0m%}') $(print '%{\e[1;31m%}%?%{\e[0m%}') \$(git_info)
-\$(prompt_char) $ "
-export PS2="$(print '%{\e[0;33m%}>%{\e[0m%}')"
+# export PS1="$(print '%{\e[1;33m%}%n@%m%{\e[0m%}'): $(print '%{\e[1;34m%}%~%{\e[0m%}') $(print '%{\e[1;31m%}%?%{\e[0m%}') \$(git_info)
+# \$(prompt_char) $ "
+export PS1="$(print '%{\e[1;33m%}%n@%m%{\e[0m%}'): $(print '%{\e[1;34m%}%~%{\e[0m%}') $(print "%{\e[1;35m%}\$(prompt_char)%{\e[0m%}") $(print '%{\e[1;31m%}%?%{\e[0m%}')
+$ "
+export PS2="$(print '%{\e[0;36m%}> %{\e[0m%}')"
 
 
 
