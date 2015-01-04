@@ -131,6 +131,8 @@ Plug 'tpope/vim-bundler'
 Plug 'Wolfy87/vim-enmasse'
 Plug 'tkztmk/vim-vala'
 Plug 'tpope/vim-fireplace'
+Plug 'tpope/vim-leiningen'
+" Plug 'tpope/vim-classpath'
 Plug 'tpope/vim-cucumber'
 Plug 'mileszs/ack.vim'
 Plug 'Townk/vim-autoclose'
@@ -167,7 +169,7 @@ if has("gui_running")
 else
     set background=dark
     colorscheme Tomorrow-Night
-    " " let base16colorspace=256
+    " let base16colorspace=256
     " set background=dark
     " colorscheme base16-default
 endif
