@@ -2,7 +2,7 @@ zstyle ':completion:*' completer _list _oldlist _expand _complete _ignored _matc
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' insert-unambiguous true
 # zstyle ':completion:*' list-colors ''
-zstyle ':completion:*' menu select=2
+zstyle ':completion:*' menu select=1
 eval "$(dircolors -b)"
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
