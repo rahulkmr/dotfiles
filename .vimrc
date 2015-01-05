@@ -160,6 +160,7 @@ Plug 'tpope/vim-repeat'
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
+Plug 'jpalardy/vim-slime'
 call plug#end()
 
 
