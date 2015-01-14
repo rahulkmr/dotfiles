@@ -1,29 +1,63 @@
-Xft.dpi: 90
-URxvt.font:     xft:DejaVu Sans Mono for Powerline:size=12:antialias=true
-Rxvt.font:     xft:DejaVu Sans Mono for Powerline:size=12:antialias=true
-URxvt.boldFont: xft:DejaVu Sans Mono for Powerline:bold:size=12:antialias=true
-Rxvt.boldFont: xft:DejaVu Sans Mono for Powerline:bold:size=12:antialias=true
+Xft.antialias: true
+Xft.dpi: 80
+
+URxvt*loginShell: true
+URxvt.font:     xft:DejaVu Sans Mono for Powerline:size=12:antialias=true:hinting=true
+Rxvt.font:     xft:DejaVu Sans Mono for Powerline:size=12:antialias=true:hinting=true
+URxvt.boldFont: xft:DejaVu Sans Mono for Powerline:bold:size=12:antialias=true:hinting=true
+Rxvt.boldFont: xft:DejaVu Sans Mono for Powerline:bold:size=12:antialias=true:hinting=true
 Rxvt.scrollBar: True
 Rxvt.scrollBar_right: True
 URxvt.scrollBar: True
-URxvt.scrollBar_right: True
+URxvt.scrollstyle: plain
+URxvt.secondaryScreen: true
+URxvt.secondaryScroll: false
+URxvt*letterSpace              : -2
+URxvt.saveLines:    90000
+URxvt.geometry: 100x50
+URxvt.iso14755 : false
+URxvt.iso14755_52: false
 
-xterm*faceName: DejaVu Sans Mono for Powerline
-xterm*faceSize: 10
-xterm*saveLines: 10000
-xterm*VT100.geometry:     80x25
-xterm*dynamicColors:      true
-xterm*utf8:               2
-xterm*eightBitInput:      true
-xterm*scrollKey:          true
-xterm*scrollTtyOutput:    false
-xterm*scrollBar:          true
-xterm*rightScrollBar:     true
-xterm*jumpScroll:         true
-xterm*multiScroll:        true
-xterm*toolBar:            true
-xterm*menuBar:            true
 
+URxvt.perl-lib: ${HOME}/.urxvt/ext
+URxvt.perl-ext-common: default,keyboard-select,url-select,clipboard
+URxvt.keysym.M-Escape: perl:keyboard-select:activate
+URxvt.keysym.M-U: perl:url-select:select_next
+URxvt.url-select.launcher: /usr/bin/xdg-open
+URxvt.url-select.underline: true
+URxvt.keysym.Control-Shift-C: perl:clipboard:copy
+URxvt.keysym.Control-Shift-V: perl:clipboard:paste
+URxvt.clipboard.autocopy: true
+
+
+XTerm*loginShell: true
+XTerm*charClass: 33:48,36-47:48,58-59:48,61:48,63-64:48,95:48,126:48
+XTerm*faceName: DejaVu Sans Mono for Powerline
+XTerm*faceSize: 12
+XTerm*saveLines: 10000
+XTerm*VT100.geometry:     80x25
+XTerm*dynamicColors:      true
+XTerm*utf8:               1
+XTerm*locale: UTF-8
+XTerm*eightBitInput:      true
+XTerm*scrollKey:          true
+XTerm*scrollTtyOutput:    false
+XTerm*scrollBar:          true
+XTerm*rightScrollBar:     true
+XTerm*jumpScroll:         true
+XTerm*multiScroll:        true
+XTerm*toolBar:            true
+XTerm*menuBar:            true
+
+XTerm*selectToClipboard: true
+XTerm*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
+
+*VT100.Translations: #override \
+                    Shift <Key>Up:              scroll-back(1) \n\
+                    Shift <Key>Down:            scroll-forw(1) \n\
+                    ~Meta Shift Ctrl <Key>V:    insert-selection(CLIPBOARD) \n\
+                     Meta <Key>V:    insert-selection(PRIMARY) \n\
+                    ~Meta Shift Ctrl <Key>C:    select-end(CLIPBOARD, CUT_BUFFER1) \n\
 
 ! Base16 Default
 ! Scheme: Chris Kempson (http://chriskempson.com)
