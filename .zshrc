@@ -111,7 +111,9 @@ function title() {
         ;;
     xterm*|rxvt*|urxvt*)
         print -Pn "\e]0;$current:$host_and_user $working_dir\a"
-        print -Pn "\ek$current:$host_and_user $working_dir\e\\"
+        if [ -n "$STY" ]; then
+            print -Pn "\ek$current:$host_and_user $working_dir\e\\"
+        fi
         ;;
     esac
 }
@@ -153,7 +155,7 @@ function grb() { git rev-parse --symbolic-full-name --abbrev-ref HEAD }
 
 
 export PS1="$(print '%{\e[1;33m%}%n@%m%{\e[0m%}'): $(print '%{\e[1;34m%}%~%{\e[0m%}') $(print "%{\e[1;35m%}\$(prompt_char)%{\e[0m%}") $(print '%{\e[1;31m%}%?%{\e[0m%}')
-$(print '%{\e[1;32m%}%#%{\e[0m%}') "
+$(print '%{\e[1;32m%}%# ▶%{\e[0m%}') "
 export PS2="$(print '%{\e[0;36m%}> %{\e[0m%}')"
 
 ## General configuration
@@ -197,3 +199,6 @@ PERL_MM_OPT="INSTALL_BASE=/home/rahul/perl5"; export PERL_MM_OPT;
 typeset -U path
 path=($HOME/bin $GOPATH/bin $HOME/.rvm/bin /usr/local/heroku/bin $path)
 
+# Base16 Shell
+BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
