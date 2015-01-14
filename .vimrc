@@ -2,7 +2,8 @@ set undodir=~/.vim/tmp//,/var/tmp//,/tmp//,.
 set backupdir=~/.vim/tmp//,/var/tmp//,/tmp//,.
 set directory=~/.vim/tmp//,/var/tmp//,/tmp//,.
 set backup
-set complete+=.,w,b,u,t,i,k
+set complete+=.,w,b,u,U,t,i,d,k
+set completeopt=longest,menuone
 set showmode
 set gdefault
 set virtualedit+=block
@@ -161,6 +162,12 @@ Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'jpalardy/vim-slime'
+Plug 'Shougo/neocomplcache.vim'
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
+" Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+
+
 call plug#end()
 
 
@@ -168,11 +175,11 @@ if has("gui_running")
     set background=dark
     colorscheme base16-default
 else
-    set background=dark
-    colorscheme Tomorrow-Night
-    " let base16colorspace=256
     " set background=dark
-    " colorscheme base16-default
+    " colorscheme Tomorrow-Night
+    let base16colorspace=256
+    set background=dark
+    colorscheme base16-default
 endif
 "
 let g:airline#extensions#tabline#enabled = 1
@@ -643,3 +650,32 @@ function! s:AckMotion(type) abort
 
     let @@ = reg_save
 endfunction
+
+
+let g:neocomplcache_enable_at_startup = 1
+" Use smartcase.
+let g:neocomplcache_enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplcache_min_syntax_length = 2
+let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+
+
+
+" Python jedi settings.
+if !exists('g:neocomplcache_omni_functions')
+    let g:neocomplcache_omni_functions = {}
+endif
+let g:neocomplcache_omni_functions['python'] = 'jedi#completions'
+let g:jedi#popup_on_dot = 0
+if !exists('g:neocomplcache_force_omni_patterns')
+  let g:neocomplcache_force_omni_patterns = {}
+endif
+let g:neocomplcache_force_omni_patterns.python = '[^. \t]\.\w*'
+
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
