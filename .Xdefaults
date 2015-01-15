@@ -1,17 +1,16 @@
 Xft.antialias: true
 Xft.dpi: 80
+Xft.hinting:                true
+Xft.hintstyle:              hintslight
 
 URxvt*loginShell: true
+URxvt.iconFile: /usr/share/icons/gnome/32x32/apps/terminal.png
 URxvt.font:     xft:DejaVu Sans Mono for Powerline:size=12:antialias=true:hinting=true
-Rxvt.font:     xft:DejaVu Sans Mono for Powerline:size=12:antialias=true:hinting=true
 URxvt.boldFont: xft:DejaVu Sans Mono for Powerline:bold:size=12:antialias=true:hinting=true
-Rxvt.boldFont: xft:DejaVu Sans Mono for Powerline:bold:size=12:antialias=true:hinting=true
-Rxvt.scrollBar: True
-Rxvt.scrollBar_right: True
 URxvt.scrollBar: True
 URxvt.scrollstyle: plain
-URxvt.secondaryScreen: true
-URxvt.secondaryScroll: false
+! URxvt.secondaryScreen: true
+! URxvt.secondaryScroll: false
 URxvt*letterSpace              : -2
 URxvt.saveLines:    90000
 URxvt.geometry: 100x50
@@ -20,7 +19,7 @@ URxvt.iso14755_52: false
 
 
 URxvt.perl-lib: ${HOME}/.urxvt/ext
-URxvt.perl-ext-common: default,keyboard-select,url-select,clipboard
+URxvt.perl-ext-common: default,keyboard-select,url-select,clipboard,font-size
 URxvt.keysym.M-Escape: perl:keyboard-select:activate
 URxvt.keysym.M-U: perl:url-select:select_next
 URxvt.url-select.launcher: /usr/bin/xdg-open
@@ -28,7 +27,11 @@ URxvt.url-select.underline: true
 URxvt.keysym.Control-Shift-C: perl:clipboard:copy
 URxvt.keysym.Control-Shift-V: perl:clipboard:paste
 URxvt.clipboard.autocopy: true
-
+URxvt.keysym.C-Up:     perl:font-size:increase
+URxvt.keysym.C-Down:   perl:font-size:decrease
+URxvt.keysym.C-S-Up:   perl:font-size:incglobal
+URxvt.keysym.C-S-Down: perl:font-size:decglobal
+URxvt.keysym.C-Left: perl:font-size:reset
 
 XTerm*loginShell: true
 XTerm*charClass: 33:48,36-47:48,58-59:48,61:48,63-64:48,95:48,126:48
@@ -62,50 +65,51 @@ XTerm*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT
 ! Base16 Default
 ! Scheme: Chris Kempson (http://chriskempson.com)
 
-! base00 #181818
-! base01 #282828
-! base02 #383838
-! base03 #585858
-! base04 #b8b8b8
-! base05 #d8d8d8
-! base06 #e8e8e8
-! base07 #f8f8f8
-! base08 #ab4642
-! base09 #dc9656
-! base0A #f7ca88
-! base0B #a1b56c
-! base0C #86c1b9
-! base0D #7cafc2
-! base0E #ba8baf
-! base0F #a16946
 
-*.foreground:   #d8d8d8
-*.background:   #181818
-*.cursorColor:  #d8d8d8
+#define base00 #181818
+#define base01 #282828
+#define base02 #383838
+#define base03 #585858
+#define base04 #b8b8b8
+#define base05 #d8d8d8
+#define base06 #e8e8e8
+#define base07 #f8f8f8
+#define base08 #ab4642
+#define base09 #dc9656
+#define base0A #f7ca88
+#define base0B #a1b56c
+#define base0C #86c1b9
+#define base0D #7cafc2
+#define base0E #ba8baf
+#define base0F #a16946
 
-*.color0:       #181818
-*.color1:       #ab4642
-*.color2:       #a1b56c
-*.color3:       #f7ca88
-*.color4:       #7cafc2
-*.color5:       #ba8baf
-*.color6:       #86c1b9
-*.color7:       #d8d8d8
+*.foreground:   base05
+*.background:   base00
+*.cursorColor:  base05
 
-*.color8:       #585858
-*.color9:       #dc9656
-*.color10:      #282828
-*.color11:      #383838
-*.color12:      #b8b8b8
-*.color13:      #e8e8e8
-*.color14:      #a16946
-*.color15:      #f8f8f8
+*.color0:       base00
+*.color1:       base08
+*.color2:       base0B
+*.color3:       base0A
+*.color4:       base0D
+*.color5:       base0E
+*.color6:       base0C
+*.color7:       base05
+
+*.color8:       base03
+*.color9:       base08
+*.color10:      base0B
+*.color11:      base0A
+*.color12:      base0D
+*.color13:      base0E
+*.color14:      base0C
+*.color15:      base07
 
 ! Note: colors beyond 15 might not be loaded (e.g., xterm, urxvt),
 ! use 'shell' template to set these if necessary
-*.color16:      #dc9656
-*.color17:      #a16946
-*.color18:      #282828
-*.color19:      #383838
-*.color20:      #b8b8b8
-*.color21:      #e8e8e8
+*.color16:      base09
+*.color17:      base0F
+*.color18:      base01
+*.color19:      base02
+*.color20:      base04
+*.color21:      base06
