@@ -51,6 +51,7 @@ XTerm*jumpScroll:         true
 XTerm*multiScroll:        true
 XTerm*toolBar:            true
 XTerm*menuBar:            true
+XTerm*metaSendsEscape: true
 
 XTerm*selectToClipboard: true
 XTerm*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
@@ -83,7 +84,9 @@ XTerm*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT
 #define base0E #ba8baf
 #define base0F #a16946
 
-*.foreground:   base05
+
+! *.foreground:   base05
+*.foreground:   black
 *.background:   base00
 *.cursorColor:  base05
 
@@ -113,3 +116,8 @@ XTerm*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT
 *.color19:      base02
 *.color20:      base04
 *.color21:      base06
+
+! XTerm*background: white
+! XTerm*foreground: black
+! XTerm*pointerColor: red
+! XTerm*pointerColorBackground: black
