@@ -1,7 +1,6 @@
-# set some options
 #shell /usr/bin/zsh
-#term xterm-256color
-#term screen-256color
+# term xterm-256color
+# term screen-256color
 activity "activity: window ~%"  # Message when activity occurs in a window
 vbell off
 autodetach on                   # Autodetach session on hangup instead of
@@ -12,13 +11,29 @@ defscrollback 10000               # Set the default number of scrollback lines
 deflogin off                    # Do not register the window in utmp
 startup_message off             # Disable startup messages
 
-
 # Display a caption string below, appearing like tabs and
 # displaying the window number and application name (by default).
 #hardstatus alwayslastline
 #hardstatus string "%{kw}%-Lw%{wr}%50> %n %t%{-}%+Lw%<"
 caption always
-caption string "%{kw}%-Lw%{wr}%50> %n %t%{-}%+Lw%<"
+
+# %{kw}  black on white
+# %-Lw all window numbers and names before current
+# %{kg} black on green
+# %50> Mark for truncation
+# %n %t Window number and title
+# %{-} reset attribute
+# %+Lw all window numbers and names after current
+# %< Truncate
+caption string "%{KW}%-Lw%{WK}%50> %n %t%{-}%+Lw%<"
+
+# %{+b KB} Bold. Black on blue.
+# %80> 80 width. Mark for truncation
+# %n %t  Current window number and title.
+# %{KW} Black on white
+# %W All window names and numbers except current
+# %< Truncate
+# caption string "%{WK}%80> %n %t %{KW}%W%<"
 
 # termcapinfo xterm ti@:te@
 multiuser on
