@@ -15,6 +15,7 @@ set showcmd
 set cmdheight=2
 set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
 let g:airline_powerline_fonts = 1
+
 "set statusline+=%4*%{fugitive#statusline()}%*
 "set statusline+=%3*\ [%{strlen(&ft)?&ft:'none'}, " filetype
 "set statusline+=%{&encoding}, " encoding
@@ -165,6 +166,7 @@ Plug 'jpalardy/vim-slime'
 Plug 'Shougo/neocomplcache.vim'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
+Plug 'edkolev/tmuxline.vim'
 " Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 
 
@@ -679,3 +681,8 @@ xmap <C-k>     <Plug>(neosnippet_expand_target)
 if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
+
+let g:tmuxline_preset = {
+      \'a'    : '#S',
+      \'win'  : ['#I', '#T'],
+      \'cwin' : ['#I', '#T']}
