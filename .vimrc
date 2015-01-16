@@ -167,6 +167,7 @@ Plug 'Shougo/neocomplcache.vim'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'edkolev/tmuxline.vim'
+Plug 'edkolev/promptline.vim'
 " Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 
 
@@ -686,3 +687,9 @@ let g:tmuxline_preset = {
       \'a'    : '#S',
       \'win'  : ['#I', '#T'],
       \'cwin' : ['#I', '#T']}
+let g:promptline_preset = {
+            \'a' : [ promptline#slices#host(), promptline#slices#user() ],
+            \'b' : [ promptline#slices#cwd() ],
+            \'c' : [ promptline#slices#vcs_branch() ],
+            \'y' : [ promptline#slices#python_virtualenv() ],
+            \'warn' : [ promptline#slices#last_exit_code() ]}
