@@ -5,6 +5,7 @@
 .netrwhist*
 .vim/tmp
 .vim/doc/tags
+.vim/bundle
 .vim/bundle/*/doc/tags
 
 tags
