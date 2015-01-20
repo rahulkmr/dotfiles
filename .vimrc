@@ -32,7 +32,7 @@ set laststatus=2
 set enc=utf-8
 set fenc=utf-8
 set termencoding=utf-8
-set title
+set notitle
 set viminfo='50,\"1000,:100,n~/vim/viminfo
 " disable vi compatibility (emulation of old bugs)
 set nocompatible
@@ -166,8 +166,10 @@ Plug 'jpalardy/vim-slime'
 Plug 'Shougo/neocomplcache.vim'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
-Plug 'edkolev/tmuxline.vim'
-Plug 'edkolev/promptline.vim'
+Plug 'talek/vorax4'
+Plug 'lucapette/vim-ruby-doc'
+" Plug 'edkolev/tmuxline.vim'
+" Plug 'edkolev/promptline.vim'
 " Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 
 
@@ -683,13 +685,13 @@ if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
 
-let g:tmuxline_preset = {
-      \'a'    : '#S',
-      \'win'  : ['#I', '#T'],
-      \'cwin' : ['#I', '#T']}
-let g:promptline_preset = {
-            \'a' : [ promptline#slices#host(), promptline#slices#user() ],
-            \'b' : [ promptline#slices#cwd() ],
-            \'c' : [ promptline#slices#vcs_branch() ],
-            \'y' : [ promptline#slices#python_virtualenv() ],
-            \'warn' : [ promptline#slices#last_exit_code() ]}
+" let g:tmuxline_preset = {
+"       \'a'    : '#S',
+"       \'win'  : ['#I', '#T'],
+"       \'cwin' : ['#I', '#T']}
+" let g:promptline_preset = {
+"             \'a' : [ promptline#slices#host(), promptline#slices#user() ],
+"             \'b' : [ promptline#slices#cwd() ],
+"             \'c' : [ promptline#slices#vcs_branch() ],
+"             \'y' : [ promptline#slices#python_virtualenv() ],
+"             \'warn' : [ promptline#slices#last_exit_code() ]}
