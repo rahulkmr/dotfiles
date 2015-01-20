@@ -25,7 +25,7 @@ caption always
 # %{-} reset attribute
 # %+Lw all window numbers and names after current
 # %< Truncate
-caption string "%{KW}%-Lw%{WK}%50> %n %t%{-}%+Lw%<"
+caption string "%{KW}%-Lw%{WK}%50> %n %t %{-}%+Lw%<"
 
 # %{+b KB} Bold. Black on blue.
 # %80> 80 width. Mark for truncation
