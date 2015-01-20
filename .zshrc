@@ -88,6 +88,9 @@ alias au='sudo aptitude update'
 alias as='apt-cache search'
 alias aw='apt-cache show'
 alias tmux='tmux -2 -u'
+alias tn='\tmux -2 -u new-session -s'
+alias ta='\tmux attach-session -t'
+alias tl='\tmux list-sessions'
 
 export EDITOR=vim
 
@@ -184,7 +187,6 @@ export GOPATH=$HOME/musings/go
 export WORKON_HOME=~/venvs
 source /usr/local/bin/virtualenvwrapper.sh
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 export PIP_DOWNLOAD_CACHE=$HOME/.pip-download-cache
 export TERM=xterm-256color
 
@@ -203,4 +205,5 @@ path=($HOME/bin $GOPATH/bin $HOME/.rvm/bin /usr/local/heroku/bin $path)
 BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
-source ~/.shell_prompt.sh
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+# source ~/.shell_prompt.sh
