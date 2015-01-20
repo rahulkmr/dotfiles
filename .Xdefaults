@@ -7,7 +7,8 @@ URxvt*loginShell: true
 URxvt.iconFile: /usr/share/icons/gnome/32x32/apps/terminal.png
 URxvt.font:     xft:DejaVu Sans Mono for Powerline:size=12:antialias=true:hinting=true
 URxvt.boldFont: xft:DejaVu Sans Mono for Powerline:bold:size=12:antialias=true:hinting=true
-URxvt.scrollBar: True
+URxvt.scrollBar: true
+URxvt*scrollBar_right: true
 URxvt.scrollstyle: plain
 ! URxvt.secondaryScreen: true
 ! URxvt.secondaryScroll: false
@@ -21,7 +22,7 @@ URxvt.iso14755_52: false
 URxvt.perl-lib: ${HOME}/.urxvt/ext
 URxvt.perl-ext-common: default,keyboard-select,url-select,clipboard,font-size
 URxvt.keysym.M-Escape: perl:keyboard-select:activate
-URxvt.keysym.M-U: perl:url-select:select_next
+URxvt.keysym.C-i: perl:url-select:select_next
 URxvt.url-select.launcher: /usr/bin/xdg-open
 URxvt.url-select.underline: true
 URxvt.keysym.Control-Shift-C: perl:clipboard:copy
