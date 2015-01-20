@@ -168,6 +168,7 @@ Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'talek/vorax4'
 Plug 'lucapette/vim-ruby-doc'
+Plug 'danchoi/ri.vim'
 " Plug 'edkolev/tmuxline.vim'
 " Plug 'edkolev/promptline.vim'
 " Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
@@ -277,6 +278,7 @@ augroup global
     nnoremap <C-h> <C-w>h
     nnoremap <C-j> <C-w>j
     nnoremap <C-k> <C-w>k
+    nnoremap <c-w><c-k> :bd!<cr>
 
     " source .vimrc/load it
     nnoremap ,v :e ~/.vimrc<CR>
