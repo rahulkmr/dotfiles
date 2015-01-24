@@ -54,6 +54,10 @@ XTerm*toolBar:            true
 XTerm*menuBar:            true
 XTerm*metaSendsEscape: true
 
+
+XTerm*colorBDMode:  true
+XTerm*colorMode: true
+
 XTerm*selectToClipboard: true
 XTerm*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
 
