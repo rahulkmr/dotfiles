@@ -189,6 +189,8 @@ source /usr/local/bin/virtualenvwrapper.sh
 
 export PIP_DOWNLOAD_CACHE=$HOME/.pip-download-cache
 export TERM=xterm-256color
+export LC_ALL=en_US.UTF-8  
+export LANG=en_US.UTF-8
 
 
 # OPAM configuration
