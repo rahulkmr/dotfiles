@@ -58,6 +58,7 @@ XTerm*allowFontOps: true
 XTerm*allowTcapOps: true
 XTerm*selectToClipboard: true
 XTerm*VT100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
+XTerm*disallowedWindowOps: 20,21,SetXprop
 
 *VT100.Translations: #override \
                     Shift <Key>Up:              scroll-back(1) \n\

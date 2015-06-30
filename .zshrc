@@ -114,9 +114,9 @@ function title() {
         ;;
     xterm*|rxvt*|urxvt*)
         print -Pn "\e]0;$current:$host_and_user $working_dir\a"
-        if [ -n "$STY" ]; then
-            print -Pn "\ek$current:$host_and_user $working_dir\e\\"
-        fi
+        # if [ -n "$STY" ]; then
+        #     print -Pn "\ek$current:$host_and_user $working_dir\e\\"
+        # fi
         ;;
     esac
 }
@@ -191,6 +191,7 @@ export PIP_DOWNLOAD_CACHE=$HOME/.pip-download-cache
 export TERM=xterm-256color
 export LC_ALL=en_US.UTF-8  
 export LANG=en_US.UTF-8
+export RUST_SRC_PATH=/data/sw/rust/src
 
 
 # OPAM configuration
@@ -201,7 +202,7 @@ PERL_MM_OPT="INSTALL_BASE=/home/rahul/perl5"; export PERL_MM_OPT;
 
 
 typeset -U path
-path=($HOME/bin $GOPATH/bin $HOME/.rvm/bin /usr/local/heroku/bin $path)
+path=($HOME/bin $GOPATH/bin $HOME/.rvm/bin /usr/local/heroku/bin ~/data/sw/nim-0.11.2/bin $path)
 
 # Base16 Shell
 BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
@@ -209,3 +210,7 @@ BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 # source ~/.shell_prompt.sh
+#
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_COMMAND='ag -l -g ""'
+export FZF_DEFAULT_OPTS="--extended --cycle"

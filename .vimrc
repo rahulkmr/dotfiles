@@ -1,7 +1,7 @@
 set undodir=~/.vim/tmp//,/var/tmp//,/tmp//,.
 set backupdir=~/.vim/tmp//,/var/tmp//,/tmp//,.
 set directory=~/.vim/tmp//,/var/tmp//,/tmp//,.
-set backup
+" set backup
 set complete+=.,w,b,u,U,t,i,d,k
 set completeopt=longest,menuone
 set showmode
@@ -36,7 +36,7 @@ set notitle
 set viminfo='50,\"1000,:100,n~/vim/viminfo
 " disable vi compatibility (emulation of old bugs)
 set nocompatible
-set clipboard=unnamedplus
+set clipboard^=unnamedplus
 " configure tabwidth and insert spaces instead of tabs
 set tabstop=4        " tab width is 4 spaces
 set shiftwidth=4     " indent also with 4 spaces
@@ -97,12 +97,15 @@ let g:is_posix = 1
 " call pathogen#infect()
 
 
+runtime! ftplugin/man.vim
+
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !mkdir -p ~/.vim/autoload
   silent !curl -fLo ~/.vim/autoload/plug.vim
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall
 endif
+
 call plug#begin('~/.vim/bundle')
 Plug 'Rip-Rip/clang_complete'
 Plug 'quanganhdo/grb256'
@@ -114,7 +117,7 @@ Plug 'Shougo/vimproc.vim'
 Plug 'guns/vim-sexp'
 Plug 'mattn/emmet-vim'
 Plug 'rking/ag.vim'
-Plug 'zah/nimrod.vim'
+Plug 'zah/nim.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-rake'
@@ -159,7 +162,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'chrisbra/Recover.vim'
 Plug 'klen/rope-vim'
 Plug 'slim-template/vim-slim'
-Plug 'jlanzarotta/bufexplorer'
+" Plug 'jlanzarotta/bufexplorer'
 Plug 'guns/vim-clojure-static'
 Plug 'gorodinskiy/vim-coloresque'
 Plug 'tpope/vim-endwise'
@@ -180,6 +183,11 @@ Plug 'talek/vorax4'
 Plug 'lucapette/vim-ruby-doc'
 Plug 'danchoi/ri.vim'
 Plug 'KabbAmine/zeavim.vim'
+Plug 'phildawes/racer'
+Plug 'wting/rust.vim'
+Plug 'tpope/vim-sleuth'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+Plug 'JuliaLang/julia-vim'
 " Plug 'edkolev/tmuxline.vim'
 " Plug 'edkolev/promptline.vim'
 " Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
@@ -223,14 +231,38 @@ syntax enable
 set copyindent
 set history=10000
 set undofile
-set undolevels=10000
-set undoreload=10000
+set undolevels=100
+set undoreload=100
 let html_use_css=1
 set lbr
 let coffee_no_trailing_space_error = 1
 set guioptions-=m
 set guioptions-=T
 
+let g:netrw_chgwin = 2
+let g:netrw_liststyle = 3
+let g:netrw_browsex_viewer="gnome-open"
+"let g:netrw_menu = 0
+"let g:netrw_banner = 0
+"let g:netrw_altv = 1
+"let g:netrw_hide = 0
+"let g:netrw_browse_split = 4
+"let g:netrw_preview=1
+"let g:netrw_ctags="etags"
+"let g:netrw_winsize=20
+"let g:netrw_cursor=0
+fun! s:layout_netrw_split()
+  execute "normal! \<C-W>o"
+  :20Vex .
+endfunction
+
+command! Lexplore :call s:layout_netrw_split()
+
+function! UnhighlightMerlinIfDefined()
+  if exists(":MerlinClearEnclosing")
+    execute "MerlinClearEnclosing"
+  endif
+endfunction
 
 augroup global
     au!
@@ -242,6 +274,7 @@ augroup global
     autocmd FileType *.cljs set ft=clojure
     au BufRead,BufNewFile *.less set ft=less syntax=less
     au BufNewFile,BufRead *.go set ft=go
+    autocmd BufReadPost fugitive://* set bufhidden=delete
 
     " normal mode mappings
     " ctags
@@ -262,7 +295,7 @@ augroup global
     nnoremap ,m :TOhtml<CR>
     nnoremap ,w :%s/\s\+$//<cr>:let @/=''<CR>
     nnoremap ,a :reg [0123456789"]<CR>
-    nnoremap <C-l> :nohl<cr><c-l>
+    nnoremap <C-l> :nohl<cr>:call UnhighlightMerlinIfDefined()<cr><c-l>
     nnoremap <C-x>u :update<cr>
     nnoremap <C-x>l :wa<cr>
     nnoremap <C-x>x :q<cr>
@@ -308,7 +341,8 @@ augroup global
     nnoremap <c-u> :CtrlPBuffer<CR>
     nnoremap <c-x>v :!gnome-open %<cr>
     nnoremap ,f :RecoverPluginFinish<CR>
-    nnoremap ,t :NERDTreeToggle<CR>
+    " nnoremap ,t :NERDTreeToggle<CR>
+    nnoremap ,t :Lexplore<CR>
     "nnoremap \t :Ve<CR><CR>
     nnoremap ,l :TagbarToggle<CR>
     nnoremap do :diffget<cr>
@@ -374,6 +408,8 @@ augroup global
     noremap!        <M-f> <S-Right>
     noremap!        <M-n> <Down>
     noremap!        <M-p> <Up>
+
+    nnoremap \e :Errors<cr>
 augroup end
 
 set noautochdir
@@ -432,23 +468,11 @@ augroup end
 augroup c
     au!
     "autocmd FileType c setlocal makeprg=clang\ -fsyntax-only\ %
-    autocmd FileType c setlocal makeprg=clang\ -g\ -o\ %<\ %
-    autocmd FileType cpp setlocal makeprg=g++\ -g\ -o\ %<\ %
+    " autocmd FileType c setlocal makeprg=clang\ -g\ -c\ %
+    " autocmd FileType cpp setlocal makeprg=clang\ -g\ -I/usr/local/include/SDL2\ -c\ %
     autocmd FileType c,cpp nnoremap<buffer> ,x :!./%
 augroup end
 
-
-"let g:netrw_menu = 0
-"let g:netrw_banner = 0
-"let g:netrw_altv = 1
-"let g:netrw_hide = 0
-" let g:netrw_liststyle = 3
-"let g:netrw_browse_split = 4
-"let g:netrw_preview=1
-"let g:netrw_browsex_viewer="gnome-open"
-"let g:netrw_ctags="etags"
-"let g:netrw_winsize=20
-"let g:netrw_cursor=0
 
 
 " For full syntax highlighting:
@@ -475,6 +499,7 @@ augroup fsharp
     autocmd FileType fsharp nnoremap<buffer> ,c :w<CR>:make<CR>
     autocmd FileType fsharp nnoremap<buffer> ,x :!./%.exe
 augroup end
+
 let g:ragtag_global_maps = 1
 
 
@@ -615,9 +640,9 @@ endif
 
 autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
 
-let s:ocamlmerlin=substitute(system('opam config var share'),'\n$','','''') .  "/ocamlmerlin"
-execute "set rtp+=".s:ocamlmerlin."/vim"
-execute "set rtp+=".s:ocamlmerlin."/vimbufsync"
+let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+execute "set rtp+=" . g:opamshare . "/merlin/vim"
+execute ":source " . "/home/rahul/.opam/4.01.0/share/vim/syntax/ocp-indent.vim"
 let g:syntastic_ocaml_checkers = ['merlin']
 
 
@@ -738,7 +763,11 @@ endfunction
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
-" let g:jedi#auto_vim_configuration = 0
+let g:neocomplete#sources#omni#input_patterns.ocaml = '[^. *\t]\.\w*\|\h\w*|#'
+" if !exists('g:neocomplcache_force_omni_patterns')
+"    let g:neocomplcache_force_omni_patterns = {}
+"  endif
+"  let g:neocomplcache_force_omni_patterns.ocaml = '[^. *\t]\.\w*\|\h\w*|#'
 let g:jedi#completions_enabled=0
 
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -759,3 +788,124 @@ endif
 "             \'c' : [ promptline#slices#vcs_branch() ],
 "             \'y' : [ promptline#slices#python_virtualenv() ],
 "             \'warn' : [ promptline#slices#last_exit_code() ]}
+
+let g:racer_cmd = "/data/sw/racer/target/release/racer"
+let $RUST_SRC_PATH = "/data/sw/rust/src""
+
+nnoremap <silent> <Leader>u :FZF<cr>
+command! -nargs=1 Locate call fzf#run(
+      \ {'source': 'locate <q-args>', 'sink': 'e', 'options': '-m'})
+function! s:buflist()
+  redir => ls
+  silent ls
+  redir END
+  return split(ls, '\n')
+endfunction
+
+function! s:bufopen(e)
+  execute 'buffer' matchstr(a:e, '^[ 0-9]*')
+endfunction
+
+command! FZFBuf call fzf#run({
+\   'source':  reverse(<sid>buflist()),
+\   'sink':    function('<sid>bufopen'),
+\   'options': '+m',
+\   'down':    len(<sid>buflist()) + 2
+\ })
+nnoremap <silent> <Leader>b :FZFBuf<cr>
+command! -bar FZFTags call fzf#run({
+\   'source': "sed '/^\\!/d;s/\t.*//' " . join(tagfiles()) . ' | uniq',
+\   'sink':   'tag',
+\ })
+nnoremap <Leader>t :FZFTags<cr>
+command! FZFTagFile call fzf#run({
+\   'source': "cat " . tagfiles()[0] . ' | grep "' . expand('%:@') . '"' . " | sed -e '/^\\!/d;s/\t.*//' ". ' |  uniq',
+\   'sink':   'tag',
+\   'options':  '+m',
+\   'left':     60,
+\ })
+function! s:line_handler(l)
+  let keys = split(a:l, ':\t')
+  exec 'buf' keys[0]
+  exec keys[1]
+  normal! ^zz
+endfunction
+
+function! s:buffer_lines()
+  let res = []
+  for b in filter(range(1, bufnr('$')), 'buflisted(v:val)')
+    call extend(res, map(getbufline(b,0,"$"), 'b . ":\t" . (v:key + 1) . ":\t" . v:val '))
+  endfor
+  return res
+endfunction
+
+command! FZFLines call fzf#run({
+\   'source':  <sid>buffer_lines(),
+\   'sink':    function('<sid>line_handler'),
+\   'options': '--extended --nth=3..',
+\   'down':    '60%'
+\})
+nnoremap <silent> <Leader>l :FZFLines<cr>
+function! s:ag_handler(lines)
+  if len(a:lines) < 2 | return | endif
+
+  let [key, line] = a:lines[0:1]
+  let [file, line, col] = split(line, ':')[0:2]
+  let cmd = get({'ctrl-x': 'split', 'ctrl-v': 'vertical split', 'ctrl-t': 'tabe'}, key, 'e')
+  execute cmd escape(file, ' %#\')
+  execute line
+  execute 'normal!' col.'|zz'
+endfunction
+
+command! -nargs=1 FZFAg call fzf#run({
+\ 'source':  'ag --nogroup --column --color "'.escape(<q-args>, '"\').'"',
+\ 'sink*':    function('<sid>ag_handler'),
+\ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --no-multi',
+\ 'down':    '50%'
+\ })
+nnoremap <Leader>a :FZFAg
+cnoremap <silent> <c-l> <c-\>eGetCompletions()<cr>
+"add an extra <cr> at the end of this line to automatically accept the fzf-selected completions.
+
+function! Lister()
+    call extend(g:FZF_Cmd_Completion_Pre_List,split(getcmdline(),'\(\\\zs\)\@<!\& '))
+endfunction
+
+function! CmdLineDirComplete(prefix, options, rawdir)
+    let l:dirprefix = matchstr(a:rawdir,"^.*/")
+    if isdirectory(expand(l:dirprefix))
+        return join(a:prefix + map(fzf#run({
+                    \'options': a:options . ' --select-1  --query=' .
+                    \ a:rawdir[matchend(a:rawdir,"^.*/"):len(a:rawdir)],
+                    \'dir': expand(l:dirprefix)
+                    \}),
+                    \'"' . escape(l:dirprefix, " ") . '" . escape(v:val, " ")'))
+    else
+        return join(a:prefix + map(fzf#run({
+                    \'options': a:options . ' --query='. a:rawdir }),
+                    \'escape(v:val, " ")'))
+        "dropped --select-1 to speed things up on a long query
+endfunction
+
+function! GetCompletions()
+    let g:FZF_Cmd_Completion_Pre_List = []
+    let l:cmdline_list = split(getcmdline(), '\(\\\zs\)\@<!\& ', 1)
+    let l:Prefix = l:cmdline_list[0:-2]
+    execute "silent normal! :" . getcmdline() . "\<c-a>\<c-\>eLister()\<cr>\<c-c>"
+    let l:FZF_Cmd_Completion_List = g:FZF_Cmd_Completion_Pre_List[len(l:Prefix):-1]
+    unlet g:FZF_Cmd_Completion_Pre_List
+    if len(l:Prefix) > 0 && l:Prefix[0] =~
+                \ '^ed\=i\=t\=$\|^spl\=i\=t\=$\|^tabed\=i\=t\=$\|^arged\=i\=t\=$\|^vsp\=l\=i\=t\=$'
+                "single-argument file commands
+        return CmdLineDirComplete(l:Prefix, "",l:cmdline_list[-1])
+    elseif len(l:Prefix) > 0 && l:Prefix[0] =~
+                \ '^arg\=s\=$\|^ne\=x\=t\=$\|^sne\=x\=t\=$\|^argad\=d\=$'
+                "multi-argument file commands
+        return CmdLineDirComplete(l:Prefix, '--multi', l:cmdline_list[-1])
+    else
+        return join(l:Prefix + fzf#run({
+                    \'source':l:FZF_Cmd_Completion_List,
+                    \'options': '--select-1 --query='.shellescape(l:cmdline_list[-1])
+                    \}))
+    endif
+endfunction

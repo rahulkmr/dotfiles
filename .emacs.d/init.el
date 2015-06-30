@@ -108,7 +108,7 @@
                           (insert-char "3bb")))
 
 (global-set-key "\C-cn" 'windmove-down)
-(global-set-key "\C-cp" 'windmove-up)
+(global-set-key "\C-cu" 'windmove-up)
 (global-set-key "\C-cf" 'windmove-right)
 (global-set-key "\C-cb" 'windmove-left)
 

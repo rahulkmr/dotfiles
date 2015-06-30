@@ -1,6 +1,6 @@
 [user]
     name = Rahul Kumar
-    email = rahulsinner@gmail.com
+    email = rahul@thoughtnirvana.com
 [alias]
     l = log --stat --decorate --graph
     co = checkout
