@@ -125,8 +125,3 @@ XTerm*disallowedWindowOps: 20,21,SetXprop
 *.color19:      base02
 *.color20:      base04
 *.color21:      base06
-
-! XTerm*background: white
-! XTerm*foreground: black
-! XTerm*pointerColor: red
-! XTerm*pointerColorBackground: black
