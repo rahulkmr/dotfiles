@@ -128,7 +128,7 @@ Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-dispatch'
 Plug 'vim-scripts/gtags.vim'
-Plug 'tpope/vim-markdown'
+" Plug 'tpope/vim-markdown'
 Plug 'Lokaltog/vim-distinguished'
 Plug 'Shougo/unite.vim'
 Plug 'bling/vim-airline'
@@ -188,13 +188,14 @@ Plug 'wting/rust.vim'
 Plug 'tpope/vim-sleuth'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 Plug 'JuliaLang/julia-vim'
+Plug 'dhruvasagar/vim-table-mode'
+Plug 'plasticboy/vim-markdown'
 " Plug 'edkolev/tmuxline.vim'
 " Plug 'edkolev/promptline.vim'
 " Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 
 
 call plug#end()
-
 
 if has("gui_running")
     set background=dark
@@ -258,6 +259,13 @@ endfunction
 
 command! Lexplore :call s:layout_netrw_split()
 
+fun! s:section(char)
+  let length = strlen(getline("."))
+  execute "normal k" . length . "i" . a:char
+  execute "normal jj" . length . "i" . a:char
+endfun
+command -nargs=1 K :call s:section(<q-args>)
+
 function! UnhighlightMerlinIfDefined()
   if exists(":MerlinClearEnclosing")
     execute "MerlinClearEnclosing"
@@ -270,7 +278,7 @@ augroup global
     autocmd BufNewFile,BufRead *.slim set filetype=slim
     " au BufNewFile,BufRead * call PareditInitBuffer()
     " let g:paredit_leader = '\'
-    autocmd FileType racket nnoremap<buffer> ,x :w<CR>:!/usr/bin/env racket %
+    autocmd FileType racket nnoremap<buffer> <Space>x :w<CR>:!/usr/bin/env racket %
     autocmd FileType *.cljs set ft=clojure
     au BufRead,BufNewFile *.less set ft=less syntax=less
     au BufNewFile,BufRead *.go set ft=go
@@ -278,8 +286,8 @@ augroup global
 
     " normal mode mappings
     " ctags
-    nnoremap \c :!ctags -R .<CR>
-    nnoremap \rc :!ctags --extra=+f --exclude=.git --exclude=log -R . `rvm gemdir`/gems/* `rvm gemdir`/bundler/gems/*<CR>
+    nnoremap <Space>c :!ctags -R .<CR>
+    nnoremap <Space>rc :!ctags --extra=+f --exclude=.git --exclude=log -R . `rvm gemdir`/gems/* `rvm gemdir`/bundler/gems/*<CR>
 
     " search and center the search result.
     nnoremap <silent> n nzz
@@ -290,11 +298,11 @@ augroup global
     nnoremap <silent> g# g#zz
 
     " misc mappings
-    nnoremap ,c :w<CR>:make<CR>
-    nnoremap \i :cclose<CR>:pclose<CR>:lclose<CR>
-    nnoremap ,m :TOhtml<CR>
-    nnoremap ,w :%s/\s\+$//<cr>:let @/=''<CR>
-    nnoremap ,a :reg [0123456789"]<CR>
+    nnoremap <Space>m :w<CR>:make<CR>
+    nnoremap <Space>i :cclose<CR>:pclose<CR>:lclose<CR>
+    " nnoremap ,m :TOhtml<CR>
+    nnoremap <Space>w :%s/\s\+$//<cr>:let @/=''<CR>
+    nnoremap <Space>a :reg [0123456789"]<CR>
     nnoremap <C-l> :nohl<cr>:call UnhighlightMerlinIfDefined()<cr><c-l>
     nnoremap <C-x>u :update<cr>
     nnoremap <C-x>l :wa<cr>
@@ -309,10 +317,10 @@ augroup global
     vnoremap ? ?\v
 
     " set filetypes
-    nnoremap ,dj :set filetype=django<CR>
-    nnoremap ,jj :set filetype=jinja<CR>
-    nnoremap ,hd :set filetype=htmldjango<CR>
-    nnoremap ,hj :set filetype=htmljinja<CR>
+    nnoremap <Space>dj :set filetype=django<CR>
+    nnoremap <Space>jj :set filetype=jinja<CR>
+    nnoremap <Space>hd :set filetype=htmldjango<CR>
+    nnoremap <Space>hj :set filetype=htmljinja<CR>
 
     " windows splits
     " nnoremap \v <C-w>v<C-w>l
@@ -325,8 +333,8 @@ augroup global
     nnoremap <c-w><c-k> :bd!<cr>
 
     " source .vimrc/load it
-    nnoremap ,v :e ~/.vimrc<CR>
-    nnoremap ,V :so ~/.vimrc<CR>
+    nnoremap <Space>v :e ~/.vimrc<CR>
+    nnoremap <Space>V :so ~/.vimrc<CR>
 
     " template shortcuts
     nnoremap <C-x>1 Ea %><Esc>BBi<% <Esc>
@@ -335,16 +343,16 @@ augroup global
     nnoremap <C-x>4 Ea }}<Esc>BBi{{ <Esc>
 
     " plugin mappings
-    nnoremap ,g :GundoToggle<CR>
-    nnoremap ,r :NERDTreeFind<CR><c-w><c-w>
+    nnoremap <Space>g :GundoToggle<CR>
+    nnoremap <Space>r :NERDTreeFind<CR><c-w><c-w>
     nnoremap <c-y> :CtrlPCurWD<CR>
     nnoremap <c-u> :CtrlPBuffer<CR>
     nnoremap <c-x>v :!gnome-open %<cr>
-    nnoremap ,f :RecoverPluginFinish<CR>
+    nnoremap <Space>f :RecoverPluginFinish<CR>
     " nnoremap ,t :NERDTreeToggle<CR>
-    nnoremap ,t :Lexplore<CR>
+    nnoremap <Space>t :Lexplore<CR>
     "nnoremap \t :Ve<CR><CR>
-    nnoremap ,l :TagbarToggle<CR>
+    nnoremap <Space>l :TagbarToggle<CR>
     nnoremap do :diffget<cr>
 
     " insert mode mappings
@@ -409,7 +417,7 @@ augroup global
     noremap!        <M-n> <Down>
     noremap!        <M-p> <Up>
 
-    nnoremap \e :Errors<cr>
+    nnoremap <Space>e :Errors<cr>
 augroup end
 
 set noautochdir
@@ -419,7 +427,7 @@ augroup chicken
     au!
     let g:is_chicken=1
     " au BufNewFile,BufRead *.ss call PareditInitBuffer()
-    autocmd FileType scheme nnoremap<buffer> ,x :w<CR>:!/usr/bin/env csi -s %
+    autocmd FileType scheme nnoremap<buffer> <Space>x :w<CR>:!/usr/bin/env csi -s %
     au FileType scheme setlocal makeprg=csc\ -check-syntax\ %:p
     au FileType scheme setl dictionary+=~/.vim/scheme-word-list
     au FileType scheme setl include=\^\(\\(use\\\|require-extension\\)\\s\\+
@@ -434,7 +442,7 @@ augroup end
 
 augroup python
     au!
-    autocmd FileType python nnoremap<buffer> ,x :w<CR>:!/usr/bin/env python %
+    autocmd FileType python nnoremap<buffer> <Space>x :w<CR>:!/usr/bin/env python %
     autocmd FileType python setlocal nosmartindent
     autocmd FileType python setlocal makeprg=pylint\ --reports=n\ --output-format=parseable\ %:p
     autocmd FileType python setlocal errorformat=%f:%l:\ %m
@@ -450,16 +458,16 @@ augroup go
     au!
     autocmd FileType go setlocal noexpandtab
     autocmd FileType go setlocal makeprg=go\ build\ %
-    autocmd FileType go nnoremap<buffer> ,x :w<CR>:!go run %
-    autocmd FileType go nnoremap<buffer> ,o :w<CR>:!go fmt %<cr>
-    autocmd FileType go nnoremap<buffer> ,i :w<CR>:!go install
-    autocmd FileType go nnoremap<buffer> ,e :w<CR>:!go clean<cr>
+    autocmd FileType go nnoremap<buffer> <Space>x :w<CR>:!go run %
+    autocmd FileType go nnoremap<buffer> <Space>o :w<CR>:!go fmt %<cr>
+    autocmd FileType go nnoremap<buffer> <Space>i :w<CR>:!go install
+    autocmd FileType go nnoremap<buffer> <Space>e :w<CR>:!go clean<cr>
 augroup end
 
 
 augroup perl
     au!
-    autocmd FileType perl nnoremap<buffer>  ,x :w<CR>:!/usr/bin/env perl %
+    autocmd FileType perl nnoremap<buffer>  <Space>x :w<CR>:!/usr/bin/env perl %
     autocmd FileType perl setlocal path+=$PERLDIRS
     autocmd FileType perl setlocal makeprg=/usr/bin/env\ perl\ -c\ %
 augroup end
@@ -470,7 +478,7 @@ augroup c
     "autocmd FileType c setlocal makeprg=clang\ -fsyntax-only\ %
     " autocmd FileType c setlocal makeprg=clang\ -g\ -c\ %
     " autocmd FileType cpp setlocal makeprg=clang\ -g\ -I/usr/local/include/SDL2\ -c\ %
-    autocmd FileType c,cpp nnoremap<buffer> ,x :!./%
+    autocmd FileType c,cpp nnoremap<buffer> <Space>x :!./%
 augroup end
 
 
@@ -496,8 +504,8 @@ augroup fsharp
     autocmd FileType fsharp set softtabstop=4
     autocmd FileType fsharp set expandtab        " expand tabs to spaces
     autocmd FileType fsharp setlocal makeprg=fsc_sh\ %
-    autocmd FileType fsharp nnoremap<buffer> ,c :w<CR>:make<CR>
-    autocmd FileType fsharp nnoremap<buffer> ,x :!./%.exe
+    autocmd FileType fsharp nnoremap<buffer> <Space>m :w<CR>:make<CR>
+    autocmd FileType fsharp nnoremap<buffer> <Space>x :!./%.exe
 augroup end
 
 let g:ragtag_global_maps = 1
@@ -510,7 +518,7 @@ let g:rubycomplete_include_object = 1
 let g:rubycomplete_include_objectspace = 1
 augroup ruby
     au!
-    autocmd FileType ruby nnoremap<buffer>  ,x :w<CR>:!ruby %
+    autocmd FileType ruby nnoremap<buffer>  <Space>x :w<CR>:!ruby %
     " autocmd FileType ruby setlocal makeprg=ruby\ -c\ %
     autocmd FileType ruby setlocal ts=2 sts=2 sw=2
 augroup end
@@ -519,23 +527,23 @@ augroup end
 augroup java
     au!
     " Mappings for eclim.
-    autocmd FileType java nnoremap<buffer> \jg :JavaGet<CR>
-    autocmd FileType java nnoremap<buffer> \js :JavaSet<CR>
-    autocmd FileType java nnoremap<buffer> \ja :JavaGetSet<CR>
-    autocmd FileType java nnoremap<buffer> \jc :JavaConstructor<CR>
-    autocmd FileType java nnoremap<buffer> \jh :JavaHierarchy<CR>
-    autocmd FileType java nnoremap<buffer> \jl :JavaImpl<CR>
-    autocmd FileType java nnoremap<buffer> \jd :JavaDelegate<CR>
-    autocmd FileType java nnoremap<buffer> \ji :JavaImport<CR>
-    autocmd FileType java nnoremap<buffer> \jm :w<CR>:JavaImportMissing<CR>:w<CR>
-    autocmd FileType java nnoremap<buffer> \jj :JavaSearchContext<CR>
-    autocmd FileType java nnoremap<buffer> \jx :Java %<CR>
-    autocmd FileType java nnoremap<buffer> \jo :w<CR>:Javac<CR>
-    autocmd FileType java nnoremap<buffer> \jv :w<CR>:Validate<CR>
-    autocmd FileType java nnoremap<buffer> \jt :JavaCorrect<CR>
-    autocmd FileType java nnoremap<buffer> \jr :JavaRename
-    autocmd FileType java nnoremap<buffer> \jw :JavaDocComment<CR>
-    autocmd FileType java nnoremap<buffer> \jf :w<CR>:%JavaFormat<CR>
+    autocmd FileType java nnoremap<buffer> <Space>jg :JavaGet<CR>
+    autocmd FileType java nnoremap<buffer> <Space>js :JavaSet<CR>
+    autocmd FileType java nnoremap<buffer> <Space>ja :JavaGetSet<CR>
+    autocmd FileType java nnoremap<buffer> <Space>jc :JavaConstructor<CR>
+    autocmd FileType java nnoremap<buffer> <Space>jh :JavaHierarchy<CR>
+    autocmd FileType java nnoremap<buffer> <Space>jl :JavaImpl<CR>
+    autocmd FileType java nnoremap<buffer> <Space>jd :JavaDelegate<CR>
+    autocmd FileType java nnoremap<buffer> <Space>ji :JavaImport<CR>
+    autocmd FileType java nnoremap<buffer> <Space>jm :w<CR>:JavaImportMissing<CR>:w<CR>
+    autocmd FileType java nnoremap<buffer> <Space>jj :JavaSearchContext<CR>
+    autocmd FileType java nnoremap<buffer> <Space>jx :Java %<CR>
+    autocmd FileType java nnoremap<buffer> <Space>jo :w<CR>:Javac<CR>
+    autocmd FileType java nnoremap<buffer> <Space>jv :w<CR>:Validate<CR>
+    autocmd FileType java nnoremap<buffer> <Space>jt :JavaCorrect<CR>
+    autocmd FileType java nnoremap<buffer> <Space>jr :JavaRename
+    autocmd FileType java nnoremap<buffer> <Space>jw :JavaDocComment<CR>
+    autocmd FileType java nnoremap<buffer> <Space>jf :w<CR>:%JavaFormat<CR>
 augroup end
 
 
@@ -545,8 +553,8 @@ let g:clang_snippets = 1
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
-nnoremap \g :set operatorfunc=CalcOperator<cr>g@
-vnoremap \g :<c-u>call CalcOperator(visualmode())<cr>
+nnoremap <Space>g :set operatorfunc=CalcOperator<cr>g@
+vnoremap <Space>g :<c-u>call CalcOperator(visualmode())<cr>
 
 function! CalcOperator(type)
     let saved_unnamed_register = @@
@@ -673,8 +681,8 @@ command! -bar -range Eval let b:file_name = '/tmp/temp_source_file_for_vim_eval.
 
 " nnoremap \w :Ag <cword><CR>
 
-nnoremap <silent> \f :set opfunc=<SID>AckMotion<CR>g@
-xnoremap <silent> \f :<C-U>call <SID>AckMotion(visualmode())<CR>
+nnoremap <silent> <Space>f :set opfunc=<SID>AckMotion<CR>g@
+xnoremap <silent> <Space>f :<C-U>call <SID>AckMotion(visualmode())<CR>
 
 function! s:CopyMotionForType(type)
     if a:type ==# 'v'
@@ -792,7 +800,7 @@ endif
 let g:racer_cmd = "/data/sw/racer/target/release/racer"
 let $RUST_SRC_PATH = "/data/sw/rust/src""
 
-nnoremap <silent> <Leader>u :FZF<cr>
+nnoremap <silent> <Space>u :FZF<cr>
 command! -nargs=1 Locate call fzf#run(
       \ {'source': 'locate <q-args>', 'sink': 'e', 'options': '-m'})
 function! s:buflist()
@@ -812,12 +820,12 @@ command! FZFBuf call fzf#run({
 \   'options': '+m',
 \   'down':    len(<sid>buflist()) + 2
 \ })
-nnoremap <silent> <Leader>b :FZFBuf<cr>
+nnoremap <silent> <Space>b :FZFBuf<cr>
 command! -bar FZFTags call fzf#run({
 \   'source': "sed '/^\\!/d;s/\t.*//' " . join(tagfiles()) . ' | uniq',
 \   'sink':   'tag',
 \ })
-nnoremap <Leader>t :FZFTags<cr>
+nnoremap <Space>t :FZFTags<cr>
 command! FZFTagFile call fzf#run({
 \   'source': "cat " . tagfiles()[0] . ' | grep "' . expand('%:@') . '"' . " | sed -e '/^\\!/d;s/\t.*//' ". ' |  uniq',
 \   'sink':   'tag',
@@ -845,7 +853,7 @@ command! FZFLines call fzf#run({
 \   'options': '--extended --nth=3..',
 \   'down':    '60%'
 \})
-nnoremap <silent> <Leader>l :FZFLines<cr>
+nnoremap <silent> <Space>l :FZFLines<cr>
 function! s:ag_handler(lines)
   if len(a:lines) < 2 | return | endif
 
@@ -863,7 +871,7 @@ command! -nargs=1 FZFAg call fzf#run({
 \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --no-multi',
 \ 'down':    '50%'
 \ })
-nnoremap <Leader>a :FZFAg
+nnoremap <Space>a :FZFAg
 cnoremap <silent> <c-l> <c-\>eGetCompletions()<cr>
 "add an extra <cr> at the end of this line to automatically accept the fzf-selected completions.
 
@@ -909,3 +917,8 @@ function! GetCompletions()
                     \}))
     endif
 endfunction
+
+let g:table_mode_corner_corner="+"
+let g:table_mode_header_fillchar="="
+let g:vim_markdown_folding_disabled=1
+let g:vim_markdown_math=1
