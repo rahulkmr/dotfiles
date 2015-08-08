@@ -853,11 +853,16 @@ function! s:tagopen(selection)
   execute tag_number. "tag /" . s:tagquery
 endfunction
 
-command! -nargs=1 FZFTag call fzf#run({
-\   'source': (<sid>taglist(<f-args>)),
-\   'sink': function('<sid>tagopen'),
-\ })
+function! s:tag_open(selection)
+  let parts = split(a:selection, '\t')
+  execute "edit"  parts[1]
+  execute parts[2]
+endfunction
 
+command! -nargs=? -bar FZFTag call fzf#run({
+\   'source': "awk -F'\t' '$1 ~ /<args>/{print}' " . join(tagfiles()),
+\   'sink': function('<sid>tag_open'),
+\ })
 nnoremap <Space>t :FZFTag 
 
 command! FZFTagFile call fzf#run({
