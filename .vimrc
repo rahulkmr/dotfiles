@@ -856,7 +856,7 @@ endfunction
 function! s:tag_open(selection)
   let parts = split(a:selection, '\t')
   execute "edit"  parts[1]
-  execute parts[2]
+  execute substitute(parts[2], ';"$', '', 'g')
 endfunction
 
 command! -nargs=? -bar FZFTag call fzf#run({
