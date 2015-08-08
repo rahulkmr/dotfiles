@@ -67,7 +67,6 @@ set showmatch
 " intelligent comments
 set comments=sl:/*,mb:\ *,elx:\ */
 
-" recreate tags file with F5
 " Ruler.
 set ruler<
 " Set backspace
@@ -106,6 +105,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall
 endif
 
+let mapleader = ","
 call plug#begin('~/.vim/bundle')
 Plug 'Rip-Rip/clang_complete'
 Plug 'quanganhdo/grb256'
@@ -131,6 +131,7 @@ Plug 'vim-scripts/gtags.vim'
 " Plug 'tpope/vim-markdown'
 Plug 'Lokaltog/vim-distinguished'
 Plug 'Shougo/unite.vim'
+Plug 'tsukkee/unite-tag'
 Plug 'bling/vim-airline'
 Plug 'nosami/Omnisharp'
 Plug 'jmcantrell/vim-virtualenv'
@@ -190,6 +191,8 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 Plug 'JuliaLang/julia-vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'plasticboy/vim-markdown'
+Plug 'junegunn/limelight.vim'
+Plug 'thoughtbot/vim-rspec'
 " Plug 'edkolev/tmuxline.vim'
 " Plug 'edkolev/promptline.vim'
 " Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
@@ -286,8 +289,8 @@ augroup global
 
     " normal mode mappings
     " ctags
-    nnoremap <Space>c :!ctags -R .<CR>
-    nnoremap <Space>rc :!ctags --extra=+f --exclude=.git --exclude=log -R . `rvm gemdir`/gems/* `rvm gemdir`/bundler/gems/*<CR>
+    nnoremap <Space>c :Dispatch ctags --exclude=log --exclude=.git  -R .<CR>
+    nnoremap <Space>rc :Dispatch ctags -f gemtags --exclude=.git --exclude=log -R `rvm gemdir`/gems/* `rvm gemdir`/bundler/gems/*<CR>
 
     " search and center the search result.
     nnoremap <silent> n nzz
@@ -521,6 +524,7 @@ augroup ruby
     autocmd FileType ruby nnoremap<buffer>  <Space>x :w<CR>:!ruby %
     " autocmd FileType ruby setlocal makeprg=ruby\ -c\ %
     autocmd FileType ruby setlocal ts=2 sts=2 sw=2
+    set tags+=gemtags
 augroup end
 
 
@@ -627,6 +631,7 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\v\.(exe|so|dll)$',
   \ }
 
+let g:ctrlp_extensions = ['tag']
 " The Silver Searcher
 if executable('ag')
   " Use ag over grep
@@ -679,7 +684,7 @@ command! -bar -range Eval let b:file_name = '/tmp/temp_source_file_for_vim_eval.
             \ call delete(b:file_name) |
             \ unlet b:file_name
 
-" nnoremap \w :Ag <cword><CR>
+nnoremap <Space>s :Ag <cword><CR>
 
 nnoremap <silent> <Space>f :set opfunc=<SID>AckMotion<CR>g@
 xnoremap <silent> <Space>f :<C-U>call <SID>AckMotion(visualmode())<CR>
@@ -821,17 +826,48 @@ command! FZFBuf call fzf#run({
 \   'down':    len(<sid>buflist()) + 2
 \ })
 nnoremap <silent> <Space>b :FZFBuf<cr>
-command! -bar FZFTags call fzf#run({
-\   'source': "sed '/^\\!/d;s/\t.*//' " . join(tagfiles()) . ' | uniq',
-\   'sink':   'tag',
+
+
+" command! -bar FZFTags call fzf#run({
+" \   'source': "sed '/^\\!/d;s/\t.*//' " . join(tagfiles()) . ' | uniq',
+" \   'sink':   'tag',
+" \ })
+" nnoremap <Space>t :FZFTags<cr>
+
+
+let s:tagquery = ''
+
+function! s:taglist(query)
+  redir => message
+  silent execute "ts /" . a:query
+  redir END
+  let repeated_numbers = substitute(message, '\v\s+(\d+)\s+', '\1: \1 ', 'g')
+  let result = split(repeated_numbers, '\v\d+:\s')
+  let s:tagquery = a:query
+  return result
+endfunction
+
+
+function! s:tagopen(selection)
+  let tag_number = matchstr(a:selection, '\v^\d+')
+  execute tag_number. "tag /" . s:tagquery
+endfunction
+
+command! -nargs=1 FZFTag call fzf#run({
+\   'source': (<sid>taglist(<f-args>)),
+\   'sink': function('<sid>tagopen'),
 \ })
-nnoremap <Space>t :FZFTags<cr>
+
+nnoremap <Space>t :FZFTag 
+
 command! FZFTagFile call fzf#run({
 \   'source': "cat " . tagfiles()[0] . ' | grep "' . expand('%:@') . '"' . " | sed -e '/^\\!/d;s/\t.*//' ". ' |  uniq',
 \   'sink':   'tag',
 \   'options':  '+m',
 \   'left':     60,
 \ })
+
+
 function! s:line_handler(l)
   let keys = split(a:l, ':\t')
   exec 'buf' keys[0]
@@ -871,7 +907,7 @@ command! -nargs=1 FZFAg call fzf#run({
 \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --no-multi',
 \ 'down':    '50%'
 \ })
-nnoremap <Space>a :FZFAg
+nnoremap <Space>a :FZFAg 
 cnoremap <silent> <c-l> <c-\>eGetCompletions()<cr>
 "add an extra <cr> at the end of this line to automatically accept the fzf-selected completions.
 
@@ -922,3 +958,10 @@ let g:table_mode_corner_corner="+"
 let g:table_mode_header_fillchar="="
 let g:vim_markdown_folding_disabled=1
 let g:vim_markdown_math=1
+
+" RSpec.vim mappings
+let g:rspec_command = "Dispatch rspec {spec}"
+map <Leader>n :call RunNearestSpec()<CR>
+map <Leader>a :call RunAllSpecs()<CR>
+map <Leader>f :call RunCurrentSpecFile()<CR>
+map <Leader>l :call RunLastSpec()<CR>
