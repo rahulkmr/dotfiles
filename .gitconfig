@@ -27,3 +27,5 @@
     extendRegexp = true
     lineNumber = true
 
+[init]
+	templatedir = ~/.git_template
