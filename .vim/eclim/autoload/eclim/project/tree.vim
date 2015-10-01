@@ -1,10 +1,8 @@
 " Author:  Eric Van Dewoestine
 "
-" Description: {{{
+" License: {{{
 "
-" License:
-"
-" Copyright (C) 2005 - 2012  Eric Van Dewoestine
+" Copyright (C) 2005 - 2014  Eric Van Dewoestine
 "
 " This program is free software: you can redistribute it and/or modify
 " it under the terms of the GNU General Public License as published by
@@ -29,9 +27,6 @@
         \ {'pattern': '.*', 'name': 'Tab', 'action': 'tablast | tabnew'},
         \ {'pattern': '.*', 'name': 'Edit', 'action': 'edit'},
       \ ]
-  endif
-  if !exists('g:EclimProjectTreePathEcho')
-    let g:EclimProjectTreePathEcho = 1
   endif
 " }}}
 
@@ -82,7 +77,9 @@ function! eclim#project#tree#ProjectTree(...) " {{{
     if dir == ''
       let dir = expand(name, ':p')
       if !isdirectory(dir)
-        call eclim#util#EchoWarning('Project not found: ' . name)
+        if eclim#EclimAvailable(0)
+          call eclim#util#EchoWarning('Project not found: ' . name)
+        endif
         call remove(names_copy, index)
         continue
       endif
@@ -122,8 +119,9 @@ function! eclim#project#tree#ProjectTreeToggle() " {{{
 endfunction " }}}
 
 function! eclim#project#tree#ProjectTreeOpen(display, names, dirs) " {{{
+  let expand = len(a:dirs) == 1
   let expandDir = ''
-  if g:EclimProjectTreeExpandPathOnOpen
+  if expand && g:EclimProjectTreeExpandPathOnOpen
     let expandDir = substitute(expand('%:p:h'), '\', '/', 'g')
   endif
 
@@ -140,6 +138,11 @@ function! eclim#project#tree#ProjectTreeOpen(display, names, dirs) " {{{
         exec 'let t:project_tree_id = ' .
           \ substitute(bufname(shared), g:EclimProjectTreeTitle . '\(\d\+\)', '\1', '')
       endif
+
+      if expand && expandDir != ''
+        call eclim#tree#ExpandPath(s:GetTreeTitle(), expandDir)
+      endif
+
       return
     endif
   endif
@@ -159,8 +162,6 @@ function! eclim#project#tree#ProjectTreeOpen(display, names, dirs) " {{{
       let g:EclimProjectTreeContentWincmd = 'winc l'
     endif
   endif
-
-  let expand = len(a:dirs) == 1
 
   if exists('g:TreeSettingsFunction')
     let s:TreeSettingsFunction = g:TreeSettingsFunction
@@ -434,9 +435,8 @@ function! eclim#project#tree#ProjectTreeSettings() " {{{
   augroup END
 endfunction " }}}
 
-" OpenProjectFile(cmd, file) {{{
-" Execute the supplied command in one of the main content windows.
-function! eclim#project#tree#OpenProjectFile(cmd, file)
+function! eclim#project#tree#OpenProjectFile(cmd, file) " {{{
+  " Execute the supplied command in one of the main content windows.
   if eclim#util#GoToBufferWindow(a:file)
     return
   endif
@@ -505,10 +505,9 @@ function! eclim#project#tree#InjectLinkedResources(dir, contents) " {{{
   endif
 endfunction " }}}
 
-" HorizontalContentWindow() {{{
-" Command for g:EclimProjectTreeContentWincmd used when relative to a
-" horizontal taglist window.
-function! eclim#project#tree#HorizontalContentWindow()
+function! eclim#project#tree#HorizontalContentWindow() " {{{
+  " Command for g:EclimProjectTreeContentWincmd used when relative to a
+  " horizontal taglist window.
   winc k
   if exists('g:TagList_title') && bufname(bufnr('%')) == g:TagList_title
     winc k

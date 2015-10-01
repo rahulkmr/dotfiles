@@ -5,7 +5,7 @@
 "
 " License:
 "
-" Copyright (C) 2005 - 2013  Eric Van Dewoestine
+" Copyright (C) 2005 - 2014  Eric Van Dewoestine
 "
 " This program is free software: you can redistribute it and/or modify
 " it under the terms of the GNU General Public License as published by
@@ -67,7 +67,12 @@ function! eclim#java#impl#Constructor(first, last, bang) " {{{
     let command .= ' -s'
   endif
   if len(properties) > 0
-    let command .= ' -r ''' . substitute(string(properties), "'", '"', 'g') . ''''
+    let json = substitute(string(properties), "'", '"', 'g')
+    if has('win32') || has('win64')
+      let command .= ' -r "' . json . '"'
+    else
+      let command .= " -r '" . json . "'"
+    endif
   endif
 
   let result = eclim#Execute(command)
@@ -292,6 +297,8 @@ function! eclim#java#impl#Add(command, function, visual) " {{{
 endfunction " }}}
 
 function! eclim#java#impl#Window(command, name) " {{{
+  let matches = matchlist(a:command, '-o \([0-9]*\)')
+  let offset = len(matches) > 1 ? matches[1] : 0
   let name = eclim#project#util#GetProjectRelativeFilePath() . '_' . a:name
   let project = eclim#project#util#GetCurrentProjectName()
   let result = eclim#Execute(a:command, {'project': project})
@@ -318,12 +325,17 @@ function! eclim#java#impl#Window(command, name) " {{{
   call eclim#util#TempWindow(name, content, {'preserveCursor': 1})
   setlocal ft=java
   call eclim#java#impl#ImplWindowFolding()
+  let b:eclim_offset = offset
   return 1
 endfunction " }}}
 
 function! s:AddImpl(visual) " {{{
+  let command = s:command_impl_insert
+  if g:EclimJavaImplInsertAtCursor
+    let command .= ' -o ' . b:eclim_offset
+  endif
   call eclim#java#impl#Add
-    \ (s:command_impl_insert, function("eclim#java#impl#ImplWindow"), a:visual)
+    \ (command, function("eclim#java#impl#ImplWindow"), a:visual)
 endfunction " }}}
 
 function! s:AddDelegate(visual) " {{{

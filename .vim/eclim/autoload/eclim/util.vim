@@ -2,7 +2,7 @@
 "
 " License: {{{
 "
-" Copyright (C) 2005 - 2013  Eric Van Dewoestine
+" Copyright (C) 2005 - 2014  Eric Van Dewoestine
 "
 " This program is free software: you can redistribute it and/or modify
 " it under the terms of the GNU General Public License as published by
@@ -32,6 +32,15 @@
   let s:show_current_error_displaying = 0
 
   let s:command_setting = '-command setting -s <setting>'
+
+  let s:log_levels = {
+      \ 'trace': 5,
+      \ 'debug': 4,
+      \ 'info': 3,
+      \ 'warning': 2,
+      \ 'error': 1,
+      \ 'off': 0,
+    \ }
 " }}}
 
 " Balloon(message) {{{
@@ -83,50 +92,42 @@ function! eclim#util#DelayedCommand(command, ...)
   exec 'augroup END'
 endfunction " }}}
 
-" EchoTrace(message, [time_elapsed]) {{{
-function! eclim#util#EchoTrace(message, ...)
+function! eclim#util#EchoTrace(message, ...) " {{{
+  " Optional args:
+  "   time_elapsed
+  let message = a:message
   if a:0 > 0
-    call s:EchoLevel('(' . a:1 . 's) ' . a:message, 6, g:EclimTraceHighlight)
-  else
-    call s:EchoLevel(a:message, 6, g:EclimTraceHighlight)
+    let message = '(' . a:1 . 's) ' . message
   endif
+  call s:EchoLevel(message, 'trace', g:EclimHighlightTrace)
 endfunction " }}}
 
-" EchoDebug(message) {{{
-function! eclim#util#EchoDebug(message)
-  call s:EchoLevel(a:message, 5, g:EclimDebugHighlight)
+function! eclim#util#EchoDebug(message) " {{{
+  call s:EchoLevel(a:message, 'debug', g:EclimHighlightDebug)
 endfunction " }}}
 
-" EchoInfo(message) {{{
-function! eclim#util#EchoInfo(message)
-  call s:EchoLevel(a:message, 4, g:EclimInfoHighlight)
+function! eclim#util#EchoInfo(message) " {{{
+  call s:EchoLevel(a:message, 'info', g:EclimHighlightInfo)
 endfunction " }}}
 
-" EchoWarning(message) {{{
-function! eclim#util#EchoWarning(message)
-  call s:EchoLevel(a:message, 3, g:EclimWarningHighlight)
+function! eclim#util#EchoWarning(message) " {{{
+  call s:EchoLevel(a:message, 'warning', g:EclimHighlightWarning)
 endfunction " }}}
 
-" EchoError(message) {{{
-function! eclim#util#EchoError(message)
-  call s:EchoLevel(a:message, 2, g:EclimErrorHighlight)
+function! eclim#util#EchoError(message) " {{{
+  call s:EchoLevel(a:message, 'error', g:EclimHighlightError)
 endfunction " }}}
 
-" EchoFatal(message) {{{
-function! eclim#util#EchoFatal(message)
-  call s:EchoLevel(a:message, 1, g:EclimFatalHighlight)
-endfunction " }}}
+function! s:EchoLevel(message, level, highlight) " {{{
+  " Echos the supplied message at the supplied level with the specified
+  " highlight.
 
-" s:EchoLevel(message) {{{
-" Echos the supplied message at the supplied level with the specified
-" highlight.
-function! s:EchoLevel(message, level, highlight)
   " don't echo if the message is 0, which signals an eclim#Execute failure.
   if type(a:message) == g:NUMBER_TYPE && a:message == 0
     return
   endif
 
-  if g:EclimLogLevel < a:level
+  if s:log_levels[g:EclimLogLevel] < s:log_levels[a:level] && !&verbose
     return
   endif
 
@@ -138,24 +139,35 @@ function! s:EchoLevel(message, level, highlight)
 
   exec "echohl " . a:highlight
   redraw
-  if mode() == 'n'
+  if mode() == 'n' || mode() == 'c' || s:log_levels[a:level] > s:log_levels['info']
+    " Note: in command mode, the message won't display, but the user can view
+    " it using :messages
     for line in messages
       echom line
     endfor
   else
     " if we aren't in normal mode then use regular 'echo' since echom
     " messages won't be displayed while the current mode is displayed in
-    " vim's command line.
+    " vim's command line (but still use echom above for debug/verbose messages
+    " so the user can get at them with :messages).
     echo join(messages, "\n") . "\n"
   endif
   echohl None
 endfunction " }}}
 
-" Echo(message) {{{
-" Echos a message using the info highlight regardless of what log level is set.
-function! eclim#util#Echo(message)
-  if a:message != "0" && g:EclimLogLevel > 0
-    exec "echohl " . g:EclimInfoHighlight
+function! eclim#util#Echo(message) " {{{
+  " Echos a message using the info highlight regardless of what log level is set.
+  call s:EchoHighlight(a:message, g:EclimHighlightInfo)
+endfunction " }}}
+
+function! eclim#util#EchoSuccess(message) " {{{
+  " Echos a message using the 'success' highlight regardless log level
+    call s:EchoHighlight(a:message, g:EclimHighlightSuccess)
+endfunction " }}}
+
+function! s:EchoHighlight(message, highlight) " {{{
+  if a:message != "0"
+    exec "echohl " . a:highlight
     redraw
     for line in split(a:message, '\n')
       echom line
@@ -527,22 +539,68 @@ function! eclim#util#GoToBufferWindow(buf)
     let winnr = bufwinnr(bufnr('^' . name . '$'))
   endif
   if winnr != -1
-    exec winnr . "winc w"
-    call eclim#util#DelayedCommand('doautocmd WinEnter')
+    if winnr != winnr()
+      exec winnr . "winc w"
+      call eclim#util#DelayedCommand('doautocmd WinEnter')
+    endif
     return 1
   endif
   return 0
 endfunction " }}}
 
-" GoToBufferWindowOrOpen(name, cmd) {{{
-" Gives focus to the window containing the buffer for the supplied file, or if
-" none, opens the file using the supplied command.
-function! eclim#util#GoToBufferWindowOrOpen(name, cmd)
+function! eclim#util#GoToBufferWindowOrOpen(name, cmd, ...) " {{{
+  " Gives focus to the window containing the buffer for the supplied file, or if
+  " none, opens the file using the supplied command.
+  " Optional args:
+  "   line: the line number to jump to in the file
+  "   column: the column number to jump to in the file
+
   let name = eclim#util#EscapeBufferName(a:name)
+  let line = a:0 ? a:1 : 0
+  let col = a:0 ? a:2 : 0
   let winnr = bufwinnr(bufnr('^' . name . '$'))
   if winnr != -1
-    exec winnr . "winc w"
-    call eclim#util#DelayedCommand('doautocmd WinEnter')
+    if winnr != winnr()
+      exec winnr . "winc w"
+      call eclim#util#DelayedCommand('doautocmd WinEnter')
+    endif
+
+    " set the cursor line mark if we plan on moving the cursor
+    if line
+      mark '
+    endif
+  else
+    let cmd = a:cmd
+    " if splitting and the buffer is a unamed empty buffer, then switch to an
+    " edit.
+    if cmd == 'split' && expand('%') == '' &&
+     \ !&modified && line('$') == 1 && getline(1) == ''
+      let cmd = 'edit'
+    endif
+    exec cmd . ' ' . escape(eclim#util#Simplify(a:name), ' ')
+  endif
+  call cursor(line, col)
+endfunction " }}}
+
+" GoToTabAwareBufferWindowOrOpen(name, cmd) {{{
+" Gives focus to the window containing the buffer for the supplied file even
+" if it is in a different tab. If none is found, then opens the file using the
+" supplied command.
+function! eclim#util#GoToTabAwareBufferWindowOrOpen(name, cmd)
+  let name = eclim#util#EscapeBufferName(a:name)
+  let bufnr = bufnr('^' . name . '$')
+  if bufnr != -1
+    try 
+      " Backup switchbuf option before resetting it
+      let old_switchbuf = &switchbuf
+      exec 'set switchbuf=usetab,newtab'
+
+      exec 'sb ' . bufnr
+      call eclim#util#DelayedCommand('doautocmd WinEnter')
+    finally 
+      " Restore switchbuf option to original value
+      let &switchbuf = old_switchbuf
+    endtry
   else
     let cmd = a:cmd
     " if splitting and the buffer is a unamed empty buffer, then switch to an
@@ -604,19 +662,29 @@ function! eclim#util#ListContains(list, element)
   return 0
 endfunction " }}}
 
+function! eclim#util#ListDedupe(list) " {{{
+  " assumes the list is presorted.
+  if exists('*uniq')
+    return uniq(copy(a:list))
+  endif
+  return filter(copy(a:list), 'index(a:list, v:val, v:key + 1) == -1')
+endfunction " }}}
+
 function! eclim#util#Make(bang, args) " {{{
   " Executes make using the supplied arguments.
 
-  " tpope/vim-rake/plugin/rake.vim will execute :Make if it exists, so mimic
-  " Rake's behavior here if that's the case.
-  if b:current_compiler == 'rake'
-    " See tpope/vim-rage/plugin/rake.vim s:Rake(bang,arg)
-    exec 'make! ' . a:args
-    if a:bang !=# '!'
-      exec 'cwindow'
-    endif
+  " if vim-dispatch is installed, just delegate to that.
+  if exists(':Dispatch') == 2
+    " vim-dispatch has a :Make command which doesn't really have anything to do
+    " with the build tool 'make', but is instead an upper cased async version of
+    " vim's 'make' command. Several of tpope's plugins depend on that :Make
+    " command (instead of the underlying function, or the less ambiguous
+    " :Dispatch command), so anyone else that defines such a command is shit out
+    " of luck.
+    exec 'Dispatch' . a:bang . ' _ ' . a:args
     return
   endif
+
   let makefile = findfile('makefile', '.;')
   let makefile2 = findfile('Makefile', '.;')
   if len(makefile2) > len(makefile)
@@ -660,7 +728,7 @@ function! eclim#util#MakeWithCompiler(compiler, bang, args, ...)
     exec 'compiler ' . a:compiler
     let make_cmd = substitute(&makeprg, '\$\*', a:args, '')
 
-    if g:EclimMakeLCD
+    if g:EclimMakeLCD && eclim#EclimAvailable(0)
       let w:quickfix_dir = getcwd()
       let dir = eclim#project#util#GetCurrentProjectRoot()
       if dir != ''
@@ -668,8 +736,18 @@ function! eclim#util#MakeWithCompiler(compiler, bang, args, ...)
       endif
     endif
 
+    " use dispatch if available and not disabled
+    if exists(':Dispatch') == 2 && g:EclimMakeDispatchEnabled
+      call eclim#util#EchoTrace('dispatch: ' . make_cmd)
+      " since dispatch is intended to run the make cmd in the background, make
+      " sure the errorformat doesn't suppress all the non-error output so the
+      " user can see the full build output in the quickfix window.
+      let &l:errorformat=substitute(&errorformat, '\M,%-G%.%#$', '', '')
+      exec 'Dispatch' . a:bang . ' _ ' . a:args
+
     " windows machines where 'tee' is available
-    if (has('win32') || has('win64')) && (executable('tee') || executable('wtee'))
+    elseif (has('win32') || has('win64')) &&
+         \ (executable('tee') || executable('wtee'))
       doautocmd QuickFixCmdPre make
       let resultfile = eclim#util#Exec(make_cmd, 2)
       if filereadable(resultfile)
@@ -856,7 +934,9 @@ function! s:ParseLocationEntry(entry)
     let col = entry.column
     let message = entry.message
     let type = ''
-    if has_key(entry, 'warning')
+    if has_key(entry, 'type')
+      let type = entry.type[0]
+    elseif has_key(entry, 'warning')
       let type = entry.warning ? 'w' : 'e'
     endif
 
@@ -903,7 +983,7 @@ function! eclim#util#Prompt(prompt, ...)
     return remove(g:EclimTestPromptQueue, 0)
   endif
 
-  let highlight = g:EclimInfoHighlight
+  let highlight = g:EclimHighlightInfo
   if a:0 > 0
     if type(a:1) == g:FUNCREF_TYPE
       let Validator = a:1
@@ -970,19 +1050,20 @@ function! eclim#util#PromptList(prompt, list, ...)
     return -1
   endif
 
-  " only one elment, no need to choose.
+  " only one element, no need to choose.
   if len(a:list) == 1
     return 0
   endif
 
   let prompt = ""
-  let index = 0
+  let index = g:EclimPromptListStartIndex
   for item in a:list
     let prompt = prompt . index . ") " . item . "\n"
     let index = index + 1
   endfor
+  let maxindex = index - 1
 
-  exec "echohl " . (a:0 ? a:1 : g:EclimInfoHighlight)
+  exec "echohl " . (a:0 ? a:1 : g:EclimHighlightInfo)
   try
     " clear any previous messages
     redraw
@@ -994,11 +1075,12 @@ function! eclim#util#PromptList(prompt, list, ...)
       echo prompt . "\n"
       let response = input(a:prompt . ": ")
     endtry
-    while response !~ '\(^$\|^[0-9]\+$\)' ||
-        \ response < 0 ||
-        \ response > (len(a:list) - 1)
+    while response !~ '^\d*$' ||
+        \ response < g:EclimPromptListStartIndex ||
+        \ response > maxindex
       let response = input("You must choose a value between " .
-        \ 0 . " and " . (len(a:list) - 1) . ". (Ctrl-C to cancel): ")
+        \ g:EclimPromptListStartIndex . " and " . maxindex .
+        \ ". (Ctrl-C to cancel): ")
     endwhile
   finally
     echohl None
@@ -1009,7 +1091,7 @@ function! eclim#util#PromptList(prompt, list, ...)
     return -1
   endif
 
-  return response
+  return response - g:EclimPromptListStartIndex
 endfunction " }}}
 
 " PromptConfirm(prompt, [highlight]) {{{
@@ -1022,7 +1104,7 @@ function! eclim#util#PromptConfirm(prompt, ...)
     return choice =~ '\c\s*\(y\(es\)\?\)\s*'
   endif
 
-  exec "echohl " . (a:0 ? a:1 : g:EclimInfoHighlight)
+  exec "echohl " . (a:0 ? a:1 : g:EclimHighlightInfo)
   try
     " clear any previous messages
     redraw
@@ -1040,6 +1122,57 @@ function! eclim#util#PromptConfirm(prompt, ...)
   endif
 
   return response =~ '\c\s*\(y\(es\)\?\)\s*'
+endfunction " }}}
+
+function! eclim#util#Complete(start, completions) " {{{
+  " Returns 1 if completion has been setup/triggered, 0 if not (because it is
+  " active already) and any input trigger would need to be inserted by the
+  " caller.
+  if !exists('##CompleteDone')
+    call complete(a:start, a:completions)
+    return 1
+  endif
+
+  let b:eclim_complete_temp_start = a:start
+  let b:eclim_complete_temp_completions = a:completions
+
+  " If the temporary completion is active already, stop here and indicate
+  " that the trigger needs to be inserted manually by returning 0.
+  " (e.g. '{% e<BS>e' in a Django template)
+  if &completefunc == 'eclim#util#CompleteTemp'
+    return 0
+  endif
+
+  let b:eclim_complete_temp_func = &completefunc
+  let b:eclim_complete_temp_opt = &completeopt
+  augroup eclim_complete_temp
+    autocmd!
+    autocmd CompleteDone <buffer> call eclim#util#CompleteTempReset()
+  augroup END
+  setlocal completefunc=eclim#util#CompleteTemp
+  setlocal completeopt=menuone,longest
+  call feedkeys("\<c-x>\<c-u>", "n")
+  return 1
+endfunction " }}}
+
+function! eclim#util#CompleteTemp(findstart, base) " {{{
+  if a:findstart
+    " complete() is 1 based, but omni completion functions are 0 based
+    return b:eclim_complete_temp_start - 1
+  endif
+  return b:eclim_complete_temp_completions
+endfunction " }}}
+
+function! eclim#util#CompleteTempReset() " {{{
+  silent! let &completefunc = b:eclim_complete_temp_func
+  silent! let &completeopt = b:eclim_complete_temp_opt
+  silent! unlet b:eclim_complete_temp_start
+  silent! unlet b:eclim_complete_temp_completions
+  silent! unlet b:eclim_complete_temp_func
+  silent! unlet b:eclim_complete_temp_opt
+  augroup eclim_complete_temp
+    autocmd!
+  augroup END
 endfunction " }}}
 
 function! eclim#util#Reload(options) " {{{
@@ -1090,62 +1223,14 @@ function! eclim#util#SetLocationList(list, ...) " {{{
   " Sets the contents of the location list for the current window.
   " Optional args:
   "   action: The action passed to the setloclist() function call.
-  let loclist = a:list
-
-  " filter the list if the current buffer defines a list of filters.
-  if exists('b:EclimLocationListFilter')
-    let newlist = []
-    for item in loclist
-      let addit = 1
-
-      for filter in b:EclimLocationListFilter
-        if item.text =~ filter
-          let addit = 0
-          break
-        endif
-      endfor
-
-      if addit
-        call add(newlist, item)
-      endif
-    endfor
-    let loclist = newlist
-  endif
-
-  if a:0 == 0
-    call setloclist(0, loclist)
-  else
-    call setloclist(0, loclist, a:1)
-  endif
-
-  let projectName = eclim#project#util#GetCurrentProjectName()
-  if projectName != ''
-    " setbufvar seems to have the side affect of changing to the buffer's dir
-    " when autochdir is set.
-    let save_autochdir = &autochdir
-    set noautochdir
-
-    for item in getloclist(0)
-      call setbufvar(item.bufnr, 'eclim_project', projectName)
-    endfor
-
-    let &autochdir = save_autochdir
-  endif
-
-  if g:EclimShowCurrentError && len(loclist) > 0
-    call eclim#util#DelayedCommand('call eclim#util#ShowCurrentError()')
-  endif
-
-  let b:eclim_loclist = 1
-  call eclim#display#signs#Update()
+  call s:SetList('loclist', a:list, a:0 ? a:1 : ' ')
 endfunction " }}}
 
-" ClearLocationList([namespace, namespace, ...]) {{{
-" Clears the current location list.  Optionally 'namespace' arguments can be
-" supplied which will only clear items with text prefixed with '[namespace]'.
-" Also the special namespace 'global' may be supplied which will only remove
-" items with no namepace prefix.
-function! eclim#util#ClearLocationList(...)
+function! eclim#util#ClearLocationList(...) " {{{
+  " Clears the current location list.  Optionally 'namespace' arguments can be
+  " supplied which will only clear items with text prefixed with '[namespace]'.
+  " Also the special namespace 'global' may be supplied which will only remove
+  " items with no namepace prefix.
   if a:0 > 0
     let loclist = getloclist(0)
     if len(loclist) > 0
@@ -1172,16 +1257,24 @@ function! eclim#util#ClearLocationList(...)
   unlet! b:eclim_loclist
 endfunction " }}}
 
-" SetQuickfixList(list, [action]) {{{
-" Sets the contents of the quickfix list.
-function! eclim#util#SetQuickfixList(list, ...)
-  let qflist = a:list
-  if exists('b:EclimQuickfixFilter')
+function! eclim#util#SetQuickfixList(list, ...) " {{{
+  " Sets the contents of the quickfix list.
+  " Optional args:
+  "   action: The action to pass into vim's setqflist function
+  call s:SetList('qflist', a:list, a:0 ? a:1 : ' ')
+endfunction " }}}
+
+function! s:SetList(type, list, action) " {{{
+  " Sets the contents of the <type> list.
+  let list = a:list
+  let list_filter = a:type == 'qflist' ?
+    \ 'EclimQuickFixFilter' : 'EclimLocationListFilter'
+  if exists('b:' . list_filter)
     let newlist = []
-    for item in qflist
+    for item in list
       let addit = 1
 
-      for filter in b:EclimQuickfixFilter
+      for filter in b:{list_filter}
         if item.text =~ filter
           let addit = 0
           break
@@ -1192,22 +1285,25 @@ function! eclim#util#SetQuickfixList(list, ...)
         call add(newlist, item)
       endif
     endfor
-    let qflist = newlist
+    let list = newlist
   endif
-  if a:0 == 0
-    call setqflist(qflist)
+
+  if a:type == 'qflist'
+    call setqflist(list, a:action)
   else
-    call setqflist(qflist, a:1)
+    call setloclist(0, list, a:action)
   endif
-  if g:EclimShowCurrentError && len(qflist) > 0
+
+  if g:EclimShowCurrentError && len(list) > 0
     call eclim#util#DelayedCommand('call eclim#util#ShowCurrentError()')
   endif
+
+  let b:eclim_loclist = 1
   call eclim#display#signs#Update()
 endfunction " }}}
 
-" ShowCurrentError() {{{
-" Shows the error on the cursor line if one.
-function! eclim#util#ShowCurrentError()
+function! eclim#util#ShowCurrentError() " {{{
+  " Shows the error on the cursor line if one.
   if mode() != 'n' || expand('%') == ''
     return
   endif
@@ -1230,9 +1326,8 @@ function! eclim#util#ShowCurrentError()
   endif
 endfunction " }}}
 
-" Simplify(file) {{{
-" Simply the supplied file to the shortest valid name.
-function! eclim#util#Simplify(file)
+function! eclim#util#Simplify(file) " {{{
+  " Simply the supplied file to the shortest valid name.
   let file = a:file
 
   " Don't run simplify on url files, it will screw them up.
@@ -1387,10 +1482,19 @@ function! eclim#util#System(cmd, ...)
   return result
 endfunction " }}}
 
-" TempWindow(name, lines, [options]) {{{
-" Opens a temp window w/ the given name and contents which is readonly unless
-" specified otherwise.
-function! eclim#util#TempWindow(name, lines, ...)
+function! eclim#util#TempWindow(name, lines, ...) " {{{
+  " Opens a temp window w/ the given name and contents which is readonly unless
+  " specified otherwise.
+  " Optional Args:
+  "   options: dict of supported options
+  "     readonly (default: 1): if non-zero, the contents are readonly
+  "     orientation (default horizontal): horizontal or vertical
+  "     height (default: 10): height if horizontal
+  "     width (default: 50): width if vertical
+  "     location (default: belowright/botright): the location to open the window at.
+  "     preserveCursor: preserve the cursor position if this temp window exists
+  "                     and will be cleared before loading the new content.
+
   let options = a:0 > 0 ? a:1 : {}
   let filename = expand('%:p')
   let winnr = winnr()
@@ -1404,15 +1508,33 @@ function! eclim#util#TempWindow(name, lines, ...)
   let line = 1
   let col = 1
 
+  if get(options, 'singleWinOnly', 0)
+    if (bufnr(bufname) != -1 && bufwinnr(bufname) == -1)
+      " Pass the unescaped name as it will be escaped in the function
+      call eclim#util#DeleteBuffer(a:name)
+    endif
+  endif
+
   if bufwinnr(bufname) == -1
-    let height = get(options, 'height', 10)
-    silent! noautocmd exec "botright " . height . "sview " . name
+    let orient = get(options, 'orientation', 'horizontal')
+    if orient == 'vertical'
+      let location = get(options, 'location', 'belowright')
+      let width = get(options, 'width', 50)
+      let split_cmd = location . " vertical " . width . " sview "
+      silent! noautocmd exec "keepalt " . split_cmd . name
+    else
+      let location = get(options, 'location', 'botright')
+      let height = get(options, 'height', 10)
+      let split_cmd = location . " " . height . " sview "
+      silent! noautocmd exec "keepalt " . split_cmd . name
+    endif
+
     setlocal nowrap
     setlocal winfixheight
     setlocal noswapfile
     setlocal nobuflisted
     setlocal buftype=nofile
-    setlocal bufhidden=delete
+    setlocal bufhidden=wipe
     silent doautocmd WinEnter
   else
     let temp_winnr = bufwinnr(bufname)
@@ -1432,7 +1554,11 @@ function! eclim#util#TempWindow(name, lines, ...)
   setlocal noreadonly
   call append(1, a:lines)
   retab
+
+  let undolevels = &undolevels
+  set undolevels=-1
   silent 1,1delete _
+  let &undolevels = undolevels
 
   call cursor(line, col)
 
@@ -1457,9 +1583,10 @@ function! eclim#util#TempWindow(name, lines, ...)
   endif
 endfunction " }}}
 
-" TempWindowClear(name) {{{
-" Clears the contents of the temp window with the given name.
-function! eclim#util#TempWindowClear(name)
+function! eclim#util#TempWindowClear(name, ...) " {{{
+  " Clears the contents of the temp window with the given name.
+  " It also accepts an optional argument. If specified, the value will be
+  " treated as new content to be added to the window after clearing it.
   let name = eclim#util#EscapeBufferName(a:name)
   if bufwinnr(name) != -1
     let curwinnr = winnr()
@@ -1467,7 +1594,157 @@ function! eclim#util#TempWindowClear(name)
     setlocal modifiable
     setlocal noreadonly
     silent 1,$delete _
+
+    if a:0 == 1
+      call append(0, a:1)
+    endif
+
     exec curwinnr . "winc w"
+  endif
+endfunction " }}}
+
+function! eclim#util#FileList(name, entries, ...) " {{{
+  " Very similar to vim's location list or quickfix list, but using a named temp
+  " window and with some slightly different features.
+  " Args:
+  "   name: The name to give/display for this file list.
+  "   entries: A list of dicts containing:
+  "     filename
+  "     line (optional)
+  "     column (optional)
+  "     message (optional)
+  " Optional Args:
+  "   options: options dict that will be passed to the TempWindow call and can
+  "            also contain options for how the FileList is formatted.
+  "     group_by: list of attributes from the entry dicts to group by
+
+  let options = a:0 > 0 ? a:1 : {}
+  let entries = a:entries
+
+  if has_key(options, 'group_by')
+    let grouped = {}
+    for entry in entries
+      let group = grouped
+      let level = 1
+      for by in options.group_by
+        let by_value = entry[by]
+        if level < len(options.group_by)
+          if !has_key(group, by_value)
+            let group[by_value] = {}
+          endif
+          let group = group[by_value]
+        else
+          if !has_key(group, by_value)
+            let group[by_value] = []
+          endif
+          let entries = group[by_value]
+        endif
+        let level += 1
+      endfor
+      call add(entries, entry)
+    endfor
+
+    let entries = []
+    call s:FileListFormatGrouped(entries, grouped, 0)
+  endif
+
+  let content = []
+  for entry in entries
+    let line = ''
+    if has_key(entry, 'padding')
+      let line .= entry.padding
+    endif
+
+    if has_key(entry, 'name')
+      let line .= entry.name
+    else
+      let line .= eclim#util#Simplify(entry.filename)
+    endif
+
+    if has_key(entry, 'line')
+      let line .= '|' . entry.line
+      if has_key(entry, 'column')
+        let line .= ' col ' . entry.column
+      endif
+    endif
+
+    if has_key(entry, 'message')
+      let line .= '|' . entry.message
+    endif
+    call add(content, line)
+  endfor
+
+  let shiftwidth = &shiftwidth
+  call eclim#util#TempWindow(a:name, content, options)
+  set filetype=eclim_filelist
+  let &l:shiftwidth = shiftwidth
+  setlocal foldmethod=expr
+  setlocal foldexpr=eclim#display#fold#GetTreeFold(v:lnum)
+  setlocal foldtext=eclim#display#fold#TreeFoldText()
+  setlocal foldlevel=99
+  let b:eclim_filelist = entries
+
+  nnoremap <silent> <buffer> <cr> :call eclim#util#FileListOpenFile('edit')<cr>
+  nnoremap <silent> <buffer> s    :call eclim#util#FileListOpenFile('split')<cr>
+  nnoremap <silent> <buffer> t    :call eclim#util#FileListOpenFile('tabnew')<cr>
+
+  nnoremap <silent> <buffer> ? :call eclim#help#BufferHelp(
+    \ [
+      \ '<cr> - open the file under the cursor using :edit',
+      \ 's    - open the file under the cursor using :split',
+      \ 't    - open the file under the cursor using :tabnew',
+      \ ],
+    \ 'vertical', 40)<CR>
+endfunction " }}}
+
+function! eclim#util#FileListOpenFile(action) " {{{
+  let entry = b:eclim_filelist[line('.') - 1]
+  if has_key(entry, 'filename')
+    let filename = entry.filename
+    let line = get(entry, 'line', 0)
+    let col = get(entry, 'column', 0)
+    exec b:winnr . 'winc w'
+    call eclim#util#GoToBufferWindowOrOpen(filename, a:action, line, col)
+  endif
+endfunction " }}}
+
+function! s:FileListFormatGrouped(entries, grouped, level) " {{{
+  let keys = sort(keys(a:grouped))
+  for key in keys
+    let padding = ''
+    let index = 0
+    while index < a:level
+      let shift = 0
+      while shift < &shiftwidth
+        let padding .= ' '
+        let shift += 1
+      endwhile
+      let index += 1
+    endwhile
+
+    call add(a:entries, {'name': padding . key})
+    if type(a:grouped[key]) == g:DICT_TYPE
+      call s:FileListFormatGrouped(a:entries, a:grouped[key], a:level + 1)
+    else
+      for entry in sort(a:grouped[key])
+        let entry.padding = padding
+        let shift = 0
+        while shift < &shiftwidth
+          let entry.padding .= ' '
+          let shift += 1
+        endwhile
+        call add(a:entries, entry)
+      endfor
+    endif
+  endfor
+endfunction " }}}
+
+function! eclim#util#DeleteBuffer(name) " {{{
+  " Deletes the buffer with given name and closes window holding it.
+  let name = eclim#util#EscapeBufferName(a:name)
+  let bufnr = bufnr(name)
+  if bufnr != -1
+    exec 'bd' . bufnr
   endif
 endfunction " }}}
 
@@ -1509,9 +1786,7 @@ function! eclim#util#WillWrittenBufferClose()
   return histget("cmd") =~ s:buffer_write_closing_commands
 endfunction " }}}
 
-" CommandCompleteFile(argLead, cmdLine, cursorPos) {{{
-" Custom command completion for files.
-function! eclim#util#CommandCompleteFile(argLead, cmdLine, cursorPos)
+function! eclim#util#CommandCompleteFile(argLead, cmdLine, cursorPos) " {{{
   let cmdTail = strpart(a:cmdLine, a:cursorPos)
   let argLead = substitute(a:argLead, cmdTail . '$', '', '')
   let results = split(eclim#util#Glob(argLead . '*', 1), '\n')
@@ -1522,9 +1797,7 @@ function! eclim#util#CommandCompleteFile(argLead, cmdLine, cursorPos)
   return eclim#util#ParseCommandCompletionResults(argLead, results)
 endfunction " }}}
 
-" CommandCompleteDir(argLead, cmdLine, cursorPos) {{{
-" Custom command completion for directories.
-function! eclim#util#CommandCompleteDir(argLead, cmdLine, cursorPos)
+function! eclim#util#CommandCompleteDir(argLead, cmdLine, cursorPos) " {{{
   let cmdLine = strpart(a:cmdLine, 0, a:cursorPos)
   let args = eclim#util#ParseCmdLine(cmdLine)
   let argLead = cmdLine =~ '\s$' ? '' : args[len(args) - 1]
@@ -1544,19 +1817,40 @@ function! eclim#util#CommandCompleteDir(argLead, cmdLine, cursorPos)
   return eclim#util#ParseCommandCompletionResults(argLead, results)
 endfunction " }}}
 
-" ParseCmdLine(args) {{{
-" Parses the supplied argument line into a list of args.
-function! eclim#util#ParseCmdLine(args)
+function! eclim#util#CommandCompleteOptions(argLead, cmdLine, cursorPos, options_map) " {{{
+  let cmdLine = strpart(a:cmdLine, 0, a:cursorPos)
+  let cmdTail = strpart(a:cmdLine, a:cursorPos)
+  let argLead = substitute(a:argLead, cmdTail . '$', '', '')
+  for [key, values] in items(a:options_map)
+    if cmdLine =~ key . '\s\+[a-z]*$'
+      return filter(copy(values), 'v:val =~ "^' . argLead . '"')
+    endif
+  endfor
+  if cmdLine =~ '\s\+[-]\?$'
+    let options = keys(a:options_map)
+    let index = 0
+    for option in options
+      if a:cmdLine =~ option
+        call remove(options, index)
+      else
+        let index += 1
+      endif
+    endfor
+    return options
+  endif
+  return []
+endfunction " }}}
+
+function! eclim#util#ParseCmdLine(args) " {{{
+  " Parses the supplied argument line into a list of args.
   let args = split(a:args, '[^\\]\s\zs')
   call map(args, 'substitute(v:val, "\\([^\\\\]\\)\\s\\+$", "\\1", "")')
-
   return args
 endfunction " }}}
 
-" ParseCommandCompletionResults(args) {{{
-" Bit of a hack for vim's lack of support for escaped spaces in custom
-" completion.
-function! eclim#util#ParseCommandCompletionResults(argLead, results)
+function! eclim#util#ParseCommandCompletionResults(argLead, results) " {{{
+  " Bit of a hack for vim's lack of support for escaped spaces in custom
+  " completion.
   let results = a:results
   if stridx(a:argLead, ' ') != -1
     let removePrefix = escape(substitute(a:argLead, '\(.*\s\).*', '\1', ''), '\')
@@ -1564,5 +1858,42 @@ function! eclim#util#ParseCommandCompletionResults(argLead, results)
   endif
   return results
 endfunction " }}}
+
+function! eclim#util#ExtractCmdArgs(argline, extract) " {{{
+  " Extracts one or more args from the given argline.
+  " The 'extract' arg here is a list of args in the form '-x' where the -x arg
+  " would be extracted. You can also use the getopts like syntax of '-x:'
+  " (trailing colon) to indicate that you want the arg to the -x option to be
+  " extracted as well.
+  "
+  " Returns a tuple with a list of the extracted args and the updated argline.
+  let extract = type(a:extract) == g:LIST_TYPE ? a:extract : [a:extract]
+  let args = eclim#util#ParseCmdLine(a:argline)
+  let extracted_args = []
+  let remaining_args = []
+  let extract_next = 0
+  for arg in args
+    if extract_next
+      call add(extracted_args, arg)
+      let extract_next = 0
+      continue
+    endif
+    for e in extract
+      let has_value = 0
+      if e =~ ':$'
+        let e = e[:-2]
+        let has_value = 1
+      endif
+      if arg == e
+        call add(extracted_args, arg)
+        let extract_next = has_value
+      else
+        call add(remaining_args, arg)
+      endif
+    endfor
+  endfor
+
+  return [extracted_args, join(remaining_args)]
+endfunction "}}}
 
 " vim:ft=vim:fdm=marker

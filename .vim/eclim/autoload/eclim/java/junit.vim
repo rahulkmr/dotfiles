@@ -5,7 +5,7 @@
 "
 " License:
 "
-" Copyright (C) 2005 - 2013  Eric Van Dewoestine
+" Copyright (C) 2005 - 2014  Eric Van Dewoestine
 "
 " This program is free software: you can redistribute it and/or modify
 " it under the terms of the GNU General Public License as published by
@@ -45,6 +45,12 @@ function! eclim#java#junit#JUnit(test, bang) " {{{
     return
   endif
 
+  Validate
+  if len(filter(getloclist(0), 'v:val.type == "e"')) > 0
+    call eclim#util#EchoError('Test case contains validation errors.')
+    return
+  endif
+
   let command = s:command_junit
   let command = substitute(command, '<project>', project, '')
   if a:test != ''
@@ -62,11 +68,30 @@ function! eclim#java#junit#JUnit(test, bang) " {{{
   let curbuf = bufnr('%')
   let result = eclim#Execute(command, {'project': project, 'exec': 1, 'raw': 1})
   let results = split(substitute(result, "^\n*", '', 'g'), "\n")
-  call eclim#util#TempWindow('[JUnit Output]', results)
+  let statusLine = matchlist(result,
+    \ 'Tests run:.*Failures: \([0-9]*\), Errors: \([0-9]*\), [^\n]*sec')
+  if len(statusLine) >= 3 && statusLine[1] == '0' && statusLine[2] == '0'
+    let name = eclim#util#EscapeBufferName('[JUnit Output]')
+    if bufwinnr(name) != -1 && a:bang != '!'
+      " close existing output window; we've fixed the issue
+      let curwinnr = winnr()
+      exec bufwinnr(name) . "winc w"
+      quit
+      exec curwinnr . "winc w"
+    elseif a:bang == '!'
+      call eclim#util#TempWindow('[JUnit Output]', results)
+    endif
+    call eclim#util#EchoSuccess(statusLine[0])
+  elseif result != '0'
+    " if result == '0', then there was some error;
+    "  results won't have anything interesting anyway
+    call eclim#util#TempWindow('[JUnit Output]', results)
+  endif
   let b:project = project
 
   if exists(":JUnit") != 2
-    command -buffer -nargs=? -complete=customlist,eclim#java#junit#CommandCompleteTest
+    command -bang -buffer -nargs=?
+      \ -complete=customlist,eclim#java#junit#CommandCompleteTest
       \ JUnit :call eclim#java#junit#JUnit('<args>', '<bang>')
   endif
 
@@ -97,17 +122,9 @@ function! eclim#java#junit#JUnitFindTest() " {{{
     return
   endif
 
-  call eclim#util#SetLocationList(eclim#util#ParseLocationEntries([result]))
-  let entry = getloclist(0)[0]
-  let name = substitute(bufname(entry.bufnr), '\', '/', 'g')
-  if g:EclimJavaSearchSingleResult != 'lopen'
-    call eclim#util#GoToBufferWindowOrOpen(name, g:EclimJavaSearchSingleResult)
-    call eclim#util#SetLocationList(eclim#util#ParseLocationEntries([result]))
-    call eclim#display#signs#Update()
-    call cursor(entry.lnum, entry.col)
-  else
-    exec 'lopen ' . g:EclimLocationListHeight
-  endif
+  let name = substitute(result.filename, '\', '/', 'g')
+  call eclim#util#GoToBufferWindowOrOpen(
+    \ name, g:EclimJavaSearchSingleResult, result.line, result.column)
 endfunction " }}}
 
 function! eclim#java#junit#JUnitResult(test) " {{{
@@ -120,7 +137,7 @@ function! eclim#java#junit#JUnitResult(test) " {{{
   if path == ''
     call eclim#util#EchoWarning(
       \ "Output directory setting for 'junit' not set. " .
-      \ "Use :EclimSettings or :ProjectSettings to set it.")
+      \ "Use :WorkspaceSettings or :ProjectSettings to set it.")
     return
   endif
 
@@ -233,7 +250,7 @@ function! eclim#java#junit#CommandCompleteResult(argLead, cmdLine, cursorPos) " 
   if path == ''
     call eclim#util#EchoWarning(
       \ "Output directory setting for 'junit' not set. " .
-      \ "Use :EclimSettings or :ProjectSettings to set it.")
+      \ "Use :WorkspaceSettings or :ProjectSettings to set it.")
     return []
   endif
 

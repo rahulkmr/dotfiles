@@ -1,11 +1,8 @@
 " Author:  Eric Van Dewoestine
 "
-" Description: {{{
-"   Utility functions for working with vim windows.
+" License: {{{
 "
-" License:
-"
-" Copyright (C) 2005 - 2012  Eric Van Dewoestine
+" Copyright (C) 2005 - 2014  Eric Van Dewoestine
 "
 " This program is free software: you can redistribute it and/or modify
 " it under the terms of the GNU General Public License as published by
@@ -71,7 +68,6 @@ function! eclim#display#window#VerticalToolWindowOpen(name, weight, ...) " {{{
     endif
   endif
 
-
   let relative_window = 0
   let relative_window_loc = 'below'
   if taglist_window != -1 || len(g:VerticalToolBuffers) > 0
@@ -91,15 +87,18 @@ function! eclim#display#window#VerticalToolWindowOpen(name, weight, ...) " {{{
         elseif getbufvar(toolbuf, 'weight') > a:weight
           let relative_window = bufwinnr(toolbuf)
           let relative_window_loc = 'below'
+        elseif getbufvar(toolbuf, 'weight') < a:weight
+          let relative_window = bufwinnr(toolbuf)
+          let relative_window_loc = 'above'
         endif
       endif
     endfor
   endif
 
   if relative_window != 0
-    let wincmd = relative_window . 'winc w | ' . relative_window_loc . ' '
+    let wincmd = relative_window . 'winc w | keepalt ' . relative_window_loc . ' '
   else
-    let wincmd = g:VerticalToolWindowPosition . ' ' . g:VerticalToolWindowWidth
+    let wincmd = 'keepalt ' . g:VerticalToolWindowPosition . ' ' . g:VerticalToolWindowWidth
   endif
 
   let escaped = substitute(
@@ -136,8 +135,7 @@ function! eclim#display#window#VerticalToolWindowOpen(name, weight, ...) " {{{
    \ (!exists('g:Tlist_Use_Horiz_Window') || !g:Tlist_Use_Horiz_Window)
     augroup eclim_vertical_tool_windows_move_taglist
       autocmd!
-      exec 'autocmd BufWinEnter ' . eclim#util#EscapeBufferName(g:TagList_title) .
-        \ ' call s:MoveRelativeTo()'
+      autocmd BufWinEnter * if bufname('%') == g:TagList_title | call s:MoveRelativeTo() | endif
     augroup END
   endif
   if exists(':TagbarOpen')

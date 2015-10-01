@@ -4,7 +4,7 @@
 "
 " License:
 "
-" Copyright (C) 2005 - 2012  Eric Van Dewoestine
+" Copyright (C) 2005 - 2014  Eric Van Dewoestine
 "
 " This program is free software: you can redistribute it and/or modify
 " it under the terms of the GNU General Public License as published by
@@ -22,43 +22,63 @@
 " }}}
 
 " Global Variables {{{
-if !exists("g:EclimProjectRefreshFiles")
-  let g:EclimProjectRefreshFiles = 1
-endif
-
-if !exists("g:EclimProjectKeepLocalHistory")
-  let g:EclimProjectKeepLocalHistory = exists('g:vimplugin_running')
-endif
-
-if !exists("g:EclimProjectProblemsUpdateOnSave")
-  let g:EclimProjectProblemsUpdateOnSave = 1
-endif
-
-if !exists("g:EclimProjectProblemsUpdateOnBuild")
-  let g:EclimProjectProblemsUpdateOnBuild = 1
-endif
 
 let g:EclimProjectTreeTitle = 'ProjectTree_'
 
-if !exists('g:EclimProjectTreeAutoOpen') || exists('g:vimplugin_running')
+call eclim#AddVimSetting(
+  \ 'Core/Projects', 'g:EclimProjectTreeAutoOpen', 0,
+  \ "Determines if the project tree should be auto opened when starting\n" .
+  \ "vim or a new tab in a project context.",
+  \ '\(0\|1\)')
+if exists('g:vimplugin_running')
   let g:EclimProjectTreeAutoOpen = 0
 endif
-
-if !exists('g:EclimProjectTabTreeAutoOpen')
-  let g:EclimProjectTabTreeAutoOpen = 1
-endif
-
-if !exists('g:EclimProjectTreeExpandPathOnOpen')
-  let g:EclimProjectTreeExpandPathOnOpen = 0
-endif
-
-if !exists('g:EclimProjectTreeSharedInstance')
-  let g:EclimProjectTreeSharedInstance = 1
-endif
+call eclim#AddVimSetting(
+  \ 'Core/Projects', 'g:EclimProjectTabTreeAutoOpen', 1,
+  \ "Sets whether to auto open the project tree when using :ProjectTab\n" .
+  \ "to open a new tab.",
+  \ '\(0\|1\)')
+call eclim#AddVimSetting(
+  \ 'Core/Projects', 'g:EclimProjectTreeExpandPathOnOpen', 0,
+  \ "Whether or not to open the path to the current file when the project\n" .
+  \ "tree is first opend.",
+  \ '\(0\|1\)')
+call eclim#AddVimSetting(
+  \ 'Core/Projects', 'g:EclimProjectTreeSharedInstance', 1,
+  \ 'Sets whether to used a shared instance of the project tree per project.',
+  \ '\(0\|1\)')
+call eclim#AddVimSetting(
+  \ 'Core/Projects', 'g:EclimProjectTreePathEcho', 1,
+  \ "Should the path of the file under the cursor be echoed as you navigate\n" .
+  \ "the project tree.",
+  \ '\(0\|1\)')
 
 if g:EclimProjectTreeAutoOpen && !exists('g:EclimProjectTreeAutoOpenProjects')
   let g:EclimProjectTreeAutoOpenProjects = ['CURRENT']
 endif
+
+call eclim#AddVimSetting(
+  \ 'Core/Projects', 'g:EclimProjectRefreshFiles', 1,
+  \ 'Sets whether or not to notify eclipse of every file save in a project.',
+  \ '\(0\|1\)')
+
+call eclim#AddVimSetting(
+  \ 'Core/Projects', 'g:EclimProjectProblemsUpdateOnSave', 1,
+  \ 'Should the open :ProjectProblems window be updated when saving source files.',
+  \ '\(0\|1\)')
+call eclim#AddVimSetting(
+  \ 'Core/Projects', 'g:EclimProjectProblemsUpdateOnBuild', 1,
+  \ 'Should the open :ProjectProblems window be updated when running :ProjectBuild.',
+  \ '\(0\|1\)')
+call eclim#AddVimSetting(
+  \ 'Core/Projects', 'g:EclimProjectProblemsQuickFixOpen', 'botright copen',
+  \ 'Sets the vim command used to open the :ProjectProblems quickfix window.')
+
+call eclim#AddVimSetting(
+  \ 'Core/Projects', 'g:EclimTerminateLaunchOnBufferClosed', 1,
+  \ 'Automatically terminate a running launch started by :ProjectRun' .
+  \ ' when the buffer is closed by eg :q.',
+  \ '\(0\|1\)')
 " }}}
 
 " Auto Commands {{{
@@ -72,7 +92,7 @@ if g:EclimProjectRefreshFiles || exists('g:vimplugin_running')
   augroup END
 endif
 
-if g:EclimProjectKeepLocalHistory
+if g:EclimKeepLocalHistory
   augroup eclim_history_add
     autocmd!
     autocmd BufWritePre * call eclim#common#history#AddHistory()
@@ -108,6 +128,8 @@ if !exists(":ProjectCreate")
   command -nargs=+
     \ -complete=customlist,eclim#project#util#CommandCompleteProjectCreate
     \ ProjectCreate :call eclim#project#util#ProjectCreate('<args>')
+  command -nargs=1 -complete=dir
+    \ ProjectImportDiscover :call eclim#project#util#ProjectImportDiscover('<args>')
   command -nargs=1 -complete=dir
     \ ProjectImport :call eclim#project#util#ProjectImport('<args>')
   command -nargs=1
@@ -197,6 +219,13 @@ if !exists(":Todo")
 endif
 if !exists(":ProjectTodo")
   command -nargs=0 ProjectTodo :call eclim#project#util#ProjectTodo()
+endif
+
+if !exists(":ProjectRun")
+  " TODO I *guess* we could support cross-project and autocomplete
+  command -nargs=0 ProjectRunList :call eclim#project#run#ProjectRunList()
+  command -nargs=? -bang ProjectRun 
+      \ :call eclim#project#run#ProjectRun('<args>', '<bang>')
 endif
 " }}}
 

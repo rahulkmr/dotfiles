@@ -1,10 +1,8 @@
 " Author:  Eric Van Dewoestine
 "
-" Description: {{{
+" License: {{{
 "
-" License:
-"
-" Copyright (C) 2005 - 2012  Eric Van Dewoestine
+" Copyright (C) 2005 - 2014  Eric Van Dewoestine
 "
 " This program is free software: you can redistribute it and/or modify
 " it under the terms of the GNU General Public License as published by
@@ -30,25 +28,12 @@ augroup eclim_xml
   autocmd! BufWritePost <buffer>
 augroup END
 
-" Global Variables {{{
-if !exists('g:EclimMavenPomClasspathUpdate')
-  let g:EclimMavenPomClasspathUpdate = 1
-endif
-" }}}
-
 " Autocmds {{{
 if g:EclimMavenPomClasspathUpdate
   augroup eclim_mvn
     autocmd! BufWritePost <buffer>
     autocmd BufWritePost <buffer> call eclim#java#maven#UpdateClasspath()
   augroup END
-endif
-" }}}
-
-" Command Declarations {{{
-if !exists(":MvnDependencySearch")
-  command -nargs=1 -buffer MvnDependencySearch
-    \ :call eclim#java#maven#Search('<args>', 'mvn')
 endif
 " }}}
 
