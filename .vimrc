@@ -2,7 +2,7 @@ set undodir=~/.vim/tmp//,/var/tmp//,/tmp//,.
 set backupdir=~/.vim/tmp//,/var/tmp//,/tmp//,.
 set directory=~/.vim/tmp//,/var/tmp//,/tmp//,.
 " set backup
-set complete+=.,w,b,u,U,t,i,d,k
+set complete=.,w,b,u,U,t,i,d,k
 set completeopt=longest,menuone
 set showmode
 set gdefault
@@ -106,6 +106,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 let mapleader = ","
+let maplocalleader = ","
 call plug#begin('~/.vim/bundle')
 Plug 'Rip-Rip/clang_complete'
 Plug 'quanganhdo/grb256'
@@ -113,7 +114,6 @@ Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'altercation/vim-colors-solarized'
 Plug 'twerth/ir_black'
 Plug 'marijnh/tern_for_vim'
-Plug 'Shougo/vimproc.vim'
 Plug 'guns/vim-sexp'
 Plug 'mattn/emmet-vim'
 Plug 'rking/ag.vim'
@@ -130,7 +130,9 @@ Plug 'tpope/vim-dispatch'
 Plug 'vim-scripts/gtags.vim'
 " Plug 'tpope/vim-markdown'
 Plug 'Lokaltog/vim-distinguished'
+Plug 'Shougo/vimproc.vim'
 Plug 'Shougo/unite.vim'
+Plug 'Shougo/unite-outline'
 Plug 'tsukkee/unite-tag'
 Plug 'bling/vim-airline'
 Plug 'nosami/Omnisharp'
@@ -152,7 +154,7 @@ Plug 'tpope/vim-cucumber'
 Plug 'mileszs/ack.vim'
 Plug 'Townk/vim-autoclose'
 Plug 'kchmck/vim-coffee-script'
-Plug 'kien/ctrlp.vim'
+" Plug 'kien/ctrlp.vim'
 " Plug 'cwood/vim-django'
 Plug 'vim-scripts/emacsmode'
 Plug 'kongo2002/fsharp-vim'
@@ -188,6 +190,7 @@ Plug 'phildawes/racer'
 Plug 'wting/rust.vim'
 Plug 'tpope/vim-sleuth'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+" Plug 'junegunn/fzf.vim'
 Plug 'JuliaLang/julia-vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'plasticboy/vim-markdown'
@@ -348,12 +351,12 @@ augroup global
     " plugin mappings
     nnoremap <Space>g :GundoToggle<CR>
     nnoremap <Space>r :NERDTreeFind<CR><c-w><c-w>
-    nnoremap <c-y> :CtrlPCurWD<CR>
-    nnoremap <c-u> :CtrlPBuffer<CR>
+    " nnoremap <c-y> :CtrlPCurWD<CR>
+    " nnoremap <c-u> :CtrlPBuffer<CR>
     nnoremap <c-x>v :!gnome-open %<cr>
     nnoremap <Space>f :RecoverPluginFinish<CR>
-    " nnoremap ,t :NERDTreeToggle<CR>
-    nnoremap <Space>t :Lexplore<CR>
+    nnoremap ,t :NERDTreeToggle<CR>
+    " nnoremap <Space>t :Lexplore<CR>
     "nnoremap \t :Ve<CR><CR>
     nnoremap <Space>l :TagbarToggle<CR>
     nnoremap do :diffget<cr>
@@ -371,7 +374,7 @@ augroup global
 
     "inoremap <C-w> <C-g>u<C-w>
     "inoremap <C-u> <C-g>u<C-u>
-    inoremap \q <Esc>O
+    inoremap <Leader>q <C-o>O
     inoremap  u03bb
     inoremap <C-x>u <c-o>:update<cr>
     inoremap <C-x>w <esc>:wq<cr>
@@ -654,10 +657,15 @@ endif
 autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
 
 let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-execute "set rtp+=" . g:opamshare . "/merlin/vim"
-execute ":source " . "/home/rahul/.opam/4.01.0/share/vim/syntax/ocp-indent.vim"
-let g:syntastic_ocaml_checkers = ['merlin']
 
+if executable('ocamlmerlin') && has('python')
+  execute "set rtp+=" . g:opamshare . "/merlin/vim"
+endif
+
+autocmd FileType ocaml source /home/rahul/.opam/4.01.0/share/vim/syntax/ocp-indent.vim
+
+let g:syntastic_ocaml_checkers = ['merlin']
+let g:syntastic_python_flake8_post_args='--ignore=E501'
 
 command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
 function! QuickfixFilenames()
@@ -667,7 +675,6 @@ function! QuickfixFilenames()
     endfor
     return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
 endfunction
-
 
 let g:rails_projections = {
             \ "app/presenters/*_presenter.rb": {
@@ -781,6 +788,17 @@ let g:neocomplete#sources#omni#input_patterns.ocaml = '[^. *\t]\.\w*\|\h\w*|#'
 "    let g:neocomplcache_force_omni_patterns = {}
 "  endif
 "  let g:neocomplcache_force_omni_patterns.ocaml = '[^. *\t]\.\w*\|\h\w*|#'
+augroup ocaml
+  au!
+  autocmd Filetype ocaml nmap <buffer> <LocalLeader>mr  :MerlinRename
+  autocmd Filetype ocaml nmap <buffer> <LocalLeader>mR  :MerlinRenameAppend
+  autocmd Filetype ocaml nmap <buffer> <LocalLeader>ml  :MerlinLocate<cr>
+  autocmd Filetype ocaml nmap <buffer> <LocalLeader>mu  :MerlinOutline<cr>
+  autocmd Filetype ocaml nmap <buffer> <LocalLeader>md  :MerlinDestruct<cr>
+  autocmd Filetype ocaml nmap <buffer> <LocalLeader>>  :MerlinGrowEnclosing<cr>
+  autocmd Filetype ocaml nmap <buffer> <LocalLeader><  :MerlinShrinkEnclosing<cr>
+augroup end
+
 let g:jedi#completions_enabled=0
 
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -859,18 +877,121 @@ function! s:tag_open(selection)
   execute substitute(parts[2], ';"$', '', 'g')
 endfunction
 
-command! -nargs=? -bar FZFTag call fzf#run({
-\   'source': "awk -F'\t' '$1 ~ /<args>/{print}' " . join(tagfiles()),
-\   'sink': function('<sid>tag_open'),
-\ })
-nnoremap <Space>t :FZFTag 
+function! s:tags_sink(line)
+  let parts = split(a:line, '\t\zs')
+  let excmd = matchstr(parts[2:], '^.*\ze;"\t')
+  execute 'silent e' parts[1][:-2]
+  let [magic, &magic] = [&magic, 0]
+  execute excmd
+  let &magic = magic
+endfunction
 
+command! -nargs=? -bar FZFTag call fzf#run({
+\   'source': "awk -F'\t' '($0 \\!~ /^\\!/) && $1 ~ /<args>/{print}' " . join(tagfiles()),
+\   'sink': function('<sid>tags_sink'),
+\ })
+nnoremap <Space>t :FZFTag
+
+
+function! s:tags()
+  call fzf#run({
+  \ 'source':  'cat '.join(map(tagfiles(), 'fnamemodify(v:val, ":S")')).
+  \            '| grep -v ^!',
+  \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
+  \ 'down':    '40%',
+  \ 'sink':    function('s:tags_sink')})
+endfunction
+
+command! Tags call s:tags()
 command! FZFTagFile call fzf#run({
 \   'source': "cat " . tagfiles()[0] . ' | grep "' . expand('%:@') . '"' . " | sed -e '/^\\!/d;s/\t.*//' ". ' |  uniq',
 \   'sink':   'tag',
 \   'options':  '+m',
 \   'left':     60,
 \ })
+
+function! s:align_lists(lists)
+  let maxes = {}
+  for list in a:lists
+    let i = 0
+    while i < len(list)
+      let maxes[i] = max([get(maxes, i, 0), len(list[i])])
+      let i += 1
+    endwhile
+  endfor
+  for list in a:lists
+    call map(list, "printf('%-'.maxes[v:key].'s', v:val)")
+  endfor
+  return a:lists
+endfunction
+
+function! s:btags_source()
+  let lines = map(split(system(printf(
+    \ 'ctags -f - --sort=no --excmd=number --language-force=%s %s',
+    \ &filetype, expand('%:S'))), "\n"), 'split(v:val, "\t")')
+  if v:shell_error
+    throw 'failed to extract tags'
+  endif
+  return map(s:align_lists(lines), 'join(v:val, "\t")')
+endfunction
+
+function! s:btags_sink(line)
+  execute split(a:line, "\t")[2]
+endfunction
+
+function! s:btags()
+  try
+    call fzf#run({
+    \ 'source':  s:btags_source(),
+    \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
+    \ 'down':    '40%',
+    \ 'sink':    function('s:btags_sink')})
+  catch
+    echohl WarningMsg
+    echom v:exception
+    echohl None
+  endtry
+endfunction
+
+command! BTags call s:btags()
+nnoremap <silent> <Space>k :BTags<cr>
+
+" reverse-i-search
+function! s:get_history()
+    redir => history
+    silent! history
+    redir END
+  return map(split(history, '\n'), "strpart(v:val, 9)")
+endfunction
+
+function! s:run_ex_cmd(cmd)
+    execute a:cmd
+endfunction
+
+command! FZFCmds call fzf#run({
+    \   'source':   <sid>get_history(),
+    \   'sink':     function('<sid>run_ex_cmd'),
+    \   'options':  '-x --tac +s',
+    \   'down':     '40%'})
+nnoremap <silent> <Space>: :FZFCmds<cr>
+
+function! s:get_search_history()
+    redir => history
+    silent! history/
+    redir END
+  return map(split(history, '\n'), "strpart(v:val, 9)")
+endfunction
+
+function! s:run_search_cmd(cmd)
+    execute '/' . a:cmd
+endfunction
+
+command! FZFSearchCmds call fzf#run({
+    \   'source':   <sid>get_search_history(),
+    \   'sink':     function('<sid>run_search_cmd'),
+    \   'options':  '-x --tac +s',
+    \   'down':     '40%'})
+nnoremap <silent> <Space>/ :FZFSearchCmds<cr>
 
 
 function! s:line_handler(l)
@@ -894,7 +1015,6 @@ command! FZFLines call fzf#run({
 \   'options': '--extended --nth=3..',
 \   'down':    '60%'
 \})
-nnoremap <silent> <Space>l :FZFLines<cr>
 function! s:ag_handler(lines)
   if len(a:lines) < 2 | return | endif
 
@@ -912,7 +1032,7 @@ command! -nargs=1 FZFAg call fzf#run({
 \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --no-multi',
 \ 'down':    '50%'
 \ })
-nnoremap <Space>a :FZFAg 
+nnoremap <Space>a :FZFAg
 cnoremap <silent> <c-l> <c-\>eGetCompletions()<cr>
 "add an extra <cr> at the end of this line to automatically accept the fzf-selected completions.
 
@@ -959,14 +1079,48 @@ function! GetCompletions()
     endif
 endfunction
 
+
 let g:table_mode_corner_corner="+"
 let g:table_mode_header_fillchar="="
-let g:vim_markdown_folding_disabled=1
+let g:vim_markdown_folding_disabled=0
 let g:vim_markdown_math=1
 
 " RSpec.vim mappings
 let g:rspec_command = "Dispatch rspec {spec}"
-map <Leader>n :call RunNearestSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
-map <Leader>f :call RunCurrentSpecFile()<CR>
-map <Leader>l :call RunLastSpec()<CR>
+nnoremap <Leader>n :call RunNearestSpec()<CR>
+nnoremap <Leader>a :call RunAllSpecs()<CR>
+nnoremap <Leader>c :call RunCurrentSpecFile()<CR>
+nnoremap <Leader>l :call RunLastSpec()<CR>
+
+if has("cscope")
+    set cscopetag
+
+    " check cscope for definition of a symbol before checking ctags: set to 1
+    " if you want the reverse search order.
+    set csto=1
+
+    " add any cscope database in current directory
+    if filereadable("cscope.out")
+        cs add cscope.out
+    " else add the database pointed to by environment variable
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
+
+    " show msg when any other cscope db added
+    set cscopeverbose
+
+
+    nmap <C-@>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+    nmap <C-@>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    nmap <C-@>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+endif
+
+nnoremap <unique> <Space>o :Unite outline<cr>
+
+let g:NERDTReeIgnore = ['\.pyc$']
