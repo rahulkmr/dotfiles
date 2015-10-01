@@ -19,3 +19,9 @@ tags
 .emacs.d/archive
 .emacs.d/elpa
 .emacs.d/url
+.emacs.d/.orig-id-locations
+.emacs.d/image-dired
+.emacs.d/projectile-bookmarks.eld
+.emacs.d/projectile.cache
+.emacs.d/session.*
+.vim/.netrwbook
