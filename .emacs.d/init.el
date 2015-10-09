@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(blink-cursor-mode nil)
  '(column-number-mode t)
- '(custom-safe-themes (quote ("42ac06835f95bc0a734c21c61aeca4286ddd881793364b4e9bc2e7bb8b6cf848" "cdc7555f0b34ed32eb510be295b6b967526dd8060e5d04ff0dce719af789f8e5" "6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "405fda54905200f202dd2e6ccbf94c1b7cc1312671894bc8eca7e6ec9e8a41a2" "51bea7765ddaee2aac2983fac8099ec7d62dff47b708aa3595ad29899e9e9e44" "9bac44c2b4dfbb723906b8c491ec06801feb57aa60448d047dbfdbd1a8650897" "de2c46ed1752b0d0423cde9b6401062b67a6a1300c068d5d7f67725adc6c3afb" "f41fd682a3cd1e16796068a2ca96e82cfd274e58b978156da0acce4d56f2b0d5" "a774c5551bc56d7a9c362dca4d73a374582caedb110c201a09b410c0ebbb5e70" "11d069fbfb0510e2b32a5787e26b762898c7e480364cbc0779fe841662e4cf5d" "410c47e5b36f3beb70b165b52badc13a77dea96ecea4811ec0f53b9d300be9bf" "41b6698b5f9ab241ad6c30aea8c9f53d539e23ad4e3963abff4b57c0f8bf6730" "e53cc4144192bb4e4ed10a3fa3e7442cae4c3d231df8822f6c02f1220a0d259a" "1affe85e8ae2667fb571fc8331e1e12840746dae5c46112d5abb0c3a973f5f5a" "73fe242ddbaf2b985689e6ec12e29fab2ecd59f765453ad0e93bc502e6e478d6" "7d4d00a2c2a4bba551fcab9bfd9186abe5bfa986080947c2b99ef0b4081cb2a6" "9bcb8ee9ea34ec21272bb6a2044016902ad18646bd09fdd65abae1264d258d89" "e26780280b5248eb9b2d02a237d9941956fc94972443b0f7aeec12b5c15db9f3" "33c5a452a4095f7e4f6746b66f322ef6da0e770b76c0ed98a438e76c497040bb" "90b5269aefee2c5f4029a6a039fb53803725af6f5c96036dee5dc029ff4dff60" "0ebe0307942b6e159ab794f90a074935a18c3c688b526a2035d14db1214cf69c" "ce79400f46bd76bebeba655465f9eadf60c477bd671cbcd091fe871d58002a88" "1989847d22966b1403bab8c674354b4a2adf6e03e0ffebe097a6bd8a32be1e19" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" "4a60f0178f5cfd5eafe73e0fc2699a03da90ddb79ac6dbc73042a591ae216f03" "0f0e3af1ec61d04ff92f238b165dbc6d2a7b4ade7ed9812b4ce6b075e08f49fe" "d7f1c86b425e148be505c689fc157d96323682c947b29ef00cf57b4e4e46e6c7" "9ea054db5cdbd5baa4cda9d373a547435ba88d4e345f4b06f732edbc4f017dc3" "1f3304214265481c56341bcee387ef1abb684e4efbccebca0e120be7b1a13589" "5339210234ec915d7d3fd87bfeb506bfc436ff7277a55516ab1781ec85c57224" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "9f42bccce1e13fa5017eb8718574db099e85358b9f424db78e7318f86d1be08f" "62b86b142b243071b5adb4d48a0ab89aefd3cf79ee3adc0bb297ea873b36d23f" default)))
+ '(custom-safe-themes (quote ("11636897679ca534f0dec6f5e3cb12f28bf217a527755f6b9e744bd240ed47e1" "0240d45644b370b0518e8407f5990a243c769fb0150a7e74297e6f7052a04a72" "3328e7238e0f6d0a5e1793539dfe55c2685f24b6cdff099c9a0c185b71fbfff9" "75c0b1d2528f1bce72f53344939da57e290aa34bea79f3a1ee19d6808cb55149" "cda6cb17953b3780294fa6688b3fe0d3d12c1ef019456333e3d5af01d4d6c054" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "6ebb2401451dc6d01cd761eef8fe24812a57793c5ccc427b600893fa1d767b1d" "756597b162f1be60a12dbd52bab71d40d6a2845a3e3c2584c6573ee9c332a66e" "9f3a4edb56d094366afed2a9ba3311bbced0f32ca44a47a765d8ef4ce5b8e4ea" "42ac06835f95bc0a734c21c61aeca4286ddd881793364b4e9bc2e7bb8b6cf848" "cdc7555f0b34ed32eb510be295b6b967526dd8060e5d04ff0dce719af789f8e5" "6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "405fda54905200f202dd2e6ccbf94c1b7cc1312671894bc8eca7e6ec9e8a41a2" "51bea7765ddaee2aac2983fac8099ec7d62dff47b708aa3595ad29899e9e9e44" "9bac44c2b4dfbb723906b8c491ec06801feb57aa60448d047dbfdbd1a8650897" "de2c46ed1752b0d0423cde9b6401062b67a6a1300c068d5d7f67725adc6c3afb" "f41fd682a3cd1e16796068a2ca96e82cfd274e58b978156da0acce4d56f2b0d5" "a774c5551bc56d7a9c362dca4d73a374582caedb110c201a09b410c0ebbb5e70" "11d069fbfb0510e2b32a5787e26b762898c7e480364cbc0779fe841662e4cf5d" "410c47e5b36f3beb70b165b52badc13a77dea96ecea4811ec0f53b9d300be9bf" "41b6698b5f9ab241ad6c30aea8c9f53d539e23ad4e3963abff4b57c0f8bf6730" "e53cc4144192bb4e4ed10a3fa3e7442cae4c3d231df8822f6c02f1220a0d259a" "1affe85e8ae2667fb571fc8331e1e12840746dae5c46112d5abb0c3a973f5f5a" "73fe242ddbaf2b985689e6ec12e29fab2ecd59f765453ad0e93bc502e6e478d6" "7d4d00a2c2a4bba551fcab9bfd9186abe5bfa986080947c2b99ef0b4081cb2a6" "9bcb8ee9ea34ec21272bb6a2044016902ad18646bd09fdd65abae1264d258d89" "e26780280b5248eb9b2d02a237d9941956fc94972443b0f7aeec12b5c15db9f3" "33c5a452a4095f7e4f6746b66f322ef6da0e770b76c0ed98a438e76c497040bb" "90b5269aefee2c5f4029a6a039fb53803725af6f5c96036dee5dc029ff4dff60" "0ebe0307942b6e159ab794f90a074935a18c3c688b526a2035d14db1214cf69c" "ce79400f46bd76bebeba655465f9eadf60c477bd671cbcd091fe871d58002a88" "1989847d22966b1403bab8c674354b4a2adf6e03e0ffebe097a6bd8a32be1e19" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" "4a60f0178f5cfd5eafe73e0fc2699a03da90ddb79ac6dbc73042a591ae216f03" "0f0e3af1ec61d04ff92f238b165dbc6d2a7b4ade7ed9812b4ce6b075e08f49fe" "d7f1c86b425e148be505c689fc157d96323682c947b29ef00cf57b4e4e46e6c7" "9ea054db5cdbd5baa4cda9d373a547435ba88d4e345f4b06f732edbc4f017dc3" "1f3304214265481c56341bcee387ef1abb684e4efbccebca0e120be7b1a13589" "5339210234ec915d7d3fd87bfeb506bfc436ff7277a55516ab1781ec85c57224" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "9f42bccce1e13fa5017eb8718574db099e85358b9f424db78e7318f86d1be08f" "62b86b142b243071b5adb4d48a0ab89aefd3cf79ee3adc0bb297ea873b36d23f" default)))
  '(global-hl-line-mode nil)
  '(inhibit-x-resources t t)
  '(menu-bar-mode nil)
@@ -42,6 +42,7 @@
 (add-to-list 'load-path vendor-dir)
 
 
+
 ;; General settings.
 
 (setq inhibit-splash-screen t)
@@ -61,7 +62,7 @@
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 (fset 'yes-or-no-p 'y-or-n-p)
-(fset 'perl-mode 'cperl-mode)
+
 
 
 ;; Automatically load abbreviations.
@@ -69,20 +70,20 @@
 (read-abbrev-file "~/.abbrev_defs")
 (setq save-abbrevs t)
 
-(electric-indent-mode 1)
+
 
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 (setq
-   backup-by-copying t      ; don't clobber symlinks
-   backup-directory-alist
-    '(("." . "~/.saves"))    ; don't litter my fs tree
-   delete-old-versions t
-   kept-new-versions 6
-   kept-old-versions 2
-   version-control t)       ; use versioned backups
+ backup-by-copying t      ; don't clobber symlinks
+ backup-directory-alist
+ '(("." . "~/.saves"))    ; don't litter my fs tree
+ delete-old-versions t
+ kept-new-versions 6
+ kept-old-versions 2
+ version-control t)       ; use versioned backups
 
 
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -125,6 +126,8 @@
                       ac-nrepl
                       auto-complete
                       browse-kill-ring
+                      coffee-mode
+                      cperl-mode
                       clojure-mode
                       clojure-test-mode
                       cider
@@ -140,6 +143,9 @@
                       flx-ido
                       flycheck
                       fsharp-mode
+                      go-mode
+                      go-projectile
+                      go-autocomplete
                       haml-mode
                       inf-ruby
                       ipython
@@ -147,10 +153,13 @@
                       jedi
                       jinja2-mode
                       js2-mode
+                      json-mode
                       jump
                       less-css-mode
+                      lua-mode
                       magit
                       multi-term
+                      nim-mode
                       nose
                       paredit
                       perspective
@@ -166,7 +175,10 @@
                       rainbow-mode
                       robe
                       rspec-mode
+                      ruby-tools
+                      rust-mode
                       rvm
+                      sbt-mode
                       scala-mode2
                       scss-mode
                       smartparens
@@ -174,7 +186,9 @@
                       smart-mode-line-powerline-theme
                       tuareg
                       undo-tree
+                      virtualenvwrapper
                       web-mode
+                      yaml-mode
                       yasnippet
                       zenburn-theme))
 
@@ -195,11 +209,21 @@
 ;; (set-face-attribute 'fringe nil :background "black")
 (set-fringe-style '(0 . 2))
 
+(elpy-enable)
+(fset 'perl-mode 'cperl-mode)
+(electric-indent-mode 1)
+
+(require 'virtualenvwrapper)
+(venv-initialize-interactive-shells)
+(setq venv-location "/home/rahul/venvs")
+
 (require 'perspective)
 (persp-mode)
 (require 'persp-projectile)
 
 (autoload 'magit-status "magit" nil t)
+
+(defalias 'perl-mode 'cperl-mode)
 
 (require 'flx-ido)
 (ido-mode 1)
@@ -219,11 +243,11 @@
 (global-set-key (kbd "C-c l") 'ace-jump-line-mode)
 (global-set-key (kbd "C-c c") 'ace-jump-char-mode)
 (global-set-key  (kbd "C-;") (lambda ()
-                                (interactive)
-                                (insert "\n\n")
-                                (indent-for-tab-command)
-                                (forward-line -1)
-                                (indent-for-tab-command)))
+                               (interactive)
+                               (insert "\n\n")
+                               (indent-for-tab-command)
+                               (forward-line -1)
+                               (indent-for-tab-command)))
 
 
 (autoload 'web-mode "web-mode" nil t)
@@ -235,6 +259,21 @@
 (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+;; make web-mode play nice with smartparens
+(setq web-mode-enable-auto-pairing nil)
+;; (sp-with-modes '(web-mode)
+;;   (sp-local-pair "%" "%"
+;;                  :unless '(sp-in-string-p)
+;;                  :post-handlers '(((lambda (&rest _ignored)
+;;                                      (just-one-space)
+;;                                      (save-excursion (insert " ")))
+;;                                    "SPC" "=" "#")))
+;;   (sp-local-pair "<% "  " %>" :insert "C-c %")
+;;   (sp-local-pair "<%= " " %>" :insert "C-c =")
+;;   (sp-local-pair "<%# " " %>" :insert "C-c #")
+;;   (sp-local-tag "%" "<% "  " %>")
+;;   (sp-local-tag "=" "<%= " " %>")
+;;   (sp-local-tag "#" "<%# " " %>"))
 
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -248,12 +287,11 @@
 (define-key sp-keymap (kbd "C-M-b") 'sp-backward-sexp)
 
 (define-key sp-keymap (kbd "C-M-d") 'sp-down-sexp)
-(define-key sp-keymap (kbd "C-M-a") 'sp-backward-down-sexp)
-(define-key sp-keymap (kbd "C-S-a") 'sp-beginning-of-sexp)
-(define-key sp-keymap (kbd "C-S-d") 'sp-end-of-sexp)
-
-(define-key sp-keymap (kbd "C-M-e") 'sp-up-sexp)
 (define-key sp-keymap (kbd "C-M-u") 'sp-backward-up-sexp)
+
+(define-key sp-keymap (kbd "C-S-a") 'sp-beginning-of-sexp)
+(define-key sp-keymap (kbd "C-S-e") 'sp-end-of-sexp)
+
 (define-key sp-keymap (kbd "C-M-t") 'sp-transpose-sexp)
 
 (define-key sp-keymap (kbd "C-M-n") 'sp-next-sexp)
@@ -262,6 +300,7 @@
 (define-key sp-keymap (kbd "C-M-k") 'sp-kill-sexp)
 (define-key sp-keymap (kbd "C-M-w") 'sp-copy-sexp)
 
+(define-key smartparens-mode-map (kbd "M-<delete>") 'sp-unwrap-sexp)
 (define-key sp-keymap (kbd "M-<backspace>") 'sp-backward-unwrap-sexp)
 
 (define-key sp-keymap (kbd "C-)") 'sp-forward-slurp-sexp)
@@ -311,14 +350,15 @@
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
+(require 'go-autocomplete)
 (require 'auto-complete-config)
 (ac-config-default)
 
 ;; (require 'powerline)
 ;; (powerline-default-theme)
-(require 'smart-mode-line)
-(sml/setup)
-(sml/apply-theme 'powerline)
+;; (require 'smart-mode-line)
+;; (sml/setup)
+;; (sml/apply-theme 'powerline)
 
 
 (require 'yasnippet)
@@ -338,10 +378,30 @@
 (autoload 'enh-ruby-mode "enh-ruby-mode" "Major mode for ruby files" t)
 (add-to-list 'auto-mode-alist '("\\.rb$" . enh-ruby-mode))
 (add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
+;; Rake files are ruby, too, as are gemspecs, rackup files, and gemfiles.
+(add-to-list 'auto-mode-alist '("\\.rake\\'" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("Rakefile\\'" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.gemspec\\'" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.ru\\'" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile\\'" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("Guardfile\\'" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("Capfile\\'" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.cap\\'" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.thor\\'" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.rabl\\'" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("Thorfile\\'" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("Vagrantfile\\'" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.jbuilder\\'" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("Podfile\\'" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.podspec\\'" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("Puppetfile\\'" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("Berksfile\\'" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("Appraisals\\'" . enh-ruby-mode))
+
 (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode)
 (add-hook 'enh-ruby-mode-hook 'robe-mode)
 (add-hook 'enh-ruby-mode-hook 'auto-complete-mode)
-;; (add-hook 'robe-mode-hook 'ac-robe-setup)
+(add-hook 'robe-mode-hook 'ac-robe-setup)
 (autoload 'feature-mode "feature-mode" "Major mode for running cukes")
 (add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))
 (require 'rspec-mode)
@@ -352,6 +412,7 @@
 (defadvice run-ruby (before rvm-switch-run-ruby)
   (rvm-activate-corresponding-ruby))
 (ad-activate 'run-ruby)
+
 (defadvice projectile-rails-server (before rvm-switch-projectile-rails-server)
   (rvm-activate-corresponding-ruby))
 (ad-activate 'projectile-rails-server)
@@ -360,7 +421,13 @@
   (rvm-activate-corresponding-ruby))
 (ad-activate 'projectile-rails-console)
 
+(defadvice inf-ruby-console-auto (before activate-rvm-for-robe activate)
+  (rvm-activate-corresponding-ruby))
+(ad-activate 'inf-ruby-console-auto)
 
+(defadvice inf-ruby (before activate-rvm-for-inf-ruby)
+  (rvm-activate-corresponding-ruby))
+(ad-activate 'inf-ruby)
 
 (require 'scala-mode2)
 (autoload 'ensime-scala-mode-hook "ensime" nil t)
@@ -368,7 +435,7 @@
 
 
 (defadvice ansi-term (after advise-ansi-term-coding-system)
-    (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
+  (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
 (ad-activate 'ansi-term)
 
 (add-hook 'term-mode-hook (lambda ()
@@ -395,21 +462,21 @@
 (add-to-list 'auto-mode-alist '("\\.less$" . less-css-mode))
 
 (add-to-list 'auto-mode-alist '("\\.rkt\\'" . scheme-mode))
-; (eval-after-load "geiser" '(require quack))
+                                        ; (eval-after-load "geiser" '(require quack))
 
 
 (defun save-macro (name)
-    "save a macro. Take a name as argument
+  "save a macro. Take a name as argument
      and save the last defined macro under
      this name at the end of your .emacs"
-     (interactive "SName of the macro :")  ; ask for the name of the macro
-     (kmacro-name-last-macro name)         ; use this name for the macro
-     (find-file user-init-file)            ; open ~/.emacs or other user init file
-     (goto-char (point-max))               ; go to the end of the .emacs
-     (newline)                             ; insert a newline
-     (insert-kbd-macro name)               ; copy the macro
-     (newline)                             ; insert a newline
-     (switch-to-buffer nil))               ; return to the initial buffer
+  (interactive "SName of the macro :")  ; ask for the name of the macro
+  (kmacro-name-last-macro name)         ; use this name for the macro
+  (find-file user-init-file)            ; open ~/.emacs or other user init file
+  (goto-char (point-max))               ; go to the end of the .emacs
+  (newline)                             ; insert a newline
+  (insert-kbd-macro name)               ; copy the macro
+  (newline)                             ; insert a newline
+  (switch-to-buffer nil))               ; return to the initial buffer
 (put 'narrow-to-region 'disabled nil)
 
 
@@ -419,7 +486,7 @@
 (setq jedi:setup-keys t)
 (setq jedi:complete-on-dot t)
 
-; Setting up ipython
+                                        ; Setting up ipython
 (when (executable-find "ipython")
   (setq
    python-shell-interpreter "ipython"
@@ -449,22 +516,22 @@
   '(add-to-list 'ac-modes 'cider-repl-mode))
 
 (defun set-auto-complete-as-completion-at-point-function ()
- (setq completion-at-point-functions '(auto-complete)))
+  (setq completion-at-point-functions '(auto-complete)))
 (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
 (add-hook 'cider-repl-mode-hook 'set-auto-complete-as-completion-at-point-function)
 (add-hook 'cider-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
 
- ; Set OPAM environment variables
+                                        ; Set OPAM environment variables
 (dolist (var (car (read-from-string (shell-command-to-string "opam config env --sexp"))))
   (setenv (car var) (concat (cadr var) (getenv (car var)))))
 (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
 (autoload 'camldebug "camldebug" "Run the Caml debugger" t)
-;(autoload 'tuareg-imenu-set-imenu "tuareg-imenu"
-;  "Configuration of imenu for tuareg" t)
+                                        ;(autoload 'tuareg-imenu-set-imenu "tuareg-imenu"
+                                        ;  "Configuration of imenu for tuareg" t)
 
-;(add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
+                                        ;(add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
 
 (setq auto-mode-alist
       (append '(("\\.ml[ily]?$" . tuareg-mode)
@@ -478,12 +545,12 @@
        "/ocamlmerlin"))
 
 (autoload 'merlin-mode "merlin" "Merlin mode" t)
-
+(add-hook 'caml-mode-hook 'merlin-mode)
 
 (add-hook 'tuareg-mode-hook
-        '(lambda ()
-            (merlin-mode)
-            (setq merlin-use-auto-complete-mode t)))
+          '(lambda ()
+             (merlin-mode)
+             (setq merlin-use-auto-complete-mode t)))
 
 (require 'helm-config)
 ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
@@ -492,7 +559,7 @@
 (global-set-key (kbd "C-c h") 'helm-command-prefix)
 (global-unset-key (kbd "C-x c"))
 (when (executable-find "curl")
-(setq helm-google-suggest-use-curl-p t))
+  (setq helm-google-suggest-use-curl-p t))
 
 (helm-mode 1)
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
@@ -519,7 +586,13 @@
 
 (setenv "ORACLE_HOME" "/usr/lib/oracle/xe/app/oracle/product/10.2.0/server")
 (setenv "ORACLE_SID" "XE")
-(setq exec-path (append exec-path  (split-string (getenv "PATH") ":")))
+;; (setq exec-path (append exec-path  (split-string (getenv "PATH") ":")))
 
 (require 'fsharp-mode)
 (put 'scroll-left 'disabled nil)
+
+(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
+(add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
+(add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
+
+(require 'go-mode-autoloads)
