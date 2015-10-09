@@ -67,7 +67,7 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# Aliases 
+# Aliases
 alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
@@ -117,7 +117,7 @@ function title() {
         # if [ -n "$STY" ]; then
         #     print -Pn "\ek$current:$host_and_user $working_dir\e\\"
         # fi
-        ;;
+            ;;
     esac
 }
 
@@ -145,16 +145,15 @@ function virtualenv_info {
 function prompt_char {
     git branch >/dev/null 2>/dev/null && print "∞($(glb) -> $(grb))" && return
     hg root >/dev/null 2>/dev/null && print "☿($(hg branch))" && return
-    # print 'o'
-    print ''
+    print 'o'
 }
 
 
 function ni() { ST="${1}"; }
 function nr() { unset ST; }
 
-function glb() { git rev-parse --abbrev-ref HEAD }
-function grb() { git rev-parse --symbolic-full-name --abbrev-ref HEAD }
+function glb() { git rev-parse --abbrev-ref HEAD 2> /dev/null }
+function grb() { git rev-parse --symbolic-full-name --abbrev-ref HEAD 2> /dev/null }
 
 
 export PS1="$(print '%{\e[1;33m%}%n@%m%{\e[0m%}'): $(print '%{\e[1;34m%}%~%{\e[0m%}') $(print "%{\e[1;35m%}\$(prompt_char)%{\e[0m%}") $(print '%{\e[1;31m%}%?%{\e[0m%}')
@@ -189,7 +188,7 @@ source /usr/local/bin/virtualenvwrapper.sh
 
 export PIP_DOWNLOAD_CACHE=$HOME/.pip-download-cache
 export TERM=xterm-256color
-export LC_ALL=en_US.UTF-8  
+export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export RUST_SRC_PATH=/data/sw/rust/src
 
@@ -214,3 +213,6 @@ BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 export FZF_DEFAULT_OPTS="--extended --cycle"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
