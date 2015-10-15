@@ -93,9 +93,6 @@ endif
 let g:is_posix = 1
 
 
-" call pathogen#infect()
-
-
 runtime! ftplugin/man.vim
 
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -109,10 +106,7 @@ let mapleader = ","
 let maplocalleader = ","
 call plug#begin('~/.vim/bundle')
 Plug 'Rip-Rip/clang_complete'
-Plug 'quanganhdo/grb256'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
-Plug 'altercation/vim-colors-solarized'
-Plug 'twerth/ir_black'
 Plug 'marijnh/tern_for_vim'
 Plug 'guns/vim-sexp'
 Plug 'mattn/emmet-vim'
@@ -128,7 +122,6 @@ Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-dispatch'
 Plug 'vim-scripts/gtags.vim'
-" Plug 'tpope/vim-markdown'
 Plug 'Lokaltog/vim-distinguished'
 Plug 'Shougo/vimproc.vim'
 Plug 'Shougo/unite.vim'
@@ -149,12 +142,10 @@ Plug 'Wolfy87/vim-enmasse'
 Plug 'tkztmk/vim-vala'
 Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-leiningen'
-" Plug 'tpope/vim-classpath'
 Plug 'tpope/vim-cucumber'
 Plug 'mileszs/ack.vim'
 Plug 'Townk/vim-autoclose'
 Plug 'kchmck/vim-coffee-script'
-" Plug 'kien/ctrlp.vim'
 " Plug 'cwood/vim-django'
 Plug 'vim-scripts/emacsmode'
 Plug 'kongo2002/fsharp-vim'
@@ -165,7 +156,6 @@ Plug 'scrooloose/nerdtree'
 Plug 'chrisbra/Recover.vim'
 Plug 'klen/rope-vim'
 Plug 'slim-template/vim-slim'
-" Plug 'jlanzarotta/bufexplorer'
 Plug 'guns/vim-clojure-static'
 Plug 'gorodinskiy/vim-coloresque'
 Plug 'tpope/vim-endwise'
@@ -178,7 +168,6 @@ Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'jpalardy/vim-slime'
-" Plug 'Shougo/neocomplcache.vim'
 Plug 'Shougo/neocomplete.vim'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
@@ -190,15 +179,10 @@ Plug 'phildawes/racer'
 Plug 'wting/rust.vim'
 Plug 'tpope/vim-sleuth'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
-" Plug 'junegunn/fzf.vim'
 Plug 'JuliaLang/julia-vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'plasticboy/vim-markdown'
-Plug 'junegunn/limelight.vim'
 Plug 'thoughtbot/vim-rspec'
-" Plug 'edkolev/tmuxline.vim'
-" Plug 'edkolev/promptline.vim'
-" Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 
 
 call plug#end()
@@ -216,6 +200,7 @@ endif
 "
 let g:airline#extensions#tabline#enabled = 1
 
+let g:slime_target = "tmux"
 
 " set omnifunc=syntaxcomplete#Complete
 filetype on
@@ -693,8 +678,8 @@ command! -bar -range Eval let b:file_name = '/tmp/temp_source_file_for_vim_eval.
 
 nnoremap <Space>s :Ag <cword><CR>
 
-nnoremap <silent> <Space>f :set opfunc=<SID>AckMotion<CR>g@
-xnoremap <silent> <Space>f :<C-U>call <SID>AckMotion(visualmode())<CR>
+nnoremap <silent> <Space>n :set opfunc=<SID>AckMotion<CR>g@
+xnoremap <silent> <Space>n :<C-U>call <SID>AckMotion(visualmode())<CR>
 
 function! s:CopyMotionForType(type)
     if a:type ==# 'v'
@@ -1087,10 +1072,10 @@ let g:vim_markdown_math=1
 
 " RSpec.vim mappings
 let g:rspec_command = "Dispatch rspec {spec}"
-nnoremap <Leader>n :call RunNearestSpec()<CR>
-nnoremap <Leader>a :call RunAllSpecs()<CR>
-nnoremap <Leader>c :call RunCurrentSpecFile()<CR>
-nnoremap <Leader>l :call RunLastSpec()<CR>
+" nnoremap <Leader>n :call RunNearestSpec()<CR>
+" nnoremap <Leader>a :call RunAllSpecs()<CR>
+" nnoremap <Leader>c :call RunCurrentSpecFile()<CR>
+" nnoremap <Leader>l :call RunLastSpec()<CR>
 
 if has("cscope")
     set cscopetag
