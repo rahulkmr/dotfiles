@@ -3,7 +3,7 @@ set backupdir=~/.vim/tmp//,/var/tmp//,/tmp//,.
 set directory=~/.vim/tmp//,/var/tmp//,/tmp//,.
 " set backup
 set complete=.,w,b,u,U,t,i,d,k
-set completeopt=longest,menuone
+set completeopt=longest,menuone,preview
 set showmode
 set gdefault
 set virtualedit+=block
@@ -123,13 +123,8 @@ Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-dispatch'
 Plug 'vim-scripts/gtags.vim'
 Plug 'Lokaltog/vim-distinguished'
-Plug 'Shougo/vimproc.vim'
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/unite-outline'
-Plug 'tsukkee/unite-tag'
 Plug 'bling/vim-airline'
 Plug 'nosami/Omnisharp'
-Plug 'jmcantrell/vim-virtualenv'
 Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-rails'
 Plug 'vim-scripts/dbext.vim'
@@ -146,7 +141,6 @@ Plug 'tpope/vim-cucumber'
 Plug 'mileszs/ack.vim'
 Plug 'Townk/vim-autoclose'
 Plug 'kchmck/vim-coffee-script'
-" Plug 'cwood/vim-django'
 Plug 'vim-scripts/emacsmode'
 Plug 'kongo2002/fsharp-vim'
 Plug 'sjl/gundo.vim'
