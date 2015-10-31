@@ -617,8 +617,7 @@ let g:ctrlp_extensions = ['tag']
 " The Silver Searcher
 if executable('ag')
   " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
+  set grepprg=ag\ --vimgrep
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
@@ -670,10 +669,13 @@ command! -bar -range Eval let b:file_name = '/tmp/temp_source_file_for_vim_eval.
             \ call delete(b:file_name) |
             \ unlet b:file_name
 
-nnoremap <Space>s :Ag <cword><CR>
+" nnoremap <Space>s :grep <cword> %<CR>
 
-nnoremap <silent> <Space>n :set opfunc=<SID>AckMotion<CR>g@
-xnoremap <silent> <Space>n :<C-U>call <SID>AckMotion(visualmode())<CR>
+nnoremap <silent> <Space>n :set opfunc=<SID>AgMotion<CR>g@
+xnoremap <silent> <Space>n :<C-U>call <SID>AgMotion(visualmode())<CR>
+
+nnoremap <silent> <Space>s :set opfunc=<SID>AgMotionCurrentBuffer<CR>g@
+xnoremap <silent> <Space>s :<C-U>call <SID>AgMotionCurrentBuffer(visualmode())<CR>
 
 function! s:CopyMotionForType(type)
     if a:type ==# 'v'
@@ -683,12 +685,24 @@ function! s:CopyMotionForType(type)
     endif
 endfunction
 
-function! s:AckMotion(type) abort
+function! s:AgMotion(type) abort
     let reg_save = @@
 
     call s:CopyMotionForType(a:type)
 
     execute "normal! :Ag " . shellescape(@@) . "\<cr>"
+
+    let @@ = reg_save
+endfunction
+
+function! s:AgMotionCurrentBuffer(type) abort
+    let reg_save = @@
+
+    call s:CopyMotionForType(a:type)
+
+    execute "normal! :grep"  @@  "%\<cr>"
+    execute "copen"
+    execute "redraw!"
 
     let @@ = reg_save
 endfunction
@@ -1006,12 +1020,12 @@ function! s:ag_handler(lines)
 endfunction
 
 command! -nargs=1 FZFAg call fzf#run({
-\ 'source':  'ag --nogroup --column --color "'.escape(<q-args>, '"\').'"',
+\ 'source':  'ag --nogroup --column --color "'. escape(<q-args>, '"\') .'"',
 \ 'sink*':    function('<sid>ag_handler'),
 \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --no-multi',
 \ 'down':    '50%'
 \ })
-nnoremap <Space>a :FZFAg
+nnoremap <Space>a  :FZFAg
 cnoremap <silent> <c-l> <c-\>eGetCompletions()<cr>
 "add an extra <cr> at the end of this line to automatically accept the fzf-selected completions.
 
