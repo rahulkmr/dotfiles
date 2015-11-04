@@ -179,12 +179,13 @@ compctl -g "*.go" gccgo
 
 
 
-export ORACLE_HOME=/usr/lib/oracle/xe/app/oracle/product/10.2.0/server
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe
 export ORACLE_SID=XE
+export NLS_LANG=`$ORACLE_HOME/bin/nls_lang.sh`
 
 export GOPATH=$HOME/musings/go
 export WORKON_HOME=~/venvs
-source /usr/local/bin/virtualenvwrapper.sh
+# source /usr/local/bin/virtualenvwrapper.sh
 
 export PIP_DOWNLOAD_CACHE=$HOME/.pip-download-cache
 export TERM=xterm-256color
