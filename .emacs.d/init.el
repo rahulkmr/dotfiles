@@ -3,11 +3,16 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#181818" "#ab4642" "#a1b56c" "#f7ca88" "#7cafc2" "#ba8baf" "#7cafc2" "#d8d8d8"])
+ '(ansi-term-color-vector
+   [unspecified "#181818" "#ab4642" "#a1b56c" "#f7ca88" "#7cafc2" "#ba8baf" "#7cafc2" "#d8d8d8"])
  '(blink-cursor-mode nil)
  '(column-number-mode t)
  '(custom-safe-themes
    (quote
-    ("11636897679ca534f0dec6f5e3cb12f28bf217a527755f6b9e744bd240ed47e1" "9f3a4edb56d094366afed2a9ba3311bbced0f32ca44a47a765d8ef4ce5b8e4ea" default)))
+    ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "7ceb8967b229c1ba102378d3e2c5fef20ec96a41f615b454e0dc0bfa1d326ea6" "0b6645497e51d80eda1d337d6cabe31814d6c381e69491931a688836c16137ed" "ff9e6deb9cfc908381c1267f407b8830bcad6028231a5f736246b9fc65e92b44" "11636897679ca534f0dec6f5e3cb12f28bf217a527755f6b9e744bd240ed47e1" "9f3a4edb56d094366afed2a9ba3311bbced0f32ca44a47a765d8ef4ce5b8e4ea" default)))
+ '(fci-rule-color "#383838")
  '(global-hl-line-mode nil)
  '(inhibit-x-resources t t)
  '(menu-bar-mode nil)
@@ -16,7 +21,29 @@
  '(show-paren-mode t)
  '(size-indication-mode t)
  '(tool-bar-mode nil)
- '(uniquify-buffer-name-style (quote forward) nil (uniquify)))
+ '(uniquify-buffer-name-style (quote forward) nil (uniquify))
+ '(vc-annotate-background "#2B2B2B")
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#BC8383")
+     (40 . "#CC9393")
+     (60 . "#DFAF8F")
+     (80 . "#D0BF8F")
+     (100 . "#E0CF9F")
+     (120 . "#F0DFAF")
+     (140 . "#5F7F5F")
+     (160 . "#7F9F7F")
+     (180 . "#8FB28F")
+     (200 . "#9FC59F")
+     (220 . "#AFD8AF")
+     (240 . "#BFEBBF")
+     (260 . "#93E0E3")
+     (280 . "#6CA0A3")
+     (300 . "#7CB8BB")
+     (320 . "#8CD0D3")
+     (340 . "#94BFF3")
+     (360 . "#DC8CC3"))))
+ '(vc-annotate-very-old-color "#DC8CC3"))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -36,7 +63,16 @@
 (setq themes (concat root "themes/"))
 (setq vendor-dir (concat root "vendor/"))
 
+(require 'package)
+(setq package-check-signature nil)
+
+(add-to-list 'package-archives
+             '("marmalade" . "https://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/"))
+
 (package-initialize nil)
+
 (add-to-list 'load-path utils)
 (add-to-list 'load-path modules)
 (add-to-list 'load-path themes)
@@ -86,12 +122,6 @@
  kept-old-versions 2
  version-control t)       ; use versioned backups
 
-
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")))
-
-
 (global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key "\C-x\C-b" 'ibuffer)
 (global-set-key "\C-s" 'isearch-forward-regexp)
@@ -117,22 +147,18 @@
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd  "C--") 'text-scale-decrease)
 
-(require 'linum-relative)
-(global-linum-mode 1)
-(setq linum-format "%d ")
-(linum-relative-mode)
-
 (package-initialize)
+
 
 (defvar my-packages '(ace-jump-mode
                       ack
                       ac-nrepl
                       auto-complete
+                      base16-theme
                       browse-kill-ring
                       coffee-mode
                       cperl-mode
                       clojure-mode
-                      clojure-test-mode
                       cider
                       coffee-mode
                       dirtree
@@ -151,12 +177,10 @@
                       flycheck
                       fsharp-mode
                       go-mode
-                      go-projectile
                       go-autocomplete
                       haml-mode
                       inf-ruby
                       ipython
-                      ir-black-theme
                       jedi
                       jinja2-mode
                       js2-mode
@@ -167,19 +191,19 @@
                       linum-relative
                       magit
                       multi-term
-                      nim-mode
+                      nimrod-mode
                       nose
-                      paredit
                       perspective
+                      persp-projectile
                       php-mode
                       powerline
                       projectile
                       projectile-rails
                       helm-projectile
+                      helm-ag
                       pylint
                       python-django
                       pyvenv
-                      racket-mode
                       rainbow-mode
                       robe
                       rspec-mode
@@ -190,11 +214,8 @@
                       scala-mode2
                       scss-mode
                       smartparens
-                      smart-mode-line
-                      smart-mode-line-powerline-theme
                       tuareg
                       undo-tree
-                      virtualenvwrapper
                       web-mode
                       yaml-mode
                       yasnippet
@@ -210,6 +231,12 @@
 
 (install-packages)
 
+(global-linum-mode 1)
+(linum-on)
+(require 'linum-relative)
+(setq linum-format "%d ")
+(linum-relative-mode)
+
 (require 'evil)
 (evil-mode 1)
 (require 'evil-surround)
@@ -221,21 +248,22 @@
 
 
 (load-theme 'zenburn)
-(set-fringe-style '(0 . 2))
 
 (elpy-enable)
 (fset 'perl-mode 'cperl-mode)
 (electric-indent-mode 1)
 
-(require 'virtualenvwrapper)
-(venv-initialize-interactive-shells)
-(setq venv-location "/home/rahul/venvs")
+;; (require 'virtualenvwrapper)
+;; (venv-initialize-interactive-shells)
+;; (setq venv-location "/home/rahul/venvs")
 
 (require 'perspective)
 (persp-mode)
 (require 'persp-projectile)
 
 (autoload 'magit-status "magit" nil t)
+(global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
 
 (defalias 'perl-mode 'cperl-mode)
 
@@ -366,12 +394,15 @@
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
-(require 'go-autocomplete)
+; (require 'go-autocomplete)
 (require 'auto-complete-config)
 (ac-config-default)
 
-(require 'powerline)
-(powerline-default-theme)
+(require 'spaceline-config)
+(spaceline-spacemacs-theme)
+
+;; (require 'powerline)
+;; (powerline-default-theme)
 ;; (require 'smart-mode-line)
 ;; (sml/setup)
 ;; (sml/apply-theme 'powerline)
@@ -539,9 +570,9 @@
 (add-hook 'cider-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
 
-                                        ; Set OPAM environment variables
-(dolist (var (car (read-from-string (shell-command-to-string "opam config env --sexp"))))
-  (setenv (car var) (concat (cadr var) (getenv (car var)))))
+; Set OPAM environment variables
+;; (dolist (var (car (read-from-string (shell-command-to-string "opam config env --sexp"))))
+;;   (setenv (car var) (concat (cadr var) (getenv (car var)))))
 (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
 (autoload 'camldebug "camldebug" "Run the Caml debugger" t)
                                         ;(autoload 'tuareg-imenu-set-imenu "tuareg-imenu"
@@ -553,12 +584,12 @@
       (append '(("\\.ml[ily]?$" . tuareg-mode)
                 ("\\.topml$" . tuareg-mode))
               auto-mode-alist))
-(setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
-(add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
-(setq merlin-command
-      (concat
-       (substring (shell-command-to-string "opam config var bin") 0 -1)
-       "/ocamlmerlin"))
+;; (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
+;; (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+;; (setq merlin-command
+;;       (concat
+;;        (substring (shell-command-to-string "opam config var bin") 0 -1)
+;;        "/ocamlmerlin"))
 
 (autoload 'merlin-mode "merlin" "Merlin mode" t)
 (add-hook 'caml-mode-hook 'merlin-mode)
@@ -600,9 +631,11 @@
 (autoload 'php-mode "php-mode" "Major mode for editing php code." t)
 (add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
 
-(setenv "ORACLE_HOME" "/usr/lib/oracle/xe/app/oracle/product/10.2.0/server")
+(setenv "ORACLE_HOME" "/u01/app/oracle/product/11.2.0/xe/")
 (setenv "ORACLE_SID" "XE")
-;; (setq exec-path (append exec-path  (split-string (getenv "PATH") ":")))
+(setenv "NLS_LANG" "AMERICAN_AMERICA.AL32UTF8")
+(add-to-list 'exec-path
+             "/u01/app/oracle/product/11.2.0/xe/bin")
 
 (require 'fsharp-mode)
 (put 'scroll-left 'disabled nil)
@@ -610,6 +643,3 @@
 (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
 (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
 (add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
-
-(require 'go-mode-autoloads)
-
