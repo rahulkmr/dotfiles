@@ -532,6 +532,12 @@ augroup java
     autocmd FileType java nnoremap<buffer> <Space>jf :w<CR>:%JavaFormat<CR>
 augroup end
 
+let g:EclimCompletionMethod = 'omnifunc'
+if !exists('g:neocomplete#force_omni_input_patterns')
+    let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_omni_input_patterns.java =
+    \ '\%(\h\w*\|)\)\.\w*'
 
 let g:clang_complete_auto = 1
 let g:clang_snippets = 1
