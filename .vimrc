@@ -177,6 +177,7 @@ Plug 'JuliaLang/julia-vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'plasticboy/vim-markdown'
 Plug 'thoughtbot/vim-rspec'
+Plug 'ensime/ensime-vim'
 
 
 call plug#end()
