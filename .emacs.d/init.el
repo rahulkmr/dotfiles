@@ -11,7 +11,7 @@
  '(column-number-mode t)
  '(custom-safe-themes
    (quote
-    ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "7ceb8967b229c1ba102378d3e2c5fef20ec96a41f615b454e0dc0bfa1d326ea6" "0b6645497e51d80eda1d337d6cabe31814d6c381e69491931a688836c16137ed" "ff9e6deb9cfc908381c1267f407b8830bcad6028231a5f736246b9fc65e92b44" "11636897679ca534f0dec6f5e3cb12f28bf217a527755f6b9e744bd240ed47e1" "9f3a4edb56d094366afed2a9ba3311bbced0f32ca44a47a765d8ef4ce5b8e4ea" default)))
+    ("f5eb916f6bd4e743206913e6f28051249de8ccfd070eae47b5bde31ee813d55f" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "7ceb8967b229c1ba102378d3e2c5fef20ec96a41f615b454e0dc0bfa1d326ea6" "0b6645497e51d80eda1d337d6cabe31814d6c381e69491931a688836c16137ed" "ff9e6deb9cfc908381c1267f407b8830bcad6028231a5f736246b9fc65e92b44" "11636897679ca534f0dec6f5e3cb12f28bf217a527755f6b9e744bd240ed47e1" "9f3a4edb56d094366afed2a9ba3311bbced0f32ca44a47a765d8ef4ce5b8e4ea" default)))
  '(fci-rule-color "#383838")
  '(global-hl-line-mode nil)
  '(inhibit-x-resources t t)
@@ -253,9 +253,9 @@
 (fset 'perl-mode 'cperl-mode)
 (electric-indent-mode 1)
 
-;; (require 'virtualenvwrapper)
-;; (venv-initialize-interactive-shells)
-;; (setq venv-location "/home/rahul/venvs")
+(require 'virtualenvwrapper)
+(venv-initialize-interactive-shells)
+(setq venv-location "/home/rahul/venvs")
 
 (require 'perspective)
 (persp-mode)
@@ -310,38 +310,38 @@
 (show-smartparens-global-mode 1)
 
 
-(define-key sp-keymap (kbd "C-M-f") 'sp-forward-sexp)
-(define-key sp-keymap (kbd "C-M-b") 'sp-backward-sexp)
+(define-key smartparens-mode-map (kbd "C-M-f") 'sp-forward-sexp)
+(define-key smartparens-mode-map (kbd "C-M-b") 'sp-backward-sexp)
 
-(define-key sp-keymap (kbd "C-M-d") 'sp-down-sexp)
-(define-key sp-keymap (kbd "C-M-u") 'sp-backward-up-sexp)
+(define-key smartparens-mode-map (kbd "C-M-d") 'sp-down-sexp)
+(define-key smartparens-mode-map (kbd "C-M-u") 'sp-backward-up-sexp)
 
-(define-key sp-keymap (kbd "C-S-a") 'sp-beginning-of-sexp)
-(define-key sp-keymap (kbd "C-S-e") 'sp-end-of-sexp)
+(define-key smartparens-mode-map (kbd "C-S-a") 'sp-beginning-of-sexp)
+(define-key smartparens-mode-map (kbd "C-S-e") 'sp-end-of-sexp)
 
-(define-key sp-keymap (kbd "C-M-t") 'sp-transpose-sexp)
+(define-key smartparens-mode-map (kbd "C-M-t") 'sp-transpose-sexp)
 
-(define-key sp-keymap (kbd "C-M-n") 'sp-next-sexp)
-(define-key sp-keymap (kbd "C-M-p") 'sp-previous-sexp)
+(define-key smartparens-mode-map (kbd "C-M-n") 'sp-next-sexp)
+(define-key smartparens-mode-map (kbd "C-M-p") 'sp-previous-sexp)
 
-(define-key sp-keymap (kbd "C-M-k") 'sp-kill-sexp)
-(define-key sp-keymap (kbd "C-M-w") 'sp-copy-sexp)
+(define-key smartparens-mode-map (kbd "C-M-k") 'sp-kill-sexp)
+(define-key smartparens-mode-map (kbd "C-M-w") 'sp-copy-sexp)
 
 (define-key smartparens-mode-map (kbd "M-<delete>") 'sp-unwrap-sexp)
-(define-key sp-keymap (kbd "M-<backspace>") 'sp-backward-unwrap-sexp)
+(define-key smartparens-mode-map (kbd "M-<backspace>") 'sp-backward-unwrap-sexp)
 
-(define-key sp-keymap (kbd "C-)") 'sp-forward-slurp-sexp)
-(define-key sp-keymap (kbd "C-}") 'sp-forward-barf-sexp)
-(define-key sp-keymap (kbd "C-(") 'sp-backward-slurp-sexp)
-(define-key sp-keymap (kbd "C-{") 'sp-backward-barf-sexp)
+(define-key smartparens-mode-map (kbd "C-)") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "C-}") 'sp-forward-barf-sexp)
+(define-key smartparens-mode-map (kbd "C-(") 'sp-backward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "C-{") 'sp-backward-barf-sexp)
 
-(define-key sp-keymap (kbd "M-D") 'sp-splice-sexp)
+(define-key smartparens-mode-map (kbd "M-D") 'sp-splice-sexp)
 
-(define-key sp-keymap (kbd "C-]") 'sp-select-next-thing-exchange)
-(define-key sp-keymap (kbd "C-M-]") 'sp-select-next-thing)
+(define-key smartparens-mode-map (kbd "C-]") 'sp-select-next-thing-exchange)
+(define-key smartparens-mode-map (kbd "C-M-]") 'sp-select-next-thing)
 
-(define-key sp-keymap (kbd "M-F") 'sp-forward-symbol)
-(define-key sp-keymap (kbd "M-B") 'sp-backward-symbol)
+(define-key smartparens-mode-map (kbd "M-F") 'sp-forward-symbol)
+(define-key smartparens-mode-map (kbd "M-B") 'sp-backward-symbol)
 
 ;; (define-key sp-keymap (kbd "H-t") 'sp-prefix-tag-object)
 ;; (define-key sp-keymap (kbd "H-p") 'sp-prefix-pair-object)
@@ -398,8 +398,8 @@
 (require 'auto-complete-config)
 (ac-config-default)
 
-(require 'spaceline-config)
-(spaceline-spacemacs-theme)
+;; (require 'spaceline-config)
+;; (spaceline-spacemacs-theme)
 
 ;; (require 'powerline)
 ;; (powerline-default-theme)
@@ -476,9 +476,10 @@
   (rvm-activate-corresponding-ruby))
 (ad-activate 'inf-ruby)
 
+(require 'ensime)
 (require 'scala-mode2)
-(autoload 'ensime-scala-mode-hook "ensime" nil t)
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+(add-hook 'scala-mode-hook #'yas-minor-mode)
 
 
 (defadvice ansi-term (after advise-ansi-term-coding-system)
@@ -636,6 +637,9 @@
 (setenv "NLS_LANG" "AMERICAN_AMERICA.AL32UTF8")
 (add-to-list 'exec-path
              "/u01/app/oracle/product/11.2.0/xe/bin")
+(add-to-list 'exec-path
+             "~/bin")
+(setenv "PATH" (concat  ":~/bin" (getenv "PATH")))
 
 (require 'fsharp-mode)
 (put 'scroll-left 'disabled nil)
@@ -643,3 +647,11 @@
 (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
 (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
 (add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
+
+;; (setq eclim-eclipse-dirs "~/data/sw/eclipse/")
+;; (setq eclim-executable "~/data/sw/eclipse/eclim")
+;; (require 'eclim)
+;; (global-eclim-mode)
+;; (require 'eclimd)
+;; (require 'ac-emacs-eclim-source)
+;; (ac-emacs-eclim-config)
