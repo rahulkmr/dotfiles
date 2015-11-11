@@ -23,7 +23,8 @@
      "0b6645497e51d80eda1d337d6cabe31814d6c381e69491931a688836c16137ed"
      "ff9e6deb9cfc908381c1267f407b8830bcad6028231a5f736246b9fc65e92b44"
      "11636897679ca534f0dec6f5e3cb12f28bf217a527755f6b9e744bd240ed47e1"
-     "9f3a4edb56d094366afed2a9ba3311bbced0f32ca44a47a765d8ef4ce5b8e4ea" default)))
+     "9f3a4edb56d094366afed2a9ba3311bbced0f32ca44a47a765d8ef4ce5b8e4ea"
+     default)))
  '(fci-rule-color "#383838")
  '(global-hl-line-mode nil)
  '(inhibit-x-resources t t)
