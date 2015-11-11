@@ -160,7 +160,6 @@
                       cperl-mode
                       clojure-mode
                       cider
-                      coffee-mode
                       dirtree
                       elpy
                       emmet-mode
@@ -264,6 +263,7 @@
 (autoload 'magit-status "magit" nil t)
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
+(require 'evil-magit)
 
 (defalias 'perl-mode 'cperl-mode)
 
@@ -310,19 +310,19 @@
 (show-smartparens-global-mode 1)
 
 
-(define-key smartparens-mode-map (kbd "C-M-f") 'sp-forward-sexp)
-(define-key smartparens-mode-map (kbd "C-M-b") 'sp-backward-sexp)
+(define-key smartparens-mode-map (kbd "M-)") 'sp-forward-sexp)
+(define-key smartparens-mode-map (kbd "M-(") 'sp-backward-sexp)
 
-(define-key smartparens-mode-map (kbd "C-M-d") 'sp-down-sexp)
-(define-key smartparens-mode-map (kbd "C-M-u") 'sp-backward-up-sexp)
+(define-key smartparens-mode-map (kbd "M-]") 'sp-down-sexp)
+(define-key smartparens-mode-map (kbd "M-[") 'sp-up-sexp)
 
 (define-key smartparens-mode-map (kbd "C-S-a") 'sp-beginning-of-sexp)
 (define-key smartparens-mode-map (kbd "C-S-e") 'sp-end-of-sexp)
 
 (define-key smartparens-mode-map (kbd "C-M-t") 'sp-transpose-sexp)
 
-(define-key smartparens-mode-map (kbd "C-M-n") 'sp-next-sexp)
-(define-key smartparens-mode-map (kbd "C-M-p") 'sp-previous-sexp)
+(define-key smartparens-mode-map (kbd "M-n") 'sp-beginning-of-next-sexp)
+(define-key smartparens-mode-map (kbd "M-p") 'sp-beginning-of-previous-sexp)
 
 (define-key smartparens-mode-map (kbd "C-M-k") 'sp-kill-sexp)
 (define-key smartparens-mode-map (kbd "C-M-w") 'sp-copy-sexp)
@@ -337,58 +337,104 @@
 
 (define-key smartparens-mode-map (kbd "M-D") 'sp-splice-sexp)
 
-(define-key smartparens-mode-map (kbd "C-]") 'sp-select-next-thing-exchange)
-(define-key smartparens-mode-map (kbd "C-M-]") 'sp-select-next-thing)
-
-(define-key smartparens-mode-map (kbd "M-F") 'sp-forward-symbol)
-(define-key smartparens-mode-map (kbd "M-B") 'sp-backward-symbol)
-
-;; (define-key sp-keymap (kbd "H-t") 'sp-prefix-tag-object)
-;; (define-key sp-keymap (kbd "H-p") 'sp-prefix-pair-object)
-;; (define-key sp-keymap (kbd "H-s c") 'sp-convolute-sexp)
-;; (define-key sp-keymap (kbd "H-s a") 'sp-absorb-sexp)
-;; (define-key sp-keymap (kbd "H-s e") 'sp-emit-sexp)
-;; (define-key sp-keymap (kbd "H-s p") 'sp-add-to-previous-sexp)
-;; (define-key sp-keymap (kbd "H-s n") 'sp-add-to-next-sexp)
-;; (define-key sp-keymap (kbd "H-s j") 'sp-join-sexp)
-;; (define-key sp-keymap (kbd "H-s s") 'sp-split-sexp)
+(define-key smartparens-mode-map (kbd "C-M-[") 'sp-select-next-thing)
 
 ;;;;;;;;;;;;;;;;;;
 ;; pair management
 
 (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil)
 
-;; web-mode
-;; make web-mode play nice with smartparens
-(setq web-mode-enable-auto-pairing nil)
-(sp-with-modes '(web-mode)
-  (sp-local-pair "%" "%"
-                 :unless '(sp-in-string-p)
-                 :post-handlers '(((lambda (&rest _ignored)
-                                     (just-one-space)
-                                     (save-excursion (insert " ")))
-                                   "spc" "=" "#")))
-  (sp-local-pair "<% "  " %>" :insert "c-c %")
-  (sp-local-pair "<%= " " %>" :insert "c-c =")
-  (sp-local-pair "<%# " " %>" :insert "c-c #")
-  (sp-local-tag "%" "<% "  " %>")
-  (sp-local-tag "=" "<%= " " %>")
-  (sp-local-tag "#" "<%# " " %>"))
-
 ;;; markdown-mode
 (sp-with-modes '(markdown-mode gfm-mode rst-mode)
-  (sp-local-pair "*" "*" :bind "C-*")
+  (sp-local-pair "*" "*")
+  (sp-local-pair "_" "_")
   (sp-local-tag "2" "**" "**")
   (sp-local-tag "s" "```scheme" "```")
   (sp-local-tag "<"  "<_>" "</_>" :transform 'sp-match-sgml-tags))
 
+(defun sp--gfm-skip-asterisk (ms mb me)
+  (save-excursion
+    (goto-char mb)
+    (save-match-data (looking-at "^\\* "))))
+
+
+;;; org-mode
+(sp-with-modes 'org-mode
+  (sp-local-pair "*" "*" :actions '(insert wrap) :unless '(sp-point-after-word-p sp-point-at-bol-p) :skip-match 'sp--org-skip-asterisk)
+  (sp-local-pair "_" "_" :unless '(sp-point-after-word-p))
+  (sp-local-pair "/" "/" :unless '(sp-point-after-word-p) :post-handlers '(("[d1]" "SPC")))
+  (sp-local-pair "~" "~" :unless '(sp-point-after-word-p) :post-handlers '(("[d1]" "SPC")))
+  (sp-local-pair "=" "=" :unless '(sp-point-after-word-p) :post-handlers '(("[d1]" "SPC")))
+  (sp-local-pair "«" "»"))
+
+(defun sp--org-skip-asterisk (ms mb me)
+  (or (and (= (line-beginning-position) mb)
+           (eq 32 (char-after (1+ mb))))
+      (and (= (1+ (line-beginning-position)) me)
+           (eq 32 (char-after me)))))
+
+
+;; web-mode
+;; make web-mode play nice with smartparens
+(defun my-web-mode-hook ()
+  (setq web-mode-enable-auto-pairing nil))
+
+(add-hook 'web-mode-hook  'my-web-mode-hook)
+
+(defun sp-web-mode-is-code-context (id action context)
+  (and (eq action 'insert)
+       (not (or (get-text-property (point) 'part-side)
+                (get-text-property (point) 'block-side)))))
+
+(sp-local-pair 'web-mode "<" nil :when '(sp-web-mode-is-code-context))
+
+(sp-with-modes 'web-mode
+  (sp-local-pair "<% "  " %>")
+  (sp-local-pair "<%= " " %>")
+  (sp-local-pair "<%# " " %>"))
+;; (sp-with-modes 'web-mode
+;;   (sp-local-pair "%" "%"
+;;                  :unless '(sp-in-string-p)
+;;                  :post-handlers '(((lambda (&rest _ignored)
+;;                                      (just-one-space)
+;;                                      (save-excursion (insert " ")))
+;;                                    "spc" "=" "#")))
+;;   (sp-local-pair "<% "  " %>" :insert "c-c %")
+;;   (sp-local-pair "<%= " " %>" :insert "c-c =")
+;;   (sp-local-pair "<%# " " %>" :insert "c-c #")
+;;   (sp-local-tag "%" "<% "  " %>")
+;;   (sp-local-tag "=" "<%= " " %>")
+;;   (sp-local-tag "#" "<%# " " %>"))
+
+
+;;; lisp modes
+(sp-with-modes sp--lisp-modes
+  (sp-local-pair "(" nil
+                 :pre-handlers '(my-add-space-before-sexp-insertion)
+                 :post-handlers '(my-add-space-after-sexp-insertion)))
+
+
+(defun my-add-space-after-sexp-insertion (id action _context)
+  (when (eq action 'insert)
+    (save-excursion
+      (forward-char (sp-get-pair id :cl-l))
+      (when (or (eq (char-syntax (following-char)) ?w)
+                (looking-at (sp--get-opening-regexp)))
+        (insert " ")))))
+
+(defun my-add-space-before-sexp-insertion (id action _context)
+  (when (eq action 'insert)
+    (save-excursion
+      (backward-char (length id))
+      (when (or (eq (char-syntax (preceding-char)) ?w)
+                (and (looking-back (sp--get-closing-regexp))
+                     (not (eq (char-syntax (preceding-char)) ?'))))
+        (insert " ")))))
+
+
 ;;; tex-mode latex-mode
 (sp-with-modes '(tex-mode plain-tex-mode latex-mode)
   (sp-local-tag "i" "\"<" "\">"))
-
-;;; html-mode
-;; (sp-with-modes '(html-mode sgml-mode)
-;;   (sp-local-pair "<" ">"))
 
 
 (autoload 'js2-mode "js2-mode" nil t)
@@ -451,7 +497,6 @@
 (add-hook 'robe-mode-hook 'ac-robe-setup)
 (autoload 'feature-mode "feature-mode" "Major mode for running cukes")
 (add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))
-(require 'rspec-mode)
 
 (require 'rvm)
 (rvm-use-default) ;; use rvm's default ruby for the current Emacs session
@@ -475,6 +520,10 @@
 (defadvice inf-ruby (before activate-rvm-for-inf-ruby)
   (rvm-activate-corresponding-ruby))
 (ad-activate 'inf-ruby)
+
+(require 'rspec-mode)
+(setq-default rspec-use-rvm t)
+(add-hook 'after-init-hook 'inf-ruby-switch-setup)
 
 (require 'ensime)
 (require 'scala-mode2)
@@ -502,6 +551,7 @@
 
 (autoload 'coffee-mode "coffee-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+(custom-set-variables '(coffee-tab-width 2))
 
 (autoload 'scss-mode "scss-mode")
 (add-to-list 'auto-mode-alist '("\\.scss$" . scss-mode))
@@ -534,7 +584,7 @@
 (setq jedi:setup-keys t)
 (setq jedi:complete-on-dot t)
 
-                                        ; Setting up ipython
+;; Setting up ipython
 (when (executable-find "ipython")
   (setq
    python-shell-interpreter "ipython"
@@ -550,55 +600,57 @@
 
 
 
-(require 'icomplete)
-(require 'cider)
-(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-(setq cider-repl-history-size 5000) ; the default is 500
-(setq cider-repl-wrap-history t)
-(setq cider-repl-history-file "/home/rahul/.cider_history")
+;; (require 'icomplete)
 
-(require 'ac-nrepl)
-(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
-(add-hook 'cider-mode-hook 'ac-nrepl-setup)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'cider-repl-mode))
 
 (defun set-auto-complete-as-completion-at-point-function ()
   (setq completion-at-point-functions '(auto-complete)))
 (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
-(add-hook 'cider-repl-mode-hook 'set-auto-complete-as-completion-at-point-function)
-(add-hook 'cider-mode-hook 'set-auto-complete-as-completion-at-point-function)
+;; (require 'cider)
+;; (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+;; (setq cider-repl-history-size 5000) ; the default is 500
+;; (setq cider-repl-wrap-history t)
+;; (setq cider-repl-history-file "/home/rahul/.cider_history")
+
+;; (require 'ac-nrepl)
+;; (add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
+;; (add-hook 'cider-mode-hook 'ac-nrepl-setup)
+;; (eval-after-load "auto-complete"
+;;   '(add-to-list 'ac-modes 'cider-repl-mode))
+
+;; (add-hook 'cider-repl-mode-hook 'set-auto-complete-as-completion-at-point-function)
+;; (add-hook 'cider-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
 
-; Set OPAM environment variables
-;; (dolist (var (car (read-from-string (shell-command-to-string "opam config env --sexp"))))
-;;   (setenv (car var) (concat (cadr var) (getenv (car var)))))
-(autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
-(autoload 'camldebug "camldebug" "Run the Caml debugger" t)
+;; ; Set OPAM environment variables
+;; ;; (dolist (var (car (read-from-string (shell-command-to-string "opam config env --sexp"))))
+;; ;;   (setenv (car var) (concat (cadr var) (getenv (car var)))))
+;; (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
+;; (autoload 'camldebug "camldebug" "Run the Caml debugger" t)
                                         ;(autoload 'tuareg-imenu-set-imenu "tuareg-imenu"
                                         ;  "Configuration of imenu for tuareg" t)
 
                                         ;(add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
 
-(setq auto-mode-alist
-      (append '(("\\.ml[ily]?$" . tuareg-mode)
-                ("\\.topml$" . tuareg-mode))
-              auto-mode-alist))
-;; (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
-;; (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
-;; (setq merlin-command
-;;       (concat
-;;        (substring (shell-command-to-string "opam config var bin") 0 -1)
-;;        "/ocamlmerlin"))
+;; (setq auto-mode-alist
+;;       (append '(("\\.ml[ily]?$" . tuareg-mode)
+;;                 ("\\.topml$" . tuareg-mode))
+;;               auto-mode-alist))
+;; ;; (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
+;; ;; (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+;; ;; (setq merlin-command
+;; ;;       (concat
+;; ;;        (substring (shell-command-to-string "opam config var bin") 0 -1)
+;; ;;        "/ocamlmerlin"))
 
-(autoload 'merlin-mode "merlin" "Merlin mode" t)
-(add-hook 'caml-mode-hook 'merlin-mode)
+;; (autoload 'merlin-mode "merlin" "Merlin mode" t)
+;; (add-hook 'caml-mode-hook 'merlin-mode)
 
-(add-hook 'tuareg-mode-hook
-          '(lambda ()
-             (merlin-mode)
-             (setq merlin-use-auto-complete-mode t)))
+;; (add-hook 'tuareg-mode-hook
+;;           '(lambda ()
+;;              (merlin-mode)
+;;              (setq merlin-use-auto-complete-mode t)))
 
 (require 'helm-config)
 ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
@@ -618,10 +670,6 @@
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "C-x b") 'helm-mini)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
-(when (executable-find "ack-grep")
-  (setq helm-grep-default-command "ack-grep -Hn --no-group --no-color %e %p %f"
-        helm-grep-default-recurse-command "ack-grep -H --no-group --no-color %e %p %f"))
-(add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages)
 
 (projectile-global-mode)
 (setq projectile-completion-system 'helm)
@@ -648,10 +696,10 @@
 (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
 (add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
 
-;; (setq eclim-eclipse-dirs "~/data/sw/eclipse/")
-;; (setq eclim-executable "~/data/sw/eclipse/eclim")
-;; (require 'eclim)
-;; (global-eclim-mode)
-;; (require 'eclimd)
-;; (require 'ac-emacs-eclim-source)
-;; (ac-emacs-eclim-config)
+;; ;; (setq eclim-eclipse-dirs "~/data/sw/eclipse/")
+;; ;; (setq eclim-executable "~/data/sw/eclipse/eclim")
+;; ;; (require 'eclim)
+;; ;; (global-eclim-mode)
+;; ;; (require 'eclimd)
+;; ;; (require 'ac-emacs-eclim-source)
+;; ;; (ac-emacs-eclim-config)
