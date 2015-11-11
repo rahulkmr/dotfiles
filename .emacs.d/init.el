@@ -8,10 +8,11 @@
  '(ansi-term-color-vector
    [unspecified "#181818" "#ab4642" "#a1b56c" "#f7ca88" "#7cafc2" "#ba8baf" "#7cafc2" "#d8d8d8"])
  '(blink-cursor-mode nil)
+ '(coffee-tab-width 2)
  '(column-number-mode t)
  '(custom-safe-themes
    (quote
-    ("f5eb916f6bd4e743206913e6f28051249de8ccfd070eae47b5bde31ee813d55f" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "7ceb8967b229c1ba102378d3e2c5fef20ec96a41f615b454e0dc0bfa1d326ea6" "0b6645497e51d80eda1d337d6cabe31814d6c381e69491931a688836c16137ed" "ff9e6deb9cfc908381c1267f407b8830bcad6028231a5f736246b9fc65e92b44" "11636897679ca534f0dec6f5e3cb12f28bf217a527755f6b9e744bd240ed47e1" "9f3a4edb56d094366afed2a9ba3311bbced0f32ca44a47a765d8ef4ce5b8e4ea" default)))
+    ("b6db49cec08652adf1ff2341ce32c7303be313b0de38c621676122f255ee46db" "fbcdb6b7890d0ec1708fa21ab08eb0cc16a8b7611bb6517b722eba3891dfc9dd" "2a5be663818e1e23fd2175cc8dac8a2015dcde6b2e07536712451b14658bbf68" "8e7ca85479dab486e15e0119f2948ba7ffcaa0ef161b3facb8103fb06f93b428" "f5eb916f6bd4e743206913e6f28051249de8ccfd070eae47b5bde31ee813d55f" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "7ceb8967b229c1ba102378d3e2c5fef20ec96a41f615b454e0dc0bfa1d326ea6" "0b6645497e51d80eda1d337d6cabe31814d6c381e69491931a688836c16137ed" "ff9e6deb9cfc908381c1267f407b8830bcad6028231a5f736246b9fc65e92b44" "11636897679ca534f0dec6f5e3cb12f28bf217a527755f6b9e744bd240ed47e1" "9f3a4edb56d094366afed2a9ba3311bbced0f32ca44a47a765d8ef4ce5b8e4ea" default)))
  '(fci-rule-color "#383838")
  '(global-hl-line-mode nil)
  '(inhibit-x-resources t t)
@@ -247,6 +248,9 @@
 
 
 (load-theme 'zenburn)
+(require 'airline-themes)
+(load-theme 'airline-base16-gui-dark)
+
 
 (elpy-enable)
 (fset 'perl-mode 'cperl-mode)
@@ -431,15 +435,6 @@
 (require 'auto-complete-config)
 (ac-config-default)
 
-;; (require 'spaceline-config)
-;; (spaceline-spacemacs-theme)
-
-;; (require 'powerline)
-;; (powerline-default-theme)
-;; (require 'smart-mode-line)
-;; (sml/setup)
-;; (sml/apply-theme 'powerline)
-
 
 (require 'yasnippet)
 (yas-global-mode 1)
@@ -538,7 +533,7 @@
 
 (autoload 'coffee-mode "coffee-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
-(custom-set-variables '(coffee-tab-width 2))
+
 
 (autoload 'scss-mode "scss-mode")
 (add-to-list 'auto-mode-alist '("\\.scss$" . scss-mode))
