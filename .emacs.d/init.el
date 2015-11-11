@@ -389,23 +389,10 @@
 (sp-local-pair 'web-mode "<" nil :when '(sp-web-mode-is-code-context))
 
 (sp-with-modes 'web-mode
-  (sp-local-pair "<% "  " %>")
-  (sp-local-pair "<%= " " %>")
-  (sp-local-pair "<%# " " %>"))
-;; (sp-with-modes 'web-mode
-;;   (sp-local-pair "%" "%"
-;;                  :unless '(sp-in-string-p)
-;;                  :post-handlers '(((lambda (&rest _ignored)
-;;                                      (just-one-space)
-;;                                      (save-excursion (insert " ")))
-;;                                    "spc" "=" "#")))
-;;   (sp-local-pair "<% "  " %>" :insert "c-c %")
-;;   (sp-local-pair "<%= " " %>" :insert "c-c =")
-;;   (sp-local-pair "<%# " " %>" :insert "c-c #")
-;;   (sp-local-tag "%" "<% "  " %>")
-;;   (sp-local-tag "=" "<%= " " %>")
-;;   (sp-local-tag "#" "<%# " " %>"))
-
+  (sp-local-pair "<% "  " %>" :insert "c-x 1")
+  (sp-local-pair "<%= " " %>" :insert "c-x 2")
+  (sp-local-pair "{% " " %}" :insert "c-x 3")
+  (sp-local-pair "{{ " " }}" :insert "c-x 4"))
 
 ;;; lisp modes
 (sp-with-modes sp--lisp-modes
