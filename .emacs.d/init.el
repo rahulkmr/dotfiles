@@ -167,6 +167,7 @@
                       aggressive-indent
                       ack
                       ac-nrepl
+                      ag
                       auto-complete
                       base16-theme
                       browse-kill-ring
@@ -232,6 +233,7 @@
                       tuareg
                       undo-tree
                       web-mode
+                      wgrep-ag
                       yaml-mode
                       yasnippet
                       zenburn-theme))
@@ -309,6 +311,9 @@
             (cons 'ggtags-try-complete-tag hippie-expand-try-functions-list))
 (global-set-key "\C-\\" 'ggtags-find-tag-dwim)
 (global-set-key (kbd "C-`") 'ggtags-find-reference)
+(setenv "GTAGSCONF" "/usr/local/share/gtags/gtags.conf")
+(setenv "GTAGSLABEL" "pygments")
+
 
 (require 'ace-jump-mode)
 (require 'browse-kill-ring)
