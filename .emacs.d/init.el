@@ -308,7 +308,7 @@
 (setq-local hippie-expand-try-functions-list
             (cons 'ggtags-try-complete-tag hippie-expand-try-functions-list))
 (global-set-key "\C-\\" 'ggtags-find-tag-dwim)
-(global-set-key "\C-`" 'ggtags-find-reference)
+(global-set-key (kbd "C-`") 'ggtags-find-reference)
 
 (require 'ace-jump-mode)
 (require 'browse-kill-ring)
