@@ -148,9 +148,9 @@
     (backward-kill-word 1)))
 (global-set-key "\C-w" 'kill-region-or-word)
 (global-set-key "\C-xw" 'delete-trailing-whitespace)
-(global-set-key "\C-\\" (lambda ()
-                          (interactive)
-                          (insert-char "3bb")))
+;; (global-set-key "\C-\\" (lambda ()
+;;                           (interactive)
+;;                           (insert-char "3bb")))
 
 (global-set-key "\C-cn" 'windmove-down)
 (global-set-key "\C-cu" 'windmove-up)
@@ -164,6 +164,7 @@
 
 
 (defvar my-packages '(ace-jump-mode
+                      aggressive-indent
                       ack
                       ac-nrepl
                       auto-complete
@@ -188,6 +189,7 @@
                       flx-ido
                       flycheck
                       fsharp-mode
+                      ggtags
                       go-mode
                       go-autocomplete
                       haml-mode
@@ -202,6 +204,7 @@
                       lua-mode
                       linum-relative
                       magit
+                      evil-magit
                       multi-term
                       nimrod-mode
                       nose
@@ -264,6 +267,11 @@
 (load-theme 'airline-base16-gui-dark)
 
 
+
+(require 'aggressive-indent)
+(global-aggressive-indent-mode 1)
+(add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+
 (elpy-enable)
 (fset 'perl-mode 'cperl-mode)
 (electric-indent-mode 1)
@@ -294,6 +302,13 @@
 (require 'undo-tree)
 (global-undo-tree-mode 1)
 (global-set-key (kbd "C-x u") 'undo)
+
+(require 'ggtags)
+(setq-local imenu-create-index-function #'ggtags-build-imenu-index)
+(setq-local hippie-expand-try-functions-list
+            (cons 'ggtags-try-complete-tag hippie-expand-try-functions-list))
+(global-set-key "\C-\\" 'ggtags-find-tag-dwim)
+(global-set-key "\C-`" 'ggtags-find-reference)
 
 (require 'ace-jump-mode)
 (require 'browse-kill-ring)
@@ -554,7 +569,7 @@
 (add-to-list 'auto-mode-alist '("\\.less$" . less-css-mode))
 
 (add-to-list 'auto-mode-alist '("\\.rkt\\'" . scheme-mode))
-                                        ; (eval-after-load "geiser" '(require quack))
+;; (eval-after-load "geiser" '(require quack))
 
 
 (defun save-macro (name)
