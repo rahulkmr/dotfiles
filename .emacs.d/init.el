@@ -248,6 +248,9 @@
 
 (install-packages)
 
+(require 'exec-path-from-shell)
+(exec-path-from-shell-initialize)
+
 (global-linum-mode 1)
 (linum-on)
 (require 'linum-relative)
@@ -268,6 +271,15 @@
 (require 'airline-themes)
 (load-theme 'airline-base16-gui-dark)
 
+(setenv "ORACLE_HOME" "/u01/app/oracle/product/11.2.0/xe/")
+(setenv "ORACLE_SID" "XE")
+(setenv "NLS_LANG" "AMERICAN_AMERICA.AL32UTF8")
+
+(add-to-list 'exec-path
+             "/u01/app/oracle/product/11.2.0/xe/bin")
+
+(require 'pyenv-mode)
+(pyenv-mode)
 
 
 (require 'aggressive-indent)
@@ -693,15 +705,6 @@
 
 (autoload 'php-mode "php-mode" "Major mode for editing php code." t)
 (add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
-
-(setenv "ORACLE_HOME" "/u01/app/oracle/product/11.2.0/xe/")
-(setenv "ORACLE_SID" "XE")
-(setenv "NLS_LANG" "AMERICAN_AMERICA.AL32UTF8")
-(add-to-list 'exec-path
-             "/u01/app/oracle/product/11.2.0/xe/bin")
-(add-to-list 'exec-path
-             "~/bin")
-(setenv "PATH" (concat  ":~/bin" (getenv "PATH")))
 
 (require 'fsharp-mode)
 (put 'scroll-left 'disabled nil)
