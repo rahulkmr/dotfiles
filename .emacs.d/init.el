@@ -186,6 +186,7 @@
                       evil-nerd-commenter
                       evil-matchit
                       expand-region
+                      exec-path-from-shell
                       feature-mode
                       flx-ido
                       flycheck
