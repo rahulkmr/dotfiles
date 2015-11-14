@@ -266,6 +266,7 @@
 (require 'evil-matchit)
 (global-evil-matchit-mode 1)
 
+(evil-set-initial-state 'dired-mode 'emacs)
 
 
 (load-theme 'zenburn)
@@ -608,6 +609,10 @@
 
 (autoload 'jedi:setup "jedi" nil t)
 (add-hook 'python-mode-hook 'jedi:setup)
+(add-hook 'python-mode-hook
+          (lambda ()
+            (setq-local imenu-create-index-function #'ggtags-build-imenu-index)))
+
 (setq jedi:setup-keys t)
 (setq jedi:complete-on-dot t)
 
