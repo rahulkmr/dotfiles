@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 dir="`git rev-parse --show-toplevel`"
-trap 'rm -f "$dir/$$.tags"' EXIT
-trap 'rm -f "$dir/$$.TAGS"' EXIT
-ctags --exclude=.git --exclude=log -f "$dir/$$.tags" -R "$dir"
-ctags --exclude=.git --exclude=log -e -f "$dir/$$.TAGS" -R "$dir"
-mv "$dir/$$.tags" "$dir/tags"
-mv "$dir/$$.TAGS" "$dir/TAGS"
+
+if [ -e "$dir/GTAGS" ]; then
+    global -u
+else
+    GTAGSROOT="${dir}" gtags
+fi
