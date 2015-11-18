@@ -276,10 +276,8 @@
 (add-to-list 'exec-path
              "/u01/app/oracle/product/11.2.0/xe/bin")
 
-;; (message "begin pyenv")
-;; (require 'pyenv-mode)
-;; (pyenv-mode)
-;; (message "end pyenv")
+(require 'pyenv-mode)
+(pyenv-mode)
 
 
 (elpy-enable)
