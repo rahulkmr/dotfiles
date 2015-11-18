@@ -122,8 +122,6 @@
 
 
 
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 (setq
@@ -164,7 +162,6 @@
 
 
 (defvar my-packages '(ace-jump-mode
-                      aggressive-indent
                       ack
                       ac-nrepl
                       ag
@@ -218,7 +215,6 @@
                       projectile-rails
                       helm-projectile
                       helm-ag
-                      pylint
                       python-django
                       pyvenv
                       rainbow-mode
@@ -280,13 +276,11 @@
 (add-to-list 'exec-path
              "/u01/app/oracle/product/11.2.0/xe/bin")
 
-(require 'pyenv-mode)
-(pyenv-mode)
+;; (message "begin pyenv")
+;; (require 'pyenv-mode)
+;; (pyenv-mode)
+;; (message "end pyenv")
 
-
-(require 'aggressive-indent)
-(global-aggressive-indent-mode 1)
-(add-to-list 'aggressive-indent-excluded-modes 'html-mode)
 
 (elpy-enable)
 (fset 'perl-mode 'cperl-mode)
@@ -303,7 +297,6 @@
 (autoload 'magit-status "magit" nil t)
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
-(require 'evil-magit)
 
 (defalias 'perl-mode 'cperl-mode)
 
@@ -685,6 +678,7 @@
 ;;              (setq merlin-use-auto-complete-mode t)))
 
 (require 'helm-config)
+(helm-mode 1)
 ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
 ;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
 ;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
@@ -693,7 +687,7 @@
 (when (executable-find "curl")
   (setq helm-google-suggest-use-curl-p t))
 
-(helm-mode 1)
+;; (helm-mode 1)
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
 (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
@@ -719,6 +713,7 @@
 (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
 (add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
 
+(require 'evil-magit)
 ;; (setq eclim-eclipse-dirs "~/data/sw/eclipse/")
 ;; (setq eclim-executable "~/data/sw/eclipse/eclim")
 ;; (require 'eclim)
