@@ -165,6 +165,9 @@ Plug 'jpalardy/vim-slime'
 Plug 'Shougo/neocomplete.vim'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+Plug 'hewes/unite-gtags'
 Plug 'talek/vorax4'
 Plug 'lucapette/vim-ruby-doc'
 Plug 'danchoi/ri.vim'
@@ -1103,6 +1106,9 @@ if has("cscope")
     if filereadable("cscope.out")
         cs add cscope.out
     " else add the database pointed to by environment variable
+    elseif filereadable("GTAGS")
+      set cscopeprg=gtags-cscope
+      cs add GTAGS
     elseif $CSCOPE_DB != ""
         cs add $CSCOPE_DB
     endif
