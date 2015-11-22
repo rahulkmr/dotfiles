@@ -181,6 +181,8 @@ Plug 'dhruvasagar/vim-table-mode'
 Plug 'plasticboy/vim-markdown'
 Plug 'thoughtbot/vim-rspec'
 Plug 'ensime/ensime-vim'
+Plug 'artur-shaik/vim-javacomplete2'
+" Plug 'ivanov/vim-ipython'
 
 
 call plug#end()
@@ -1130,3 +1132,4 @@ endif
 nnoremap <unique> <Space>o :Unite outline<cr>
 
 let g:NERDTReeIgnore = ['\.pyc$']
+nnoremap <c-\> :GtagsCursor<cr>
