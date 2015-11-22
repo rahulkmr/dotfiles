@@ -214,9 +214,11 @@ BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
 #
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
-export FZF_DEFAULT_OPTS="--extended --cycle"
+export FZF_DEFAULT_OPTS="--extended-exact --cycle"
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 export GTAGSCONF=/usr/local/share/gtags/gtags.conf
 export GTAGSLABEL=pygments
+
+export PAGER='less'
