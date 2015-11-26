@@ -176,6 +176,7 @@
                       flx-ido
                       flycheck
                       fsharp-mode
+                      geiser
                       ggtags
                       go-mode
                       go-autocomplete
@@ -237,7 +238,7 @@
 (exec-path-from-shell-initialize)
 (exec-path-from-shell-copy-envs
  '("WORKON_HOME" "ORACLE_HOME" "ORACLE_SID" "NLS_LANG" "GTAGSCONF"
-   "GTAGSLABEL" "PYENV_ROOT"))
+   "GTAGSLABEL" "PYENV_ROOT" "FZF_DEFAULT_COMMAND" "FZF_DEFAULT_OPTS"))
 
 
 (global-linum-mode 1)
