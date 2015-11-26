@@ -235,6 +235,10 @@
 
 (require 'exec-path-from-shell)
 (exec-path-from-shell-initialize)
+(exec-path-from-shell-copy-envs
+ '("WORKON_HOME" "ORACLE_HOME" "ORACLE_SID" "NLS_LANG" "GTAGSCONF"
+   "GTAGSLABEL" "PYENV_ROOT"))
+
 
 (global-linum-mode 1)
 (linum-on)
@@ -257,24 +261,19 @@
 (require 'airline-themes)
 (load-theme 'airline-base16-gui-dark)
 
-(setenv "ORACLE_HOME" "/u01/app/oracle/product/11.2.0/xe/")
-(setenv "ORACLE_SID" "XE")
-(setenv "NLS_LANG" "AMERICAN_AMERICA.AL32UTF8")
+;; (add-to-list 'exec-path
+;;              "/u01/app/oracle/product/11.2.0/xe/bin")
 
-(add-to-list 'exec-path
-             "/u01/app/oracle/product/11.2.0/xe/bin")
+;; (require 'pyenv-mode)
+;; (pyenv-mode)
 
-(require 'pyenv-mode)
-(pyenv-mode)
-
-
-(elpy-enable)
+;; (elpy-enable)
 (fset 'perl-mode 'cperl-mode)
 (electric-indent-mode 1)
 
-(require 'virtualenvwrapper)
-(venv-initialize-interactive-shells)
-(setq venv-location "/home/rahul/venvs")
+;; (require 'virtualenvwrapper)
+;; (venv-initialize-interactive-shells)
+;; (setq venv-location "/home/rahul/venvs")
 
 (require 'perspective)
 (persp-mode)
@@ -304,8 +303,6 @@
             (cons 'ggtags-try-complete-tag hippie-expand-try-functions-list))
 (global-set-key "\C-\\" 'ggtags-find-tag-dwim)
 (global-set-key (kbd "C-`") 'ggtags-find-reference)
-(setenv "GTAGSCONF" "/usr/local/share/gtags/gtags.conf")
-(setenv "GTAGSLABEL" "pygments")
 
 
 (require 'ace-jump-mode)
