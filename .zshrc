@@ -222,3 +222,4 @@ export GTAGSCONF=/usr/local/share/gtags/gtags.conf
 export GTAGSLABEL=pygments
 
 export PAGER='less'
+stty -ixon -ixoff
