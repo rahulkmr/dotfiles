@@ -461,8 +461,8 @@
 (ac-config-default)
 
 
-(require 'yasnippet)
-(yas-global-mode 1)
+; (require 'yasnippet)
+; (yas-global-mode 1)
 
 (require 'rainbow-mode)
 (rainbow-mode t)
@@ -535,7 +535,7 @@
 (require 'ensime)
 (require 'scala-mode2)
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
-(add-hook 'scala-mode-hook #'yas-minor-mode)
+; (add-hook 'scala-mode-hook #'yas-minor-mode)
 
 
 (defadvice ansi-term (after advise-ansi-term-coding-system)
@@ -543,7 +543,7 @@
 (ad-activate 'ansi-term)
 
 (add-hook 'term-mode-hook (lambda ()
-                            (yas-minor-mode -1)
+                            ; (yas-minor-mode -1)
                             (setq show-trailing-whitespace nil)))
 
 (add-hook 'dired-mode-hook (lambda ()
