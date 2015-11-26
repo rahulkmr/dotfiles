@@ -239,7 +239,7 @@
 (global-linum-mode 1)
 (linum-on)
 (require 'linum-relative)
-(setq linum-format "%d ")
+(setq linum-relative-format "%s ")
 (linum-relative-mode)
 
 (require 'evil)
