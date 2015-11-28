@@ -234,6 +234,10 @@
 
 (install-packages)
 
+(add-to-list 'load-path "/home/rahul/.emacs.d/benchmark-init-el/")
+(require 'benchmark-init-loaddefs)
+(benchmark-init/activate)
+
 (require 'exec-path-from-shell)
 (exec-path-from-shell-initialize)
 (exec-path-from-shell-copy-envs
@@ -459,8 +463,8 @@
 (ac-config-default)
 
 
-; (require 'yasnippet)
-; (yas-global-mode 1)
+(require 'yasnippet)
+(yas-global-mode 1)
 
 (require 'rainbow-mode)
 (rainbow-mode t)
@@ -533,7 +537,7 @@
 (require 'scala-mode2)
 (require 'ensime)
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
-; (add-hook 'scala-mode-hook #'yas-minor-mode)
+(add-hook 'scala-mode-hook #'yas-minor-mode)
 
 
 (defadvice ansi-term (after advise-ansi-term-coding-system)
@@ -661,6 +665,7 @@
 ;;              (merlin-mode)
 ;;              (setq merlin-use-auto-complete-mode t)))
 
+(setq tramp-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
 (require 'helm-config)
 (helm-mode 1)
 ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
