@@ -238,6 +238,8 @@
 (require 'benchmark-init-loaddefs)
 (benchmark-init/activate)
 
+(setq tramp-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
+
 (require 'exec-path-from-shell)
 (exec-path-from-shell-initialize)
 (exec-path-from-shell-copy-envs
@@ -269,16 +271,13 @@
 ;; (add-to-list 'exec-path
 ;;              "/u01/app/oracle/product/11.2.0/xe/bin")
 
-;; (require 'pyenv-mode)
-;; (pyenv-mode)
+(require 'pyenv-mode)
+(pyenv-mode)
 
-;; (elpy-enable)
+(elpy-enable)
+
 (fset 'perl-mode 'cperl-mode)
 (electric-indent-mode 1)
-
-;; (require 'virtualenvwrapper)
-;; (venv-initialize-interactive-shells)
-;; (setq venv-location "/home/rahul/venvs")
 
 (require 'perspective)
 (persp-mode)
@@ -665,7 +664,6 @@
 ;;              (merlin-mode)
 ;;              (setq merlin-use-auto-complete-mode t)))
 
-(setq tramp-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
 (require 'helm-config)
 (helm-mode 1)
 ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
