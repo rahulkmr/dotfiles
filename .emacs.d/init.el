@@ -530,8 +530,8 @@
 (setq-default rspec-use-rvm t)
 (add-hook 'after-init-hook 'inf-ruby-switch-setup)
 
-(require 'ensime)
 (require 'scala-mode2)
+(require 'ensime)
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 ; (add-hook 'scala-mode-hook #'yas-minor-mode)
 
