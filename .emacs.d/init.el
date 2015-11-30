@@ -268,9 +268,6 @@
 (require 'airline-themes)
 (load-theme 'airline-base16-gui-dark)
 
-;; (add-to-list 'exec-path
-;;              "/u01/app/oracle/product/11.2.0/xe/bin")
-
 (require 'pyenv-mode)
 (pyenv-mode)
 
