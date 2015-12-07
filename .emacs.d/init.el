@@ -134,9 +134,6 @@
     (backward-kill-word 1)))
 (global-set-key "\C-w" 'kill-region-or-word)
 (global-set-key "\C-xw" 'delete-trailing-whitespace)
-;; (global-set-key "\C-\\" (lambda ()
-;;                           (interactive)
-;;                           (insert-char "3bb")))
 
 (global-set-key "\C-cn" 'windmove-down)
 (global-set-key "\C-cu" 'windmove-up)
