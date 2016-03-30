@@ -79,8 +79,6 @@
 (add-to-list 'load-path themes)
 (add-to-list 'load-path vendor-dir)
 
-
-
 ;; General settings.
 
 (setq inhibit-splash-screen t)
@@ -234,6 +232,8 @@
 (add-to-list 'load-path "/home/rahul/.emacs.d/benchmark-init-el/")
 (require 'benchmark-init-loaddefs)
 (benchmark-init/activate)
+
+
 
 (setq tramp-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
 
@@ -450,11 +450,19 @@
 
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\.erb$" . js2-mode))
 
 ; (require 'go-autocomplete)
 (require 'auto-complete-config)
 (ac-config-default)
 
+(add-to-list 'load-path "~/projects/tern/emacs/")
+(autoload 'tern-mode "tern.el" nil t)
+(add-hook 'js2-mode-hook (lambda () (tern-mode t)))
+(eval-after-load 'tern
+   '(progn
+      (require 'tern-auto-complete)
+      (tern-ac-setup)))
 
 (require 'yasnippet)
 (yas-global-mode 1)
@@ -542,11 +550,11 @@
                             (setq show-trailing-whitespace nil)))
 
 (add-hook 'dired-mode-hook (lambda ()
-                             (local-set-key (kbd "j") (lambda ()
+                             (local-set-key (kbd "c-n") (lambda ()
                                                         (interactive)
                                                         (dired-next-line 1)
                                                         (image-dired-dired-display-image)))
-                             (local-set-key (kbd "k") (lambda ()
+                             (local-set-key (kbd "c-p") (lambda ()
                                                         (interactive)
                                                         (dired-previous-line 1)
                                                         (image-dired-dired-display-image)))))
