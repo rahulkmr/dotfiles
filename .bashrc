@@ -106,3 +106,5 @@ fi
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+[ -s "/home/rahul/.dnx/dnvm/dnvm.sh" ] && . "/home/rahul/.dnx/dnvm/dnvm.sh" # Load dnvm
