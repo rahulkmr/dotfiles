@@ -107,7 +107,7 @@ let maplocalleader = ","
 call plug#begin('~/.vim/bundle')
 Plug 'Rip-Rip/clang_complete'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
-Plug 'marijnh/tern_for_vim'
+Plug 'ternjs/tern_for_vim'
 Plug 'guns/vim-sexp'
 Plug 'mattn/emmet-vim'
 Plug 'rking/ag.vim'
@@ -117,7 +117,8 @@ Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-rake'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-scripts/a.vim'
-Plug 'tomtom/tcomment_vim'
+Plug 'scrooloose/nerdcommenter'
+" Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-dispatch'
@@ -131,7 +132,7 @@ Plug 'vim-scripts/dbext.vim'
 Plug 'tpope/vim-scriptease'
 Plug 'davidhalter/jedi-vim'
 Plug 'derekwyatt/vim-scala'
-Plug 'tpope/vim-vinegar'
+"Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-bundler'
 Plug 'Wolfy87/vim-enmasse'
 Plug 'tkztmk/vim-vala'
@@ -181,9 +182,16 @@ Plug 'dhruvasagar/vim-table-mode'
 Plug 'plasticboy/vim-markdown'
 Plug 'thoughtbot/vim-rspec'
 Plug 'ensime/ensime-vim'
-Plug 'artur-shaik/vim-javacomplete2'
-" Plug 'ivanov/vim-ipython'
-
+"Plug 'artur-shaik/vim-javacomplete2'
+Plug 'altercation/vim-colors-solarized'
+Plug 'Yggdroot/indentLine'
+"Plug 'tpope/vim-classpath'
+"Plug 'ivanov/vim-ipython'
+"Plug 'nathanaelkane/vim-indent-guides'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'ryanoasis/vim-devicons'
+Plug 'hynek/vim-python-pep8-indent'
 
 call plug#end()
 
@@ -196,6 +204,7 @@ else
     let base16colorspace=256
     set background=dark
     colorscheme base16-default
+    " colorscheme solarized
 endif
 "
 let g:airline#extensions#tabline#enabled = 1
@@ -231,7 +240,7 @@ let coffee_no_trailing_space_error = 1
 set guioptions-=m
 set guioptions-=T
 
-let g:netrw_chgwin = 2
+"let g:netrw_chgwin = 2
 let g:netrw_liststyle = 3
 let g:netrw_browsex_viewer="gnome-open"
 "let g:netrw_menu = 0
@@ -248,7 +257,7 @@ fun! s:layout_netrw_split()
   :20Vex .
 endfunction
 
-command! Lexplore :call s:layout_netrw_split()
+"command! Lexplore :call s:layout_netrw_split()
 
 fun! s:section(char)
   let length = strlen(getline("."))
@@ -267,6 +276,8 @@ augroup global
     au!
     au VimResized * exe "normal! \<c-w>="
     autocmd BufNewFile,BufRead *.slim set filetype=slim
+    autocmd BufNewFile,BufRead *.js.erb set filetype=eruby.javascript
+    autocmd BufNewFile,BufRead *.coffee.erb set filetype=eruby.coffee
     " au BufNewFile,BufRead * call PareditInitBuffer()
     " let g:paredit_leader = '\'
     autocmd FileType racket nnoremap<buffer> <Space>x :w<CR>:!/usr/bin/env racket %
@@ -341,7 +352,7 @@ augroup global
     nnoremap <c-x>v :!gnome-open %<cr>
     nnoremap <Space>f :RecoverPluginFinish<CR>
     nnoremap ,t :NERDTreeToggle<CR>
-    " nnoremap <Space>t :Lexplore<CR>
+    nnoremap <Leader>e :Explore<CR>
     "nnoremap \t :Ve<CR><CR>
     nnoremap <Space>l :TagbarToggle<CR>
     nnoremap do :diffget<cr>
@@ -408,7 +419,11 @@ augroup global
     noremap!        <M-n> <Down>
     noremap!        <M-p> <Up>
 
+    nnoremap <c-w>e :SyntasticCheck<cr>
     nnoremap <Space>e :Errors<cr>
+
+    let g:indentLine_enabled = 0
+    nnoremap <Leader>ig :IndentLinesToggle<cr>
 augroup end
 
 set noautochdir
@@ -515,27 +530,32 @@ augroup ruby
     set tags+=gemtags
 augroup end
 
-
 augroup java
     au!
     " Mappings for eclim.
-    autocmd FileType java nnoremap<buffer> <Space>jg :JavaGet<CR>
-    autocmd FileType java nnoremap<buffer> <Space>js :JavaSet<CR>
-    autocmd FileType java nnoremap<buffer> <Space>ja :JavaGetSet<CR>
-    autocmd FileType java nnoremap<buffer> <Space>jc :JavaConstructor<CR>
-    autocmd FileType java nnoremap<buffer> <Space>jh :JavaHierarchy<CR>
-    autocmd FileType java nnoremap<buffer> <Space>jl :JavaImpl<CR>
-    autocmd FileType java nnoremap<buffer> <Space>jd :JavaDelegate<CR>
-    autocmd FileType java nnoremap<buffer> <Space>ji :JavaImport<CR>
-    autocmd FileType java nnoremap<buffer> <Space>jm :w<CR>:JavaImportMissing<CR>:w<CR>
-    autocmd FileType java nnoremap<buffer> <Space>jj :JavaSearchContext<CR>
-    autocmd FileType java nnoremap<buffer> <Space>jx :Java %<CR>
-    autocmd FileType java nnoremap<buffer> <Space>jo :w<CR>:Javac<CR>
-    autocmd FileType java nnoremap<buffer> <Space>jv :w<CR>:Validate<CR>
-    autocmd FileType java nnoremap<buffer> <Space>jt :JavaCorrect<CR>
-    autocmd FileType java nnoremap<buffer> <Space>jr :JavaRename
-    autocmd FileType java nnoremap<buffer> <Space>jw :JavaDocComment<CR>
-    autocmd FileType java nnoremap<buffer> <Space>jf :w<CR>:%JavaFormat<CR>
+     autocmd FileType java nnoremap<buffer> <Space>jg :JavaGet<CR>
+     autocmd FileType java nnoremap<buffer> <Space>js :JavaSet<CR>
+     autocmd FileType java nnoremap<buffer> <Space>ja :JavaGetSet<CR>
+     autocmd FileType java nnoremap<buffer> <Space>jc :JavaConstructor<CR>
+     autocmd FileType java nnoremap<buffer> <Space>jh :JavaHierarchy<CR>
+     autocmd FileType java nnoremap<buffer> <Space>jl :JavaImpl<CR>
+     autocmd FileType java nnoremap<buffer> <Space>jd :JavaDelegate<CR>
+     autocmd FileType java nnoremap<buffer> <Space>ji :JavaImport<CR>
+     autocmd FileType java nnoremap<buffer> <Space>jm :w<CR>:JavaImportMissing<CR>:w<CR>
+     autocmd FileType java nnoremap<buffer> <Space>jj :JavaSearchContext<CR>
+     autocmd FileType java nnoremap<buffer> <Space>jx :Java %<CR>
+     autocmd FileType java nnoremap<buffer> <Space>jo :w<CR>:Javac<CR>
+     autocmd FileType java nnoremap<buffer> <Space>jv :w<CR>:Validate<CR>
+     autocmd FileType java nnoremap<buffer> <Space>jt :JavaCorrect<CR>
+     autocmd FileType java nnoremap<buffer> <Space>jr :JavaRename
+     autocmd FileType java nnoremap<buffer> <Space>jw :JavaDocComment<CR>
+     autocmd FileType java nnoremap<buffer> <Space>jf :w<CR>:%JavaFormat<CR>
+
+    "autocmd Filetype java setlocal omnifunc=javacomplete#Complete
+    "autocmd FileType java nnoremap<buffer> <Space>jm :JCimportsAddMissing<cr>
+    "autocmd FileType java nnoremap<buffer> <Space>ji :JCimportAddI<cr>
+    "autocmd FileType java setlocal makeprg=mvn\ package
+    "autocmd FileType java setlocal errorformat=\[ERROR]\ %f:[%l\\,%v]\ %m 
 augroup end
 
 let g:EclimCompletionMethod = 'omnifunc'
@@ -591,18 +611,15 @@ let NERDTreeShowHidden=1
 
 
 function! ChangeBuffer()
-    if stridx(expand("%:t"), ".") != 0
-        if exists("t:NERDTreeBufName")
-            if bufwinnr(t:NERDTreeBufName) != -1
-                let win_num = winnr()
-                NERDTreeFind
-                exe win_num . "wincmd w"
-            endif
-        end
-    end
+  if &modifiable && !&diff && stridx(expand("%:t"), ".") != 0 &&
+        \ strlen(expand('%')) > 0 && exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
+    let win_num = winnr()
+    NERDTreeFind
+    exe win_num . "wincmd w"
+  endif
 endfunction
 let g:BufExplorerFuncRef = function('ChangeBuffer')
-autocmd BufWinEnter * call ChangeBuffer()
+"autocmd BufEnter * call ChangeBuffer()
 
 
 augroup PreviewWin
@@ -656,8 +673,14 @@ autocmd FileType ocaml source /home/rahul/.opam/4.01.0/share/vim/syntax/ocp-inde
 
 let g:syntastic_ocaml_checkers = ['merlin']
 let g:syntastic_python_flake8_post_args='--ignore=E501'
+let g:syntastic_mode_map = {
+      \ "mode": "active",
+      \ "passive_filetypes": ["java"] }
+
+let g:syntastic_javascript_checkers = ['eslint']
 
 command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
+command! -nargs=1 -complete=command -bang Qdo exe 'args '.QuickfixFilenames() | argdo<bang> <args>
 function! QuickfixFilenames()
     let buffer_numbers = {}
     for quickfix_item in getqflist()
@@ -1108,9 +1131,9 @@ if has("cscope")
     if filereadable("cscope.out")
         cs add cscope.out
     " else add the database pointed to by environment variable
-    elseif filereadable("GTAGS")
-      set cscopeprg=gtags-cscope
-      cs add GTAGS
+    "elseif filereadable("GTAGS")
+      "set cscopeprg=gtags-cscope
+      "cs add GTAGS
     elseif $CSCOPE_DB != ""
         cs add $CSCOPE_DB
     endif
@@ -1133,3 +1156,5 @@ nnoremap <unique> <Space>o :Unite outline<cr>
 
 let g:NERDTReeIgnore = ['\.pyc$']
 nnoremap <c-\> :GtagsCursor<cr>
+
+let g:jsx_ext_required = 0
