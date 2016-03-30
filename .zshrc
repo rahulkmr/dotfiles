@@ -184,9 +184,10 @@ export ORACLE_SID=XE
 export NLS_LANG=`$ORACLE_HOME/bin/nls_lang.sh`
 export LD_LIBRARY_PATH=$ORACLE_HOME/lib:$LD_LIBRARY_PATH
 
+export GOROOT=/data/sw/go
 export GOPATH=$HOME/musings/go
 export WORKON_HOME=~/venvs
-# source /usr/local/bin/virtualenvwrapper.sh
+source /usr/local/bin/virtualenvwrapper.sh
 
 export PIP_DOWNLOAD_CACHE=$HOME/.pip-download-cache
 export TERM=xterm-256color
@@ -201,25 +202,36 @@ export RUST_SRC_PATH=/data/sw/rust/src
 PERL_MB_OPT="--install_base \"/home/rahul/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/home/rahul/perl5"; export PERL_MM_OPT;
 
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
 
 typeset -U path
-path=($HOME/bin $GOPATH/bin $HOME/.rvm/bin /usr/local/heroku/bin ~/data/sw/nim-0.11.2/bin $path)
+path=($HOME/.rvm/bin
+$HOME/bin
+$GOROOT/bin
+$GOPATH/bin
+/data/sw/nim-0.13.0/bin
+~/.nimble/bin
+/usr/local/heroku/bin
+~/data/sw/swift/bin 
+~/data/sw/node-v5.7.0-linux-x64/bin
+$path)
 
 # Base16 Shell
 BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 # source ~/.shell_prompt.sh
 #
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 export FZF_DEFAULT_OPTS="--extended-exact --cycle"
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
 export GTAGSCONF=/usr/local/share/gtags/gtags.conf
 export GTAGSLABEL=pygments
 
 export PAGER='less'
 stty -ixon -ixoff
+
+[ -s "/home/rahul/.dnx/dnvm/dnvm.sh" ] && . "/home/rahul/.dnx/dnvm/dnvm.sh" # Load dnvm
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
