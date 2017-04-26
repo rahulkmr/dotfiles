@@ -1,3 +1,7 @@
+set encoding=utf-8
+scriptencoding utf-8
+set fileencoding=utf-8
+set termencoding=utf-8
 set undodir=~/.vim/tmp//,/var/tmp//,/tmp//,.
 set backupdir=~/.vim/tmp//,/var/tmp//,/tmp//,.
 set directory=~/.vim/tmp//,/var/tmp//,/tmp//,.
@@ -10,7 +14,7 @@ set virtualedit+=block
 set fileformats=unix,mac,dos
 set ttyfast
 set modeline
-set fdm=manual
+set foldmethod=manual
 set showcmd
 set cmdheight=2
 set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
@@ -29,13 +33,9 @@ let g:airline_powerline_fonts = 1
 "set statusline+=\ Character:%b/%B
 set laststatus=2
 " set UTF-8 encoding
-set enc=utf-8
-set fenc=utf-8
-set termencoding=utf-8
 set notitle
-set viminfo='50,\"1000,:100,n~/vim/viminfo
+set viminfo='50,\"1000,:100,n~/.vim/viminfo
 " disable vi compatibility (emulation of old bugs)
-set nocompatible
 set clipboard^=unnamedplus
 " configure tabwidth and insert spaces instead of tabs
 set tabstop=4        " tab width is 4 spaces
@@ -78,8 +78,8 @@ set noerrorbells
 set novisualbell
 
 "Enable folding, I find it very useful
-set fen
-set fdl=0
+set foldenable
+set foldlevel=0
 
 set shiftround
 set nojoinspaces
@@ -113,7 +113,8 @@ Plug 'mattn/emmet-vim'
 Plug 'rking/ag.vim'
 Plug 'zah/nim.vim'
 Plug 'chriskempson/base16-vim'
-Plug 'scrooloose/syntastic'
+"Plug 'scrooloose/syntastic'
+Plug 'w0rp/ale'
 Plug 'tpope/vim-rake'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-scripts/a.vim'
@@ -125,7 +126,7 @@ Plug 'tpope/vim-dispatch'
 Plug 'vim-scripts/gtags.vim'
 Plug 'Lokaltog/vim-distinguished'
 Plug 'bling/vim-airline'
-Plug 'nosami/Omnisharp'
+"Plug 'nosami/Omnisharp'
 Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-rails'
 Plug 'vim-scripts/dbext.vim'
@@ -149,7 +150,7 @@ Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'tmhedberg/matchit'
 Plug 'scrooloose/nerdtree'
 Plug 'chrisbra/Recover.vim'
-Plug 'klen/rope-vim'
+"Plug 'klen/rope-vim'
 Plug 'slim-template/vim-slim'
 Plug 'guns/vim-clojure-static'
 Plug 'gorodinskiy/vim-coloresque'
@@ -192,24 +193,32 @@ Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'ryanoasis/vim-devicons'
 Plug 'hynek/vim-python-pep8-indent'
+Plug 'tweekmonster/django-plus.vim'
+Plug 'mjbrownie/vim-htmldjango_omnicomplete'
+Plug 'mhinz/vim-grepper'
+Plug 'skywind3000/asyncrun.vim'
+Plug 'fsharp/vim-fsharp', {
+      \ 'for': 'fsharp',
+      \ 'do':  'make fsautocomplete',
+      \}
 
 call plug#end()
 
-if has("gui_running")
+if has('gui_running')
     set background=dark
-    colorscheme base16-default
+    colorscheme base16-default-dark
 else
     " set background=dark
     " colorscheme Tomorrow-Night
-    let base16colorspace=256
+    let g:base16colorspace=256
     set background=dark
-    colorscheme base16-default
+    colorscheme base16-default-dark
     " colorscheme solarized
 endif
 "
 let g:airline#extensions#tabline#enabled = 1
 
-let g:slime_target = "tmux"
+let g:slime_target = 'tmux'
 
 " set omnifunc=syntaxcomplete#Complete
 filetype on
@@ -234,15 +243,15 @@ set history=10000
 set undofile
 set undolevels=100
 set undoreload=100
-let html_use_css=1
-set lbr
-let coffee_no_trailing_space_error = 1
+let g:html_use_css=1
+set linebreak
+let g:coffee_no_trailing_space_error = 1
 set guioptions-=m
 set guioptions-=T
 
 "let g:netrw_chgwin = 2
 let g:netrw_liststyle = 3
-let g:netrw_browsex_viewer="gnome-open"
+let g:netrw_browsex_viewer='gnome-open'
 "let g:netrw_menu = 0
 "let g:netrw_banner = 0
 "let g:netrw_altv = 1
@@ -260,7 +269,7 @@ endfunction
 "command! Lexplore :call s:layout_netrw_split()
 
 fun! s:section(char)
-  let length = strlen(getline("."))
+  let l:length = strlen(getline('.'))
   execute "normal k" . length . "i" . a:char
   execute "normal jj" . length . "i" . a:char
 endfun
@@ -277,6 +286,7 @@ augroup global
     au VimResized * exe "normal! \<c-w>="
     autocmd BufNewFile,BufRead *.slim set filetype=slim
     autocmd BufNewFile,BufRead *.js.erb set filetype=eruby.javascript
+    autocmd BufNewFile,BufRead *.html.erb set filetype=eruby.html
     autocmd BufNewFile,BufRead *.coffee.erb set filetype=eruby.coffee
     " au BufNewFile,BufRead * call PareditInitBuffer()
     " let g:paredit_leader = '\'
@@ -457,6 +467,9 @@ augroup python
     let g:jedi#use_tabs_not_buffers = 0
     let g:jedi#popup_select_first = 0
     "autocmd FileType python setlocal makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;py_compile.compile(r'%')\"
+    if has('python3')
+      autocmd FileType python setlocal omnifunc=python3complete#Complete
+    end
 augroup end
 
 
@@ -491,14 +504,14 @@ augroup end
 
 " For full syntax highlighting:
 let python_highlight_all=1
-python << EOF
-import os
-import sys
-import vim
-for p in sys.path:
-    if os.path.isdir(p):
-        vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
-EOF
+"python << EOF
+"import os
+"import sys
+"import vim
+"for p in sys.path:
+    "if os.path.isdir(p):
+        "vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
+"EOF
 
 augroup fsharp
     au!
@@ -678,6 +691,10 @@ let g:syntastic_mode_map = {
       \ "passive_filetypes": ["java"] }
 
 let g:syntastic_javascript_checkers = ['eslint']
+
+let g:ale_linters = {
+      \ 'python': ['flake8', 'pylint'],
+      \ }
 
 command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
 command! -nargs=1 -complete=command -bang Qdo exe 'args '.QuickfixFilenames() | argdo<bang> <args>
@@ -1082,6 +1099,7 @@ function! CmdLineDirComplete(prefix, options, rawdir)
                     \'options': a:options . ' --query='. a:rawdir }),
                     \'escape(v:val, " ")'))
         "dropped --select-1 to speed things up on a long query
+    endif
 endfunction
 
 function! GetCompletions()
