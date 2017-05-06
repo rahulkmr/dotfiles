@@ -144,7 +144,7 @@ Plug 'mileszs/ack.vim'
 Plug 'Townk/vim-autoclose'
 Plug 'kchmck/vim-coffee-script'
 Plug 'vim-scripts/emacsmode'
-Plug 'kongo2002/fsharp-vim'
+"Plug 'kongo2002/fsharp-vim'
 Plug 'sjl/gundo.vim'
 Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'tmhedberg/matchit'
@@ -356,12 +356,12 @@ augroup global
 
     " plugin mappings
     nnoremap <Space>g :GundoToggle<CR>
-    nnoremap <Space>r :NERDTreeFind<CR><c-w><c-w>
+    nnoremap <c-w>r :NERDTreeFind<CR><c-w><c-w>
     " nnoremap <c-y> :CtrlPCurWD<CR>
     " nnoremap <c-u> :CtrlPBuffer<CR>
     nnoremap <c-x>v :!gnome-open %<cr>
     nnoremap <Space>f :RecoverPluginFinish<CR>
-    nnoremap ,t :NERDTreeToggle<CR>
+    nnoremap <c-w>t :NERDTreeToggle<CR>
     nnoremap <Leader>e :Explore<CR>
     "nnoremap \t :Ve<CR><CR>
     nnoremap <Space>l :TagbarToggle<CR>
@@ -522,9 +522,9 @@ augroup fsharp
     autocmd FileType fsharp set shiftwidth=4     " indent also with 4 spaces
     autocmd FileType fsharp set softtabstop=4
     autocmd FileType fsharp set expandtab        " expand tabs to spaces
-    autocmd FileType fsharp setlocal makeprg=fsc_sh\ %
-    autocmd FileType fsharp nnoremap<buffer> <Space>m :w<CR>:make<CR>
-    autocmd FileType fsharp nnoremap<buffer> <Space>x :!./%.exe
+    "autocmd FileType fsharp setlocal makeprg=fsc_sh\ %
+    "autocmd FileType fsharp nnoremap<buffer> <Space>m :w<CR>:make<CR>
+    "autocmd FileType fsharp nnoremap<buffer> <Space>x :!./%.exe
 augroup end
 
 let g:ragtag_global_maps = 1
