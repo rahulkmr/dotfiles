@@ -190,7 +190,7 @@ export WORKON_HOME=~/venvs
 source /usr/local/bin/virtualenvwrapper.sh
 
 export PIP_DOWNLOAD_CACHE=$HOME/.pip-download-cache
-export TERM=xterm-256color
+#export TERM=xterm-256color
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export RUST_SRC_PATH=/data/sw/rust/src
@@ -220,7 +220,7 @@ $path)
 
 # Base16 Shell
 BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
-[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+[[ -s $BASE16_SHELL && $TERM != 'eterm-color' ]] && source $BASE16_SHELL
 
 # source ~/.shell_prompt.sh
 #
