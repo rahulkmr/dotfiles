@@ -12,7 +12,7 @@
  '(column-number-mode t)
  '(custom-safe-themes
    (quote
-    ("8e7ca85479dab486e15e0119f2948ba7ffcaa0ef161b3facb8103fb06f93b428" "f5eb916f6bd4e743206913e6f28051249de8ccfd070eae47b5bde31ee813d55f" default)))
+    ("721bb3cb432bb6be7c58be27d583814e9c56806c06b4077797074b009f322509" "a0dc0c1805398db495ecda1994c744ad1a91a9455f2a17b59b716f72d3585dde" "cdbd0a803de328a4986659d799659939d13ec01da1f482d838b68038c1bb35e8" "8e7ca85479dab486e15e0119f2948ba7ffcaa0ef161b3facb8103fb06f93b428" "f5eb916f6bd4e743206913e6f28051249de8ccfd070eae47b5bde31ee813d55f" default)))
  '(fci-rule-color "#383838")
  '(global-hl-line-mode nil)
  '(inhibit-x-resources t t)
@@ -64,15 +64,6 @@
 (setq themes (concat root "themes/"))
 (setq vendor-dir (concat root "vendor/"))
 
-(require 'package)
-(setq package-check-signature nil)
-
-(add-to-list 'package-archives
-             '("marmalade" . "https://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
-
-(package-initialize nil)
 
 (add-to-list 'load-path utils)
 (add-to-list 'load-path modules)
@@ -141,12 +132,21 @@
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd  "C--") 'text-scale-decrease)
 
+(require 'package)
+;; (setq package-check-signature nil)
+(add-to-list 'package-archives
+             '("marmalade" . "https://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa-stable" . "http://stable.melpa.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/"))
+;; (add-to-list 'package-archives
+;;              '("elpy" . "http://jorgenschaefer.github.io/packages/"))
+;; (package-initialize nil)
 (package-initialize)
 
 
-(defvar my-packages '(ace-jump-mode
-                      ack
-                      ac-nrepl
+(defvar my-packages '(ac-nrepl
                       ag
                       auto-complete
                       base16-theme
@@ -156,13 +156,11 @@
                       clojure-mode
                       cider
                       dirtree
-                      elpy
+                      ;; elpy
                       emmet-mode
                       enh-ruby-mode
-                      ensime
                       evil
                       evil-surround
-                      evil-rails
                       evil-nerd-commenter
                       evil-matchit
                       expand-region
@@ -170,6 +168,7 @@
                       feature-mode
                       flx-ido
                       flycheck
+                      flycheck-color-mode-line
                       fsharp-mode
                       geiser
                       ggtags
@@ -199,8 +198,7 @@
                       projectile-rails
                       helm-projectile
                       helm-ag
-                      python-django
-                      pyvenv
+                      pyenv-mode
                       rainbow-mode
                       robe
                       rspec-mode
@@ -213,6 +211,7 @@
                       smartparens
                       tuareg
                       undo-tree
+                      use-package
                       web-mode
                       wgrep-ag
                       yaml-mode
@@ -229,9 +228,15 @@
 
 (install-packages)
 
-(add-to-list 'load-path "/home/rahul/.emacs.d/benchmark-init-el/")
-(require 'benchmark-init-loaddefs)
-(benchmark-init/activate)
+(require 'yasnippet)
+(yas-global-mode 1)
+
+(use-package ensime
+  :pin melpa-stable)
+
+;; (add-to-list 'load-path "/home/rahul/.emacs.d/benchmark-init-el/")
+;; (require 'benchmark-init-loaddefs)
+;; (benchmark-init/activate)
 
 
 
@@ -268,7 +273,7 @@
 (require 'pyenv-mode)
 (pyenv-mode)
 
-(elpy-enable)
+;; (elpy-enable)
 
 (fset 'perl-mode 'cperl-mode)
 (electric-indent-mode 1)
@@ -303,11 +308,7 @@
 (global-set-key (kbd "C-`") 'ggtags-find-reference)
 
 
-(require 'ace-jump-mode)
 (require 'browse-kill-ring)
-(global-set-key (kbd "C-c w") 'ace-jump-word-mode)
-(global-set-key (kbd "C-c l") 'ace-jump-line-mode)
-(global-set-key (kbd "C-c c") 'ace-jump-char-mode)
 (global-set-key  (kbd "C-;") (lambda ()
                                (interactive)
                                (insert "\n\n")
@@ -328,6 +329,12 @@
 
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
+;; disable jshint since we prefer eslint checking
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(javascript-jshint)))
+(setq flycheck-eslintrc "~/.eslintrc")
+
 
 (require 'smartparens-config)
 (smartparens-global-mode 1)
@@ -338,7 +345,7 @@
 (define-key smartparens-mode-map (kbd "M-(") 'sp-backward-sexp)
 
 (define-key smartparens-mode-map (kbd "M-]") 'sp-down-sexp)
-(define-key smartparens-mode-map (kbd "M-[") 'sp-up-sexp)
+(define-key smartparens-mode-map (kbd "M-[") 'sp-backward-up-sexp)
 
 (define-key smartparens-mode-map (kbd "C-S-a") 'sp-beginning-of-sexp)
 (define-key smartparens-mode-map (kbd "C-S-e") 'sp-end-of-sexp)
@@ -354,9 +361,9 @@
 (define-key smartparens-mode-map (kbd "M-<delete>") 'sp-unwrap-sexp)
 (define-key smartparens-mode-map (kbd "M-<backspace>") 'sp-backward-unwrap-sexp)
 
-(define-key smartparens-mode-map (kbd "C-)") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "C->") 'sp-forward-slurp-sexp)
 (define-key smartparens-mode-map (kbd "C-}") 'sp-forward-barf-sexp)
-(define-key smartparens-mode-map (kbd "C-(") 'sp-backward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "C-<") 'sp-backward-slurp-sexp)
 (define-key smartparens-mode-map (kbd "C-{") 'sp-backward-barf-sexp)
 
 (define-key smartparens-mode-map (kbd "M-D") 'sp-splice-sexp)
@@ -390,6 +397,7 @@
   (sp-local-pair "~" "~" :unless '(sp-point-after-word-p) :post-handlers '(("[d1]" "SPC")))
   (sp-local-pair "=" "=" :unless '(sp-point-after-word-p) :post-handlers '(("[d1]" "SPC")))
   (sp-local-pair "«" "»"))
+
 
 (defun sp--org-skip-asterisk (ms mb me)
   (or (and (= (line-beginning-position) mb)
@@ -453,7 +461,7 @@
 (add-to-list 'auto-mode-alist '("\\.js\\.erb$" . js2-mode))
 
 ; (require 'go-autocomplete)
-(require 'auto-complete-config)
+;; (require 'auto-complete-config)
 (ac-config-default)
 
 (add-to-list 'load-path "~/projects/tern/emacs/")
@@ -463,9 +471,6 @@
    '(progn
       (require 'tern-auto-complete)
       (tern-ac-setup)))
-
-(require 'yasnippet)
-(yas-global-mode 1)
 
 (require 'rainbow-mode)
 (rainbow-mode t)
@@ -595,9 +600,9 @@
           (lambda ()
             (setq-local imenu-create-index-function #'ggtags-build-imenu-index)))
 
-(setq jedi:setup-keys t)
 (setq jedi:complete-on-dot t)
-
+(setq jedi:setup-keys t)
+(require 'pony-mode)
 ;; Setting up ipython
 (when (executable-find "ipython")
   (setq
@@ -614,12 +619,10 @@
 
 
 
-;; (require 'icomplete)
 
-
-(defun set-auto-complete-as-completion-at-point-function ()
-  (setq completion-at-point-functions '(auto-complete)))
-(add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
+;; (defun set-auto-complete-as-completion-at-point-function ()
+;;   (setq completion-at-point-functions '(auto-complete)))
+;; (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
 ;; (require 'cider)
 ;; (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
