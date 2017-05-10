@@ -301,7 +301,7 @@
 (global-set-key (kbd "C-x u") 'undo)
 
 (require 'ggtags)
-(setq-local imenu-create-index-function #'ggtags-build-imenu-index)
+;; (setq-local imenu-create-index-function #'ggtags-build-imenu-index)
 (setq-local hippie-expand-try-functions-list
             (cons 'ggtags-try-complete-tag hippie-expand-try-functions-list))
 (global-set-key "\C-\\" 'ggtags-find-tag-dwim)
@@ -317,6 +317,8 @@
                                (indent-for-tab-command)))
 
 
+(setq web-mode-enable-current-element-highlight t)
+(setq web-mode-enable-current-column-highlight t)
 (autoload 'web-mode "web-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
@@ -326,6 +328,10 @@
 (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jinja2\\'" . web-mode))
+(setq web-mode-engines-alist
+      '(("jinja2"    . "\\.jinja2\\'")))
+
 
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -555,6 +561,12 @@
                             (setq show-trailing-whitespace nil)))
 
 (add-hook 'dired-mode-hook (lambda ()
+                             (local-set-key (kbd "j") (lambda ()
+                                                        (interactive)
+                                                        (dired-next-line 1)))
+                             (local-set-key (kbd "k") (lambda ()
+                                                        (interactive)
+                                                        (dired-previous-line 1)))
                              (local-set-key (kbd "c-n") (lambda ()
                                                         (interactive)
                                                         (dired-next-line 1)
@@ -596,9 +608,9 @@
 
 (autoload 'jedi:setup "jedi" nil t)
 (add-hook 'python-mode-hook 'jedi:setup)
-(add-hook 'python-mode-hook
-          (lambda ()
-            (setq-local imenu-create-index-function #'ggtags-build-imenu-index)))
+;; (add-hook 'python-mode-hook
+;;           (lambda ()
+;;             (setq-local imenu-create-index-function #'ggtags-build-imenu-index)))
 
 (setq jedi:complete-on-dot t)
 (setq jedi:setup-keys t)
