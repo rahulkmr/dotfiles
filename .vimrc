@@ -146,7 +146,7 @@ Plug 'kchmck/vim-coffee-script'
 Plug 'vim-scripts/emacsmode'
 "Plug 'kongo2002/fsharp-vim'
 Plug 'sjl/gundo.vim'
-Plug 'Glench/Vim-Jinja2-Syntax'
+"Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'tmhedberg/matchit'
 Plug 'scrooloose/nerdtree'
 Plug 'chrisbra/Recover.vim'
@@ -201,6 +201,7 @@ Plug 'fsharp/vim-fsharp', {
       \ 'for': 'fsharp',
       \ 'do':  'make fsautocomplete',
       \}
+Plug 'mitsuhiko/vim-jinja'
 
 call plug#end()
 
@@ -285,6 +286,7 @@ augroup global
     au!
     au VimResized * exe "normal! \<c-w>="
     autocmd BufNewFile,BufRead *.slim set filetype=slim
+    autocmd BufNewFile,BufRead *.jinja2 set filetype=htmljinja
     autocmd BufNewFile,BufRead *.js.erb set filetype=eruby.javascript
     autocmd BufNewFile,BufRead *.html.erb set filetype=eruby.html
     autocmd BufNewFile,BufRead *.coffee.erb set filetype=eruby.coffee
@@ -925,14 +927,14 @@ endfunction
 function! s:tags_sink(line)
   let parts = split(a:line, '\t\zs')
   let excmd = matchstr(parts[2:], '^.*\ze;"\t')
-  execute 'silent e' parts[1][:-2]
+  execute 'e' parts[1][:-2]
   let [magic, &magic] = [&magic, 0]
   execute excmd
   let &magic = magic
 endfunction
 
 command! -nargs=? -bar FZFTag call fzf#run({
-\   'source': "awk -F'\t' '($0 \\!~ /^\\!/) && $1 ~ /<args>/{print}' " . join(tagfiles()),
+\   'source': "awk -F'\t' '($0 \!~ /^\!/) && $1 ~ /<args>/{print}' " . join(map(tagfiles(), 'fnamemodify(v:val, ":S")')),
 \   'sink': function('<sid>tags_sink'),
 \ })
 nnoremap <Space>t :FZFTag
