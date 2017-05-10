@@ -1,3 +1,9 @@
+autoload -Uz compinit
+compinit
+zmodload -i zsh/complist
+
+
+# zstyle ':completion:*' completer _list _oldlist _menu _expand _complete _match _ignored _correct _approximate _prefix
 zstyle ':completion:*' completer _list _oldlist _expand _complete _ignored _match _correct _approximate _prefix
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' insert-unambiguous true
@@ -7,7 +13,7 @@ eval "$(dircolors -b)"
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-zstyle ':completion:*' max-errors 3
+zstyle ':completion:*' max-errors 2
 zstyle ':completion:*' original true
 zstyle ':completion:*' verbose true
 zstyle ':completion:*:processes' command 'ps -axw'
@@ -19,9 +25,6 @@ zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p
 zstyle :compinstall filename '/home/rahul/.zshrc'
 
 
-autoload -Uz compinit
-compinit
-zmodload -i zsh/complist
 
 
 HISTFILE=~/.histfile
@@ -32,11 +35,11 @@ setopt inc_append_history
 setopt share_history          # share history between open shells
 setopt hist_ignore_dups
 setopt hist_ignore_all_dups
-setopt hist_ignore_space
-setopt hist_reduce_blanks
-setopt hist_expire_dups_first # expire duped history first
 setopt hist_save_no_dups
 setopt hist_find_no_dups
+setopt hist_expire_dups_first # expire duped history first
+# setopt hist_ignore_space
+setopt hist_reduce_blanks
 
 bindkey -e
 autoload edit-command-line
@@ -47,7 +50,7 @@ setopt no_beep
 setopt auto_cd
 setopt cd_able_vars
 setopt extended_glob
-setopt correct correct_all
+setopt correct no_correct_all
 setopt promptsubst
 setopt chase_dots
 setopt chase_links
@@ -92,11 +95,6 @@ alias tn='\tmux -2 -u new-session -s'
 alias ta='\tmux attach-session -t'
 alias tl='\tmux list-sessions'
 
-export EDITOR=vim
-
-export PYTHONDIRS=$(/usr/bin/env python -c 'import sys; sys.stdout.write(",".join(sys.path))')
-PYTHONDIRS=$(echo $PYTHONDIRS | sed -e 's;\\;/;g')
-
 
 # Functions
 #
@@ -109,7 +107,7 @@ function title() {
     host_and_user=$(print -Pn "%40>..>$2")
     working_dir=$(print -Pn "%40<..<$3")
     case $TERM in
-    screen*)
+    screen*|tmux*)
         print -Pn "\ek$current:$host_and_user $working_dir\e\\"
         ;;
     xterm*|rxvt*|urxvt*)
@@ -158,7 +156,7 @@ function grb() { git rev-parse --symbolic-full-name --abbrev-ref HEAD 2> /dev/nu
 
 export PS1="$(print '%{\e[1;33m%}%n@%m%{\e[0m%}'): $(print '%{\e[1;34m%}%~%{\e[0m%}') $(print "%{\e[1;35m%}\$(prompt_char)%{\e[0m%}") $(print '%{\e[1;31m%}%?%{\e[0m%}')
 $(print '%{\e[1;32m%}%# ▶%{\e[0m%}') "
-export PS2="$(print '%{\e[0;36m%}> %{\e[0m%}')"
+export PS2="$(print '%{\e[0;36m%}%_> %{\e[0m%}')"
 
 ## General configuration
 
@@ -177,46 +175,14 @@ compctl -g "*.go" gofmt
 compctl -g "*.go" gccgo
 
 
-
-
-export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe
-export ORACLE_SID=XE
-export NLS_LANG=`$ORACLE_HOME/bin/nls_lang.sh`
-export LD_LIBRARY_PATH=$ORACLE_HOME/lib:$LD_LIBRARY_PATH
-
-export GOROOT=/data/sw/go
-export GOPATH=$HOME/musings/go
-export WORKON_HOME=~/venvs
 source /usr/local/bin/virtualenvwrapper.sh
-
-export PIP_DOWNLOAD_CACHE=$HOME/.pip-download-cache
-#export TERM=xterm-256color
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-export RUST_SRC_PATH=/data/sw/rust/src
 
 
 # OPAM configuration
 . /home/rahul/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
-PERL_MB_OPT="--install_base \"/home/rahul/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/home/rahul/perl5"; export PERL_MM_OPT;
-
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
-typeset -U path
-path=($HOME/.rvm/bin
-$HOME/bin
-$GOROOT/bin
-$GOPATH/bin
-/data/sw/nim-0.13.0/bin
-~/.nimble/bin
-/usr/local/heroku/bin
-~/data/sw/swift/bin 
-~/data/sw/node-v5.7.0-linux-x64/bin
-$path)
 
 # Base16 Shell
 BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
@@ -225,12 +191,7 @@ BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
 # source ~/.shell_prompt.sh
 #
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_COMMAND='ag -l -g ""'
-export FZF_DEFAULT_OPTS="--extended-exact --cycle"
-export GTAGSCONF=/usr/local/share/gtags/gtags.conf
-export GTAGSLABEL=pygments
 
-export PAGER='less'
 stty -ixon -ixoff
 
 [ -s "/home/rahul/.dnx/dnvm/dnvm.sh" ] && . "/home/rahul/.dnx/dnvm/dnvm.sh" # Load dnvm
