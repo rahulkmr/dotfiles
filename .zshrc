@@ -94,6 +94,8 @@ alias tmux='tmux -2 -u'
 alias tn='\tmux -2 -u new-session -s'
 alias ta='\tmux attach-session -t'
 alias tl='\tmux list-sessions'
+alias antlr='java -jar ~/data/sw/antlr-4.7-complete.jar'
+alias grun='java org.antlr.v4.gui.TestRig'
 
 
 # Functions
@@ -196,3 +198,7 @@ stty -ixon -ixoff
 
 [ -s "/home/rahul/.dnx/dnvm/dnvm.sh" ] && . "/home/rahul/.dnx/dnvm/dnvm.sh" # Load dnvm
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+##THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+#export SDKMAN_DIR="/home/rahul/.sdkman"
+#[[ -s "/home/rahul/.sdkman/bin/sdkman-init.sh" ]] && source "/home/rahul/.sdkman/bin/sdkman-init.sh"
