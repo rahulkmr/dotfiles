@@ -164,6 +164,7 @@
                       evil-nerd-commenter
                       evil-matchit
                       expand-region
+                      extempore-mode
                       exec-path-from-shell
                       feature-mode
                       flx-ido
@@ -188,7 +189,7 @@
                       magit
                       evil-magit
                       multi-term
-                      nimrod-mode
+                      nim-mode
                       nose
                       perspective
                       persp-projectile
@@ -274,6 +275,7 @@
 (pyenv-mode)
 
 ;; (elpy-enable)
+(add-hook 'nim-mode-hook 'nimsuggest-mode)
 
 (fset 'perl-mode 'cperl-mode)
 (electric-indent-mode 1)
