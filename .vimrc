@@ -57,7 +57,7 @@ set cursorcolumn
 set wildmenu
 set wildcharm=<C-z>
 ""Ignore these files when completing names and in Explorer
-set wildignore+=.svn,CVS,.git,*.o,*.a,*.*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pyc,*.so.*
+set wildignore+=.svn,CVS,.git,*.o,*.a,*.*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pyc,*.so.*,*.class,*.jar
 set wildmode=list:longest
 " turn line numbers on
 set relativenumber
@@ -102,16 +102,19 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall
 endif
 
+autocmd BufNewFile,BufRead *.jinja2 set filetype=htmljinja | let b:dif_ftplugin = 1
+
 let mapleader = ","
 let maplocalleader = ","
 call plug#begin('~/.vim/bundle')
 Plug 'Rip-Rip/clang_complete'
-Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'ternjs/tern_for_vim'
 Plug 'guns/vim-sexp'
+Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'mattn/emmet-vim'
 Plug 'rking/ag.vim'
-Plug 'zah/nim.vim'
+"Plug 'zah/nim.vim'
+Plug 'baabelfish/nvim-nim'
 Plug 'chriskempson/base16-vim'
 "Plug 'scrooloose/syntastic'
 Plug 'w0rp/ale'
@@ -183,25 +186,33 @@ Plug 'dhruvasagar/vim-table-mode'
 Plug 'plasticboy/vim-markdown'
 Plug 'thoughtbot/vim-rspec'
 Plug 'ensime/ensime-vim'
-"Plug 'artur-shaik/vim-javacomplete2'
+Plug 'artur-shaik/vim-javacomplete2'
 Plug 'altercation/vim-colors-solarized'
 Plug 'Yggdroot/indentLine'
-"Plug 'tpope/vim-classpath'
+Plug 'tpope/vim-classpath'
 "Plug 'ivanov/vim-ipython'
 "Plug 'nathanaelkane/vim-indent-guides'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'ryanoasis/vim-devicons'
 Plug 'hynek/vim-python-pep8-indent'
+Plug 'mitsuhiko/vim-jinja'
 Plug 'tweekmonster/django-plus.vim'
 Plug 'mjbrownie/vim-htmldjango_omnicomplete'
 Plug 'mhinz/vim-grepper'
+Plug 'ramele/agrep'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'fsharp/vim-fsharp', {
       \ 'for': 'fsharp',
       \ 'do':  'make fsautocomplete',
       \}
-Plug 'mitsuhiko/vim-jinja'
+Plug 'Shougo/vimfiler.vim'
+Plug 'leafgarland/typescript-vim'
+Plug 'Quramy/tsuquyomi'
+Plug 'jason0x43/vim-js-indent'
+Plug 'udalov/kotlin-vim'
+Plug 'junegunn/vim-easy-align'
+Plug 'leafo/moonscript-vim'
 
 call plug#end()
 
@@ -286,7 +297,6 @@ augroup global
     au!
     au VimResized * exe "normal! \<c-w>="
     autocmd BufNewFile,BufRead *.slim set filetype=slim
-    autocmd BufNewFile,BufRead *.jinja2 set filetype=htmljinja
     autocmd BufNewFile,BufRead *.js.erb set filetype=eruby.javascript
     autocmd BufNewFile,BufRead *.html.erb set filetype=eruby.html
     autocmd BufNewFile,BufRead *.coffee.erb set filetype=eruby.coffee
@@ -358,12 +368,14 @@ augroup global
 
     " plugin mappings
     nnoremap <Space>g :GundoToggle<CR>
-    nnoremap <c-w>r :NERDTreeFind<CR><c-w><c-w>
+    "nnoremap <c-w>r :NERDTreeFind<CR><c-w><c-w>
     " nnoremap <c-y> :CtrlPCurWD<CR>
     " nnoremap <c-u> :CtrlPBuffer<CR>
     nnoremap <c-x>v :!gnome-open %<cr>
     nnoremap <Space>f :RecoverPluginFinish<CR>
     nnoremap <c-w>t :NERDTreeToggle<CR>
+    nnoremap <c-x>f :VimFilerExplorer -find<CR>
+    nnoremap <c-x>d :VimFiler -find<CR>
     nnoremap <Leader>e :Explore<CR>
     "nnoremap \t :Ve<CR><CR>
     nnoremap <Space>l :TagbarToggle<CR>
@@ -385,11 +397,6 @@ augroup global
     inoremap <Leader>q <C-o>O
     inoremap  u03bb
     inoremap <C-x>u <c-o>:update<cr>
-    inoremap <C-x>w <esc>:wq<cr>
-    inoremap <C-x>l <esc>:wa<cr>
-    inoremap <C-x>x <esc>:q<cr>
-    inoremap <C-x>d <esc>:q!<cr>
-    inoremap <C-x>t <esc>:qa!<cr>
     inoremap <C-x>c <esc>bgUWea
 
 
@@ -436,6 +443,12 @@ augroup global
 
     let g:indentLine_enabled = 0
     nnoremap <Leader>ig :IndentLinesToggle<cr>
+
+    " Start interactive EasyAlign in visual mode (e.g. vipga)
+    xmap ga <Plug>(EasyAlign)
+
+    " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+    nmap ga <Plug>(EasyAlign)
 augroup end
 
 set noautochdir
@@ -548,27 +561,29 @@ augroup end
 augroup java
     au!
     " Mappings for eclim.
-     autocmd FileType java nnoremap<buffer> <Space>jg :JavaGet<CR>
-     autocmd FileType java nnoremap<buffer> <Space>js :JavaSet<CR>
-     autocmd FileType java nnoremap<buffer> <Space>ja :JavaGetSet<CR>
-     autocmd FileType java nnoremap<buffer> <Space>jc :JavaConstructor<CR>
-     autocmd FileType java nnoremap<buffer> <Space>jh :JavaHierarchy<CR>
-     autocmd FileType java nnoremap<buffer> <Space>jl :JavaImpl<CR>
-     autocmd FileType java nnoremap<buffer> <Space>jd :JavaDelegate<CR>
-     autocmd FileType java nnoremap<buffer> <Space>ji :JavaImport<CR>
-     autocmd FileType java nnoremap<buffer> <Space>jm :w<CR>:JavaImportMissing<CR>:w<CR>
-     autocmd FileType java nnoremap<buffer> <Space>jj :JavaSearchContext<CR>
-     autocmd FileType java nnoremap<buffer> <Space>jx :Java %<CR>
-     autocmd FileType java nnoremap<buffer> <Space>jo :w<CR>:Javac<CR>
-     autocmd FileType java nnoremap<buffer> <Space>jv :w<CR>:Validate<CR>
-     autocmd FileType java nnoremap<buffer> <Space>jt :JavaCorrect<CR>
-     autocmd FileType java nnoremap<buffer> <Space>jr :JavaRename
-     autocmd FileType java nnoremap<buffer> <Space>jw :JavaDocComment<CR>
-     autocmd FileType java nnoremap<buffer> <Space>jf :w<CR>:%JavaFormat<CR>
+     "autocmd FileType java nnoremap<buffer> <Space>jg :JavaGet<CR>
+     "autocmd FileType java nnoremap<buffer> <Space>js :JavaSet<CR>
+     "autocmd FileType java nnoremap<buffer> <Space>ja :JavaGetSet<CR>
+     "autocmd FileType java nnoremap<buffer> <Space>jc :JavaConstructor<CR>
+     "autocmd FileType java nnoremap<buffer> <Space>jh :JavaHierarchy<CR>
+     "autocmd FileType java nnoremap<buffer> <Space>jl :JavaImpl<CR>
+     "autocmd FileType java nnoremap<buffer> <Space>jd :JavaDelegate<CR>
+     "autocmd FileType java nnoremap<buffer> <Space>ji :JavaImport<CR>
+     "autocmd FileType java nnoremap<buffer> <Space>jm :w<CR>:JavaImportMissing<CR>:w<CR>
+     "autocmd FileType java nnoremap<buffer> <Space>jj :JavaSearchContext<CR>
+     "autocmd FileType java nnoremap<buffer> <Space>jx :Java %<CR>
+     "autocmd FileType java nnoremap<buffer> <Space>jo :w<CR>:Javac<CR>
+     "autocmd FileType java nnoremap<buffer> <Space>jv :w<CR>:Validate<CR>
+     "autocmd FileType java nnoremap<buffer> <Space>jt :JavaCorrect<CR>
+     "autocmd FileType java nnoremap<buffer> <Space>jr :JavaRename
+     "autocmd FileType java nnoremap<buffer> <Space>jw :JavaDocComment<CR>
+     "autocmd FileType java nnoremap<buffer> <Space>jf :w<CR>:%JavaFormat<CR>
 
-    "autocmd Filetype java setlocal omnifunc=javacomplete#Complete
-    "autocmd FileType java nnoremap<buffer> <Space>jm :JCimportsAddMissing<cr>
-    "autocmd FileType java nnoremap<buffer> <Space>ji :JCimportAddI<cr>
+    autocmd Filetype java setlocal omnifunc=javacomplete#Complete
+    "autocmd FileType java nnoremap<buffer> <Space>jm <Plug>(JavaComplete-Imports-AddMissing)
+    "autocmd FileType java nnoremap<buffer> <Space>ji <Plug>(JavaComplete-Imports-Add)
+    "autocmd FileType java nnoremap<buffer> <Space>js <Plug>(JavaComplete-Imports-Smart)
+    "autocmd FileType java nnoremap<buffer> <Space>ju <Plug>(JavaComplete-Imports-RemoveUnused)
     "autocmd FileType java setlocal makeprg=mvn\ package
     "autocmd FileType java setlocal errorformat=\[ERROR]\ %f:[%l\\,%v]\ %m 
 augroup end
@@ -620,6 +635,9 @@ augroup LargeFile
     au BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
 augroup END
 
+let g:vimfiler_as_default_explorer = 1
+"let g:vimfiler_ignore_pattern = ['^\.', '^.+\.pyc$', '^.+\.class$', '^.+\.jar$']
+let g:vimfiler_ignore_filters = ['matcher_ignore_wildignore']
 
 let NERDTreeHijackNetrw=0
 let NERDTreeShowHidden=1
