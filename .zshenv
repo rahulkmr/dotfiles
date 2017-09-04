@@ -34,15 +34,23 @@ export GTAGSLABEL=pygments
 
 export PAGER='less'
 
+antlr_path=".:/data/sw/antlr-4.7-complete.jar"
+if [ -z "$CLASSPATH" ]; then
+    export CLASSPATH="${antlr_path}"
+else
+    export CLASSPATH="${antlr_path}:$CLASSPATH"
+fi
+
 typeset -U path
 path=($HOME/.rvm/bin
 $HOME/bin
 $GOROOT/bin
 $GOPATH/bin
 $PYENV_ROOT/bin
-/data/sw/nim-0.13.0/bin
+/data/sw/nim-0.17.0/bin
 ~/.nimble/bin
 /usr/local/heroku/bin
 ~/data/sw/swift/bin
-~/data/sw/node-v5.7.0-linux-x64/bin
+~/data/sw/node-v8.4.0-linux-x64/bin
+~/data/sw/Extempore-0.7.0-Ubuntu/extempore
 $path)
