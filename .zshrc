@@ -4,12 +4,12 @@ zmodload -i zsh/complist
 
 
 # zstyle ':completion:*' completer _list _oldlist _menu _expand _complete _match _ignored _correct _approximate _prefix
-zstyle ':completion:*' completer _list _oldlist _expand _complete _ignored _match _correct _approximate _prefix
+zstyle ':completion:*' completer _list _oldlist _menu _expand _complete _ignored _match _correct _approximate _prefix
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' insert-unambiguous true
 # zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' menu select=1
-eval "$(dircolors -b)"
+# eval "$(dircolors -b)"
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
@@ -69,6 +69,7 @@ if [ -x /usr/bin/dircolors ]; then
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
+alias ls='ls -G'
 
 # Aliases
 alias ll='ls -l'
@@ -177,13 +178,16 @@ compctl -g "*.go" gofmt
 compctl -g "*.go" gccgo
 
 
-source /usr/local/bin/virtualenvwrapper.sh
-
+# source /usr/local/bin/virtualenvwrapper.sh
 
 # OPAM configuration
 . /home/rahul/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
 eval "$(pyenv init -)"
+eval "$(pipenv --completion)"
+eval "$(rbenv init -)"
+
+# pyenv virtualenvwrapper
 
 
 # Base16 Shell
