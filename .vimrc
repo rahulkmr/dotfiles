@@ -36,7 +36,7 @@ set laststatus=2
 set notitle
 set viminfo='50,\"1000,:100,n~/.vim/viminfo
 " disable vi compatibility (emulation of old bugs)
-set clipboard^=unnamedplus
+set clipboard^=unnamed
 " configure tabwidth and insert spaces instead of tabs
 set tabstop=4        " tab width is 4 spaces
 set shiftwidth=4     " indent also with 4 spaces
@@ -56,7 +56,7 @@ set cursorcolumn
 "Show menu with possible tab completions
 set wildmenu
 set wildcharm=<C-z>
-""Ignore these files when completing names and in Explorer
+"Ignore these files when completing names and in Explorer
 set wildignore+=.svn,CVS,.git,*.o,*.a,*.*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pyc,*.so.*,*.class,*.jar
 set wildmode=list:longest
 " turn line numbers on
@@ -114,7 +114,7 @@ Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'mattn/emmet-vim'
 Plug 'rking/ag.vim'
 "Plug 'zah/nim.vim'
-Plug 'baabelfish/nvim-nim'
+"Plug 'baabelfish/nvim-nim'
 Plug 'chriskempson/base16-vim'
 "Plug 'scrooloose/syntastic'
 Plug 'w0rp/ale'
@@ -134,7 +134,7 @@ Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-rails'
 Plug 'vim-scripts/dbext.vim'
 Plug 'tpope/vim-scriptease'
-Plug 'davidhalter/jedi-vim'
+"Plug 'davidhalter/jedi-vim'
 Plug 'derekwyatt/vim-scala'
 "Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-bundler'
@@ -185,7 +185,7 @@ Plug 'JuliaLang/julia-vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'plasticboy/vim-markdown'
 Plug 'thoughtbot/vim-rspec'
-Plug 'ensime/ensime-vim'
+"Plug 'ensime/ensime-vim'
 Plug 'artur-shaik/vim-javacomplete2'
 Plug 'altercation/vim-colors-solarized'
 Plug 'Yggdroot/indentLine'
@@ -207,12 +207,23 @@ Plug 'fsharp/vim-fsharp', {
       \ 'do':  'make fsautocomplete',
       \}
 Plug 'Shougo/vimfiler.vim'
-Plug 'leafgarland/typescript-vim'
 Plug 'Quramy/tsuquyomi'
 Plug 'jason0x43/vim-js-indent'
 Plug 'udalov/kotlin-vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'leafo/moonscript-vim'
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown'] }
+Plug 'Quramy/tsuquyomi'
+Plug 'Quramy/vim-js-pretty-template'
+Plug 'leafgarland/typescript-vim'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'Quramy/tsuquyomi'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'cespare/vim-toml'
+Plug 'tpope/vim-eunuch'
 
 call plug#end()
 
@@ -340,10 +351,10 @@ augroup global
     nnoremap <C-x>t :qa!<cr>
 
     " smart regex
-    nnoremap / /\v
-    vnoremap / /\v
-    nnoremap ? ?\v
-    vnoremap ? ?\v
+    "nnoremap / /\v
+    "vnoremap / /\v
+    "nnoremap ? ?\v
+    "vnoremap ? ?\v
 
     " set filetypes
     nnoremap <Space>dj :set filetype=django<CR>
@@ -487,9 +498,17 @@ augroup python
     let g:jedi#use_tabs_not_buffers = 0
     let g:jedi#popup_select_first = 0
     "autocmd FileType python setlocal makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;py_compile.compile(r'%')\"
-    if has('python3')
-      autocmd FileType python setlocal omnifunc=python3complete#Complete
-    end
+    "if has('python3')
+      "autocmd FileType python setlocal omnifunc=python3complete#Complete
+    "end
+    if executable('pyls')
+      " pip install python-language-server
+      au User lsp_setup call lsp#register_server({
+            \ 'name': 'pyls',
+            \ 'cmd': {server_info->['pyls']},
+            \ 'whitelist': ['python'],
+            \ })
+    endif
 augroup end
 
 
