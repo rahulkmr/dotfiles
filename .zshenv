@@ -5,7 +5,7 @@ PYTHONDIRS=$(echo $PYTHONDIRS | sed -e 's;\\;/;g')
 
 export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe
 export ORACLE_SID=XE
-export NLS_LANG=`$ORACLE_HOME/bin/nls_lang.sh`
+# export NLS_LANG=`$ORACLE_HOME/bin/nls_lang.sh`
 export LD_LIBRARY_PATH=$ORACLE_HOME/lib:$LD_LIBRARY_PATH
 
 export GOROOT=/data/sw/go
@@ -42,15 +42,7 @@ else
 fi
 
 typeset -U path
-path=($HOME/.rvm/bin
+path=(
 $HOME/bin
-$GOROOT/bin
-$GOPATH/bin
-$PYENV_ROOT/bin
-/data/sw/nim-0.17.0/bin
-~/.nimble/bin
-/usr/local/heroku/bin
-~/data/sw/swift/bin
-~/data/sw/node-v8.4.0-linux-x64/bin
-~/data/sw/Extempore-0.7.0-Ubuntu/extempore
-$path)
+$path
+)
