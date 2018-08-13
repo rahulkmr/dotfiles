@@ -1,16 +1,15 @@
+fpath+=~/.zfunc
 autoload -Uz compinit
 compinit
 zmodload -i zsh/complist
 
 
-# zstyle ':completion:*' completer _list _oldlist _menu _expand _complete _match _ignored _correct _approximate _prefix
-zstyle ':completion:*' completer _list _oldlist _menu _expand _complete _ignored _match _correct _approximate _prefix
+zstyle ':completion:*' completer _list _oldlist _expand _complete _ignored _match _correct _approximate _prefix
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' insert-unambiguous true
-# zstyle ':completion:*' list-colors ''
-zstyle ':completion:*' menu select=1
+zstyle ':completion:*' list-colors ''
 # eval "$(dircolors -b)"
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+#zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' max-errors 2
@@ -19,7 +18,7 @@ zstyle ':completion:*' verbose true
 zstyle ':completion:*:processes' command 'ps -axw'
 zstyle ':completion:*:processes-names' command 'ps -awxho command'
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
-zstyle ':completion:*' menu select=long
+zstyle ':completion:*' menu select=1
 zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
 
 zstyle :compinstall filename '/home/rahul/.zshrc'
@@ -188,6 +187,7 @@ eval "$(pipenv --completion)"
 eval "$(rbenv init -)"
 
 # pyenv virtualenvwrapper
+if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
 
 
 # Base16 Shell
