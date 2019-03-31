@@ -20,17 +20,7 @@ set cmdheight=2
 set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
 let g:airline_powerline_fonts = 1
 
-"set statusline+=%4*%{fugitive#statusline()}%*
-"set statusline+=%3*\ [%{strlen(&ft)?&ft:'none'}, " filetype
-"set statusline+=%{&encoding}, " encoding
-"set statusline+=%{&fileformat}]%* " file format
-"set statusline+=%1*\ %f\ %* "path to the file in the buffer, relative to current directory
-"set statusline+=%5*\ Line:%l/%L
-"set statusline+=\ Column:%c/%v\ 
-"set statusline+=\ %h%1*%m%r%w%q%* " flag
-"set statusline+=%6*%=%*
-"set statusline+=%2*\ Buffer:%n
-"set statusline+=\ Character:%b/%B
+
 set laststatus=2
 " set UTF-8 encoding
 set notitle
@@ -107,123 +97,86 @@ autocmd BufNewFile,BufRead *.jinja2 set filetype=htmljinja | let b:dif_ftplugin 
 let mapleader = ","
 let maplocalleader = ","
 call plug#begin('~/.vim/bundle')
-Plug 'Rip-Rip/clang_complete'
-Plug 'ternjs/tern_for_vim'
+
+
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
-Plug 'mattn/emmet-vim'
+
+
 Plug 'rking/ag.vim'
-"Plug 'zah/nim.vim'
-"Plug 'baabelfish/nvim-nim'
-Plug 'chriskempson/base16-vim'
-"Plug 'scrooloose/syntastic'
-Plug 'w0rp/ale'
-Plug 'tpope/vim-rake'
-Plug 'tpope/vim-fugitive'
-Plug 'vim-scripts/a.vim'
-Plug 'scrooloose/nerdcommenter'
-" Plug 'tomtom/tcomment_vim'
-Plug 'tpope/vim-projectionist'
-Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-dispatch'
 Plug 'vim-scripts/gtags.vim'
-Plug 'Lokaltog/vim-distinguished'
+Plug 'mhinz/vim-grepper'
+Plug 'ramele/agrep'
+Plug 'honza/vim-snippets'
+
+Plug 'chriskempson/base16-vim'
 Plug 'bling/vim-airline'
-"Plug 'nosami/Omnisharp'
-Plug 'majutsushi/tagbar'
+Plug 'airblade/vim-gitgutter'
+
+Plug 'tpope/vim-rake'
+Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-rails'
-Plug 'vim-scripts/dbext.vim'
-Plug 'tpope/vim-scriptease'
-"Plug 'davidhalter/jedi-vim'
-Plug 'derekwyatt/vim-scala'
-"Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-bundler'
-Plug 'Wolfy87/vim-enmasse'
-Plug 'tkztmk/vim-vala'
-Plug 'tpope/vim-fireplace'
-Plug 'tpope/vim-leiningen'
 Plug 'tpope/vim-cucumber'
-Plug 'mileszs/ack.vim'
-Plug 'Townk/vim-autoclose'
-Plug 'kchmck/vim-coffee-script'
-Plug 'vim-scripts/emacsmode'
-"Plug 'kongo2002/fsharp-vim'
-Plug 'sjl/gundo.vim'
-"Plug 'Glench/Vim-Jinja2-Syntax'
-Plug 'tmhedberg/matchit'
-Plug 'scrooloose/nerdtree'
-Plug 'chrisbra/Recover.vim'
-"Plug 'klen/rope-vim'
-Plug 'slim-template/vim-slim'
-Plug 'guns/vim-clojure-static'
-Plug 'gorodinskiy/vim-coloresque'
-Plug 'tpope/vim-endwise'
-Plug 'fatih/vim-go'
 Plug 'tpope/vim-haml'
-Plug 'groenewege/vim-less'
-Plug 'wlangstroth/vim-racket'
-Plug 'tpope/vim-repeat'
 Plug 'vim-ruby/vim-ruby'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
-Plug 'jpalardy/vim-slime'
-Plug 'Shougo/neocomplete.vim'
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-Plug 'hewes/unite-gtags'
-Plug 'talek/vorax4'
 Plug 'lucapette/vim-ruby-doc'
 Plug 'danchoi/ri.vim'
-Plug 'KabbAmine/zeavim.vim'
-Plug 'phildawes/racer'
-Plug 'wting/rust.vim'
-Plug 'tpope/vim-sleuth'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
-Plug 'JuliaLang/julia-vim'
-Plug 'dhruvasagar/vim-table-mode'
-Plug 'plasticboy/vim-markdown'
 Plug 'thoughtbot/vim-rspec'
-"Plug 'ensime/ensime-vim'
-Plug 'artur-shaik/vim-javacomplete2'
-Plug 'altercation/vim-colors-solarized'
-Plug 'Yggdroot/indentLine'
-Plug 'tpope/vim-classpath'
-"Plug 'ivanov/vim-ipython'
-"Plug 'nathanaelkane/vim-indent-guides'
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-Plug 'ryanoasis/vim-devicons'
+
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-scriptease'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-eunuch'
+
 Plug 'hynek/vim-python-pep8-indent'
 Plug 'mitsuhiko/vim-jinja'
 Plug 'tweekmonster/django-plus.vim'
 Plug 'mjbrownie/vim-htmldjango_omnicomplete'
-Plug 'mhinz/vim-grepper'
-Plug 'ramele/agrep'
-Plug 'skywind3000/asyncrun.vim'
+
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
+
+Plug 'mxw/vim-jsx'
+Plug 'Quramy/vim-js-pretty-template'
+Plug 'udalov/kotlin-vim'
+Plug 'cespare/vim-toml'
+
+
+"Plug 'nosami/Omnisharp'
+Plug 'slim-template/vim-slim'
+Plug 'groenewege/vim-less'
+Plug 'wlangstroth/vim-racket'
 Plug 'fsharp/vim-fsharp', {
       \ 'for': 'fsharp',
       \ 'do':  'make fsautocomplete',
       \}
-Plug 'Shougo/vimfiler.vim'
-Plug 'Quramy/tsuquyomi'
-Plug 'jason0x43/vim-js-indent'
-Plug 'udalov/kotlin-vim'
-Plug 'junegunn/vim-easy-align'
 Plug 'leafo/moonscript-vim'
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown'] }
-Plug 'Quramy/tsuquyomi'
-Plug 'Quramy/vim-js-pretty-template'
-Plug 'leafgarland/typescript-vim'
+
+
+Plug 'w0rp/ale'
+Plug 'majutsushi/tagbar'
+Plug 'Wolfy87/vim-enmasse'
+Plug 'vim-scripts/emacsmode'
+Plug 'sjl/gundo.vim'
+Plug 'tmhedberg/matchit'
+Plug 'chrisbra/Recover.vim'
+Plug 'vim-scripts/dbext.vim'
+Plug 'gorodinskiy/vim-coloresque'
+Plug 'jpalardy/vim-slime'
+Plug 'talek/vorax4'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+Plug 'dhruvasagar/vim-table-mode'
+Plug 'plasticboy/vim-markdown'
+Plug 'skywind3000/asyncrun.vim'
+Plug 'junegunn/vim-easy-align'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'Quramy/tsuquyomi'
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'cespare/vim-toml'
-Plug 'tpope/vim-eunuch'
+
+Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 
 call plug#end()
 
@@ -236,12 +189,9 @@ if has('gui_running')
     set background=dark
     colorscheme base16-default-dark
 else
-    " set background=dark
-    " colorscheme Tomorrow-Night
     let g:base16colorspace=256
     set background=dark
     colorscheme base16-default-dark
-    " colorscheme solarized
 endif
 "
 let g:airline#extensions#tabline#enabled = 1
@@ -325,9 +275,6 @@ augroup global
     autocmd BufReadPost fugitive://* set bufhidden=delete
 
     " normal mode mappings
-    " ctags
-    nnoremap <Space>c :Dispatch ctags --exclude=log --exclude=.git  -R .<CR>
-    nnoremap <Space>rc :Dispatch ctags -f gemtags --exclude=.git --exclude=log -R `rvm gemdir`/gems/* `rvm gemdir`/bundler/gems/*<CR>
 
     " search and center the search result.
     nnoremap <silent> n nzz
@@ -385,13 +332,9 @@ augroup global
     " plugin mappings
     nnoremap <Space>g :GundoToggle<CR>
     "nnoremap <c-w>r :NERDTreeFind<CR><c-w><c-w>
-    " nnoremap <c-y> :CtrlPCurWD<CR>
-    " nnoremap <c-u> :CtrlPBuffer<CR>
     nnoremap <c-x>v :!gnome-open %<cr>
     nnoremap <Space>f :RecoverPluginFinish<CR>
-    nnoremap <c-w>t :NERDTreeToggle<CR>
-    nnoremap <c-x>f :VimFilerExplorer -find<CR>
-    nnoremap <c-x>d :VimFiler -find<CR>
+    nnoremap <c-x>e :NERDTreeToggle<CR>
     nnoremap <Leader>e :Explore<CR>
     "nnoremap \t :Ve<CR><CR>
     nnoremap <Space>l :TagbarToggle<CR>
@@ -491,24 +434,9 @@ augroup python
     au!
     autocmd FileType python nnoremap<buffer> <Space>x :w<CR>:!/usr/bin/env python %
     autocmd FileType python setlocal nosmartindent
-    autocmd FileType python setlocal makeprg=pylint\ --reports=n\ --output-format=parseable\ %:p
-    autocmd FileType python setlocal errorformat=%f:%l:\ %m
-    autocmd BufRead python setlocal efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
     autocmd FileType python setlocal path+=$PYTHONDIRS
     let g:jedi#use_tabs_not_buffers = 0
     let g:jedi#popup_select_first = 0
-    "autocmd FileType python setlocal makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;py_compile.compile(r'%')\"
-    "if has('python3')
-      "autocmd FileType python setlocal omnifunc=python3complete#Complete
-    "end
-    if executable('pyls')
-      " pip install python-language-server
-      au User lsp_setup call lsp#register_server({
-            \ 'name': 'pyls',
-            \ 'cmd': {server_info->['pyls']},
-            \ 'whitelist': ['python'],
-            \ })
-    endif
 augroup end
 
 
@@ -582,45 +510,6 @@ augroup ruby
     set tags+=gemtags
 augroup end
 
-augroup java
-    au!
-    " Mappings for eclim.
-     "autocmd FileType java nnoremap<buffer> <Space>jg :JavaGet<CR>
-     "autocmd FileType java nnoremap<buffer> <Space>js :JavaSet<CR>
-     "autocmd FileType java nnoremap<buffer> <Space>ja :JavaGetSet<CR>
-     "autocmd FileType java nnoremap<buffer> <Space>jc :JavaConstructor<CR>
-     "autocmd FileType java nnoremap<buffer> <Space>jh :JavaHierarchy<CR>
-     "autocmd FileType java nnoremap<buffer> <Space>jl :JavaImpl<CR>
-     "autocmd FileType java nnoremap<buffer> <Space>jd :JavaDelegate<CR>
-     "autocmd FileType java nnoremap<buffer> <Space>ji :JavaImport<CR>
-     "autocmd FileType java nnoremap<buffer> <Space>jm :w<CR>:JavaImportMissing<CR>:w<CR>
-     "autocmd FileType java nnoremap<buffer> <Space>jj :JavaSearchContext<CR>
-     "autocmd FileType java nnoremap<buffer> <Space>jx :Java %<CR>
-     "autocmd FileType java nnoremap<buffer> <Space>jo :w<CR>:Javac<CR>
-     "autocmd FileType java nnoremap<buffer> <Space>jv :w<CR>:Validate<CR>
-     "autocmd FileType java nnoremap<buffer> <Space>jt :JavaCorrect<CR>
-     "autocmd FileType java nnoremap<buffer> <Space>jr :JavaRename
-     "autocmd FileType java nnoremap<buffer> <Space>jw :JavaDocComment<CR>
-     "autocmd FileType java nnoremap<buffer> <Space>jf :w<CR>:%JavaFormat<CR>
-
-    autocmd Filetype java setlocal omnifunc=javacomplete#Complete
-    "autocmd FileType java nnoremap<buffer> <Space>jm <Plug>(JavaComplete-Imports-AddMissing)
-    "autocmd FileType java nnoremap<buffer> <Space>ji <Plug>(JavaComplete-Imports-Add)
-    "autocmd FileType java nnoremap<buffer> <Space>js <Plug>(JavaComplete-Imports-Smart)
-    "autocmd FileType java nnoremap<buffer> <Space>ju <Plug>(JavaComplete-Imports-RemoveUnused)
-    "autocmd FileType java setlocal makeprg=mvn\ package
-    "autocmd FileType java setlocal errorformat=\[ERROR]\ %f:[%l\\,%v]\ %m 
-augroup end
-
-let g:EclimCompletionMethod = 'omnifunc'
-if !exists('g:neocomplete#force_omni_input_patterns')
-    let g:neocomplete#force_omni_input_patterns = {}
-endif
-let g:neocomplete#force_omni_input_patterns.java =
-    \ '\%(\h\w*\|)\)\.\w*'
-
-let g:clang_complete_auto = 1
-let g:clang_snippets = 1
 
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
@@ -659,10 +548,6 @@ augroup LargeFile
     au BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
 augroup END
 
-let g:vimfiler_as_default_explorer = 1
-"let g:vimfiler_ignore_pattern = ['^\.', '^.+\.pyc$', '^.+\.class$', '^.+\.jar$']
-let g:vimfiler_ignore_filters = ['matcher_ignore_wildignore']
-
 let NERDTreeHijackNetrw=0
 let NERDTreeShowHidden=1
 
@@ -694,47 +579,14 @@ function! RefreshAll()
 endfunction
 
 
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-  \ 'file': '\v\.(exe|so|dll)$',
-  \ }
-
-let g:ctrlp_extensions = ['tag']
 " The Silver Searcher
 if executable('ag')
   " Use ag over grep
   set grepprg=ag\ --vimgrep
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
 endif
-" let g:ctrlp_user_command = {
-"     \ 'types': {
-"         \ 1: ['.git', 'cd %s && git ls-files'],
-"         \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-"         \ },
-"     \ 'fallback': 'find %s -type f'
-"     \ }
 
 autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
 
-let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-
-if executable('ocamlmerlin') && has('python')
-  execute "set rtp+=" . g:opamshare . "/merlin/vim"
-endif
-
-autocmd FileType ocaml source /home/rahul/.opam/4.01.0/share/vim/syntax/ocp-indent.vim
-
-let g:syntastic_ocaml_checkers = ['merlin']
-let g:syntastic_python_flake8_post_args='--ignore=E501'
-let g:syntastic_mode_map = {
-      \ "mode": "active",
-      \ "passive_filetypes": ["java"] }
-
-let g:syntastic_javascript_checkers = ['eslint']
 
 let g:ale_linters = {
       \ 'python': ['flake8', 'pylint'],
@@ -804,79 +656,8 @@ function! s:AgMotionCurrentBuffer(type) abort
 endfunction
 
 
-" let g:neocomplcache_enable_at_startup = 1
-" " Use smartcase.
-" let g:neocomplcache_enable_smart_case = 1
-" " Set minimum syntax keyword length.
-" let g:neocomplcache_min_syntax_length = 2
-" let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
-" " Plugin key-mappings.
-" inoremap <expr><C-g>     neocomplcache#undo_completion()
-" inoremap <expr><C-l>     neocomplcache#complete_common_string()
-" " <TAB>: completion.
-" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" " <C-h>, <BS>: close popup and delete backword char.
-" inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-" inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-" inoremap <expr><C-y>  neocomplcache#close_popup()
-" inoremap <expr><C-e>  neocomplcache#cancel_popup()
-"
-" " Recommended key-mappings.
-" " <CR>: close popup and save indent.
-" inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-" function! s:my_cr_function()
-"   return neocomplcache#smart_close_popup() . "\<CR>"
-"   " For no inserting <CR> key.
-"   "return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
-" endfunction
-"
-"
-"
-" " Python jedi settings.
-" if !exists('g:neocomplcache_omni_functions')
-"     let g:neocomplcache_omni_functions = {}
-" endif
-" let g:neocomplcache_omni_functions['python'] = 'jedi#completions'
-" let g:jedi#popup_on_dot = 0
-" if !exists('g:neocomplcache_force_omni_patterns')
-"   let g:neocomplcache_force_omni_patterns = {}
-" endif
-" let g:neocomplcache_force_omni_patterns.python = '[^. \t]\.\w*'
-"
 
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 0
-" Set minimum syntax keyword length.
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplete#close_popup()
-inoremap <expr><C-e>  neocomplete#cancel_popup()
 
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return neocomplete#close_popup() . "\<CR>"
-  " For no inserting <CR> key.
-  return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-endfunction
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-let g:neocomplete#sources#omni#input_patterns.ocaml = '[^. *\t]\.\w*\|\h\w*|#'
-" if !exists('g:neocomplcache_force_omni_patterns')
-"    let g:neocomplcache_force_omni_patterns = {}
-"  endif
-"  let g:neocomplcache_force_omni_patterns.ocaml = '[^. *\t]\.\w*\|\h\w*|#'
 augroup ocaml
   au!
   autocmd Filetype ocaml nmap <buffer> <LocalLeader>mr  :MerlinRename
@@ -890,9 +671,6 @@ augroup end
 
 let g:jedi#completions_enabled=0
 
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
 " For snippet_complete marker.
 if has('conceal')
   set conceallevel=2 concealcursor=i
@@ -908,9 +686,6 @@ endif
 "             \'c' : [ promptline#slices#vcs_branch() ],
 "             \'y' : [ promptline#slices#python_virtualenv() ],
 "             \'warn' : [ promptline#slices#last_exit_code() ]}
-
-let g:racer_cmd = "/data/sw/racer/target/release/racer"
-let $RUST_SRC_PATH = "/data/sw/rust/src""
 
 nnoremap <silent> <Space>u :FZF<cr>
 command! -nargs=1 Locate call fzf#run(
@@ -1214,9 +989,169 @@ if has("cscope")
     nmap <C-@>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 endif
 
-nnoremap <unique> <Space>o :Unite outline<cr>
-
 let g:NERDTReeIgnore = ['\.pyc$']
 nnoremap <c-\> :GtagsCursor<cr>
 
 let g:jsx_ext_required = 0
+" ## added by OPAM user-setup for vim / base ## 93ee63e278bdfc07d1139a748ed3fff2 ## you can edit, but keep this line
+let s:opam_share_dir = system("opam config var share")
+let s:opam_share_dir = substitute(s:opam_share_dir, '[\r\n]*$', '', '')
+
+let s:opam_configuration = {}
+
+function! OpamConfOcpIndent()
+  execute "set rtp^=" . s:opam_share_dir . "/ocp-indent/vim"
+endfunction
+let s:opam_configuration['ocp-indent'] = function('OpamConfOcpIndent')
+
+function! OpamConfOcpIndex()
+  execute "set rtp+=" . s:opam_share_dir . "/ocp-index/vim"
+endfunction
+let s:opam_configuration['ocp-index'] = function('OpamConfOcpIndex')
+
+function! OpamConfMerlin()
+  let l:dir = s:opam_share_dir . "/merlin/vim"
+  execute "set rtp+=" . l:dir
+endfunction
+let s:opam_configuration['merlin'] = function('OpamConfMerlin')
+
+let s:opam_packages = ["ocp-indent", "ocp-index", "merlin"]
+let s:opam_check_cmdline = ["opam list --installed --short --safe --color=never"] + s:opam_packages
+let s:opam_available_tools = split(system(join(s:opam_check_cmdline)))
+for tool in s:opam_packages
+  " Respect package order (merlin should be after ocp-index)
+  if count(s:opam_available_tools, tool) > 0
+    call s:opam_configuration[tool]()
+  endif
+endfor
+" ## end of OPAM user-setup addition for vim / base ## keep this line
+" ## added by OPAM user-setup for vim / ocp-indent ## 159b980aec3076676c883415a3952e61 ## you can edit, but keep this line
+if count(s:opam_available_tools,"ocp-indent") == 0
+  source "/Users/rahul/.opam/default/share/ocp-indent/vim/indent/ocaml.vim"
+endif
+" ## end of OPAM user-setup addition for vim / ocp-indent ## keep this line
+
+
+
+" ## coc settings
+
+" Smaller updatetime for CursorHold & CursorHoldI
+set updatetime=300
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" always show signcolumns
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+"inoremap <silent><expr> <TAB>
+      "\ pumvisible() ? "\<C-n>" :
+      "\ <SID>check_back_space() ? "\<TAB>" :
+      "\ coc#refresh()
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? coc#rpc#request('doKeymap', ['snippets-expand-jump','']) :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
+" Use <c-space> for trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use `[c` and `]c` for navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K for show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+vmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Use `:Format` for format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` for fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+" if you want to disable auto detect, comment out those two lines
+let g:airline#extensions#disable_rtp_load = 1
+let g:airline_extensions = ['branch', 'hunks', 'coc']
+
+let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
+
+nmap ]h <Plug>GitGutterNextHunk
+nmap [h <Plug>GitGutterPrevHunk
+" ## end of coc settings
