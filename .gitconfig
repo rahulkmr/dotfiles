@@ -28,6 +28,7 @@
     lineNumber = true
 
 [init]
-	templatedir = ~/.git_template
+    templatedir = ~/.git_template
 [core]
-	quotepath = false
+    quotepath = false
+    autocrlf = input
