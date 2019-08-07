@@ -1,19 +1,37 @@
 import atexit
 import os
-import readline
-import rlcompleter
 import sys
-import timeit
 
-history = os.path.expanduser('~/.python_history')
-readline.read_history_file(history)
-readline.parse_and_bind('tab: complete')
-atexit.register(readline.write_history_file, history)
+try:
+    import readline
+except ImportError:
+    print(".pythonrc :: Module readline not available.")
+else:
+    if sys.platform == 'darwin' and 'libedit' in readline.__doc__:
+        readline.parse_and_bind("bind ^I rl_complete")
+    else:
+        readline.parse_and_bind("tab: complete")
 
-def t(*args):
-    return timeit.Timer(*args).timeit()
+    history_file = os.path.join(os.path.expanduser("~"), ".python_history")
 
+
+    def save_history(history=history_file):
+        import readline
+        readline.write_history_file(history)
+
+
+    def load_history(history=history_file):
+        try:
+            readline.read_history_file(history)
+        except IOError:
+            pass
+
+    load_history()
+    atexit.register(save_history)
+
+    del readline, atexit, history_file
 
 if os.getenv('TERM') in ('xterm', 'xterm-color', 'xterm-256color', 'rxvt', 'screen', 'screen-256color'):
-	sys.ps1 = '\033[1;34m>>> \033[0m'
-	sys.ps2 = '\033[1;34m... \033[0m'
+    sys.ps1 = '\033[1;34m>>> \033[0m'
+    sys.ps2 = '\033[1;34m... \033[0m'
+
