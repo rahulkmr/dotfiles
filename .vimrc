@@ -137,6 +137,8 @@ Plug 'hynek/vim-python-pep8-indent'
 Plug 'mitsuhiko/vim-jinja'
 Plug 'tweekmonster/django-plus.vim'
 Plug 'mjbrownie/vim-htmldjango_omnicomplete'
+Plug 'hashivim/vim-terraform'
+Plug 'pearofducks/ansible-vim'
 
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
@@ -147,7 +149,7 @@ Plug 'udalov/kotlin-vim'
 Plug 'cespare/vim-toml'
 
 
-"Plug 'nosami/Omnisharp'
+"Plug 'OmniSharp/omnisharp-vim'
 Plug 'slim-template/vim-slim'
 Plug 'groenewege/vim-less'
 Plug 'wlangstroth/vim-racket'
@@ -156,6 +158,7 @@ Plug 'fsharp/vim-fsharp', {
       \ 'do':  'make fsautocomplete',
       \}
 Plug 'leafo/moonscript-vim'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 
 Plug 'w0rp/ale'
@@ -175,8 +178,7 @@ Plug 'plasticboy/vim-markdown'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'editorconfig/editorconfig-vim'
-
-Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
 
@@ -1031,11 +1033,7 @@ if count(s:opam_available_tools,"ocp-indent") == 0
 endif
 " ## end of OPAM user-setup addition for vim / ocp-indent ## keep this line
 
-
-
-" ## coc settings
-
-" Smaller updatetime for CursorHold & CursorHoldI
+" You will have bad experience for diagnostic messages when it's default 4000.
 set updatetime=300
 
 " don't give |ins-completion-menu| messages.
@@ -1046,14 +1044,8 @@ set signcolumn=yes
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-"inoremap <silent><expr> <TAB>
-      "\ pumvisible() ? "\<C-n>" :
-      "\ <SID>check_back_space() ? "\<TAB>" :
-      "\ coc#refresh()
-
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? coc#_select_confirm() :
-      \ coc#expandableOrJumpable() ? coc#rpc#request('doKeymap', ['snippets-expand-jump','']) :
+      \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
@@ -1063,15 +1055,14 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-let g:coc_snippet_next = '<tab>'
-" Use <c-space> for trigger completion.
+" Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
-" Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-" Use `[c` and `]c` for navigate diagnostics
+" Use `[c` and `]c` to navigate diagnostics
 nmap <silent> [c <Plug>(coc-diagnostic-prev)
 nmap <silent> ]c <Plug>(coc-diagnostic-next)
 
@@ -1081,11 +1072,11 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" Use K for show documentation in preview window
+" Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
-  if &filetype == 'vim'
+  if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
   else
     call CocAction('doHover')
@@ -1099,7 +1090,7 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
 
 " Remap for format selected region
-vmap <leader>f  <Plug>(coc-format-selected)
+xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
@@ -1111,7 +1102,7 @@ augroup mygroup
 augroup end
 
 " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-vmap <leader>a  <Plug>(coc-codeaction-selected)
+xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap for do codeAction of current line
@@ -1119,11 +1110,31 @@ nmap <leader>ac  <Plug>(coc-codeaction)
 " Fix autofix problem of current line
 nmap <leader>qf  <Plug>(coc-fix-current)
 
-" Use `:Format` for format current buffer
+" Use <tab> for select selections ranges, needs server support, like: coc-tsserver, coc-python
+nmap <silent> <TAB> <Plug>(coc-range-select)
+xmap <silent> <TAB> <Plug>(coc-range-select)
+xmap <silent> <S-TAB> <Plug>(coc-range-select-backword)
+
+" Use `:Format` to format current buffer
 command! -nargs=0 Format :call CocAction('format')
 
-" Use `:Fold` for fold current buffer
+" Use `:Fold` to fold current buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" use `:OR` for organize import of current buffer
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Add diagnostic info for https://github.com/itchyny/lightline.vim
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'cocstatus': 'coc#status'
+      \ },
+      \ }
 
 
 
@@ -1145,13 +1156,8 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
-" if you want to disable auto detect, comment out those two lines
-let g:airline#extensions#disable_rtp_load = 1
-let g:airline_extensions = ['branch', 'hunks', 'coc']
-
-let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
-
 nmap ]h <Plug>GitGutterNextHunk
 nmap [h <Plug>GitGutterPrevHunk
-" ## end of coc settings
+
+let g:vim_markdown_folding_level = 3
+let g:vim_markdown_conceal = 0
