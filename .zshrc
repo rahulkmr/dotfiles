@@ -43,7 +43,7 @@ setopt hist_reduce_blanks
 bindkey -e
 autoload edit-command-line
 zle -N edit-command-line
-bindkey '^Xe' edit-command-line
+bindkey "^X^E" edit-command-line
 
 setopt no_beep
 setopt auto_cd
@@ -179,8 +179,6 @@ compctl -g "*.go" gccgo
 
 # source /usr/local/bin/virtualenvwrapper.sh
 
-# OPAM configuration
-. /home/rahul/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
 eval "$(pyenv init -)"
 eval "$(pipenv --completion)"
@@ -206,3 +204,35 @@ stty -ixon -ixoff
 ##THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 #export SDKMAN_DIR="/home/rahul/.sdkman"
 #[[ -s "/home/rahul/.sdkman/bin/sdkman-init.sh" ]] && source "/home/rahul/.sdkman/bin/sdkman-init.sh"
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
+
+
+# opam configuration
+test -r /Users/rahul/.opam/opam-init/init.zsh && . /Users/rahul/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /Users/rahul/bin/terraform terraform
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/rahul/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/rahul/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/rahul/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/rahul/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+_dotnet_zsh_complete() 
+{
+  local completions=("$(dotnet complete "$words")")
+
+  reply=( "${(ps:\n:)completions}" )
+}
+
+compctl -K _dotnet_zsh_complete dotnet
+if [ /Users/rahul/Downloads/google-cloud-sdk/bin/kubectl ]; then source <(kubectl completion zsh); fi
