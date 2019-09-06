@@ -36,7 +36,7 @@ esac
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-#force_color_prompt=yes
+force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -50,9 +50,9 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[33m\]$(__git_ps1 " (%s)")\[\033[00m\] \$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(__git_ps1 " (%s)") \$ '
 fi
 unset color_prompt force_color_prompt
 
@@ -81,10 +81,37 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias x=exit
+alias rm='rm -i'
+alias mv='nocorrect mv -i'
+alias cp='nocorrect cp -i'
+alias tmux='tmux -2 -u'
+alias tn='\tmux -2 -u new-session -s'
+alias ta='\tmux attach-session -t'
+alias tl='\tmux list-sessions'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+export EDITOR=vim
+export VISUAL=vim
+export LDFLAGS="-L/usr/local/opt/openssl/lib"
+export CPPFLAGS="-I/usr/local/opt/openssl/include"
+export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
+export GOPATH=$HOME/go
+export WORKON_HOME=~/venvs
+export PIP_DOWNLOAD_CACHE=$HOME/.pip-download-cache
+#export TERM=xterm-256color
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export PYENV_ROOT="$HOME/.pyenv"
+export FZF_DEFAULT_COMMAND='ag -l -g ""'
+export FZF_DEFAULT_OPTS="--extended-exact --cycle"
+export GTAGSCONF=/usr/local/share/gtags/gtags.conf
+export GTAGSLABEL=pygments
+export PAGER='less'
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -102,13 +129,17 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+export PATH="~/.pyenv/bin:~/.rbenv/bin:~/bin:~/.cargo/bin:$GOPATH/bin:$PATH"
+
+[ -d ~/.pyenv ] && eval "$(pyenv init -)"
+[ -d ~/.rbenv ] && eval "$(rbenv init -)"
+
+# pyenv virtualenvwrapper
+if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-[ -s "/home/rahul/.dnx/dnvm/dnvm.sh" ] && . "/home/rahul/.dnx/dnvm/dnvm.sh" # Load dnvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/home/rahul/.sdkman"
-[[ -s "/home/rahul/.sdkman/bin/sdkman-init.sh" ]] && source "/home/rahul/.sdkman/bin/sdkman-init.sh"
