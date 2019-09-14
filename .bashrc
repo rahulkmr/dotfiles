@@ -49,6 +49,10 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+function virtualenv_info {
+    [[ -n "$VIRTUAL_ENV" ]] && echo "(venv:${VIRTUAL_ENV##*/})"
+}
+
 if [ "$color_prompt" = yes ]; then
     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[33m\]$(__git_ps1 " (%s)")\[\033[00m\] \$ '
 else
@@ -83,8 +87,8 @@ alias la='ls -A'
 alias l='ls -CF'
 alias x=exit
 alias rm='rm -i'
-alias mv='nocorrect mv -i'
-alias cp='nocorrect cp -i'
+alias mv='mv -i'
+alias cp='cp -i'
 alias tmux='tmux -2 -u'
 alias tn='\tmux -2 -u new-session -s'
 alias ta='\tmux attach-session -t'
@@ -142,4 +146,7 @@ if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
+BASE16_SHELL="$HOME/.config/base16-shell/"
+[ -n "$PS1" ] && \
+        [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+                eval "$("$BASE16_SHELL/profile_helper.sh")"
